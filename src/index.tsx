@@ -16,16 +16,20 @@ const history = createBrowserHistory();
 const rootReducer = generateRootReducer(history);
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <App />
-        </ConnectedRouter>
-    </Provider>,
-    document.getElementById('root'));
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,7 +1,7 @@
 // @flow
 
 import { put, takeEvery, delay } from 'redux-saga/effects';
-import {loadingStarted, loadingEnd} from './actions';
+import { loadingStarted, loadingEnd } from './actions';
 
 function* startLoading(): Iterable<any> {
   yield delay(2000);

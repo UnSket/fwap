@@ -7,11 +7,14 @@ const defaultState: State = {
 };
 
 export default handleActions<State, Payload>(
-    {
-        [combineActions(loadingStarted, loadingEnd).toString()]: (state, { payload: {loading}}) => ({
-            ...state,
-            loading
-        }),
-    },
-    defaultState
+  {
+    [combineActions(loadingStarted, loadingEnd).toString()]: (
+      state,
+      { payload: { loading } }
+    ) => ({
+      ...state,
+      loading
+    })
+  },
+  defaultState
 );

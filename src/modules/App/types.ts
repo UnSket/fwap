@@ -1,7 +1,7 @@
 export type State = {
-    loading: boolean
-}
+  loading: boolean;
+};
 
 export type Payload = {
-    loading: boolean
-}
+  loading: boolean;
+};
