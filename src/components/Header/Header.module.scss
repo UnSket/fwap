@@ -1,0 +1,50 @@
+.container {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .toggleMenu {
+    color: white;
+  }
+  .leftPart {
+    display: flex;
+    align-items: center;
+    .logo {
+      width: 150px;
+      height: 100%;
+      float: left;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .linkWrapper {
+      height: 100%;
+      display: inline-flex;
+      justify-content: center;
+
+      .link {
+        padding: 0 15px;
+        color: #cacaca;
+        font-size: 20px;
+        text-underline: none;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
+.dropDownMenu {
+  .link {
+    color: #1c1c1c;
+  }
+}
