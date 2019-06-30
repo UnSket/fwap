@@ -1,5 +1,5 @@
 .container {
-  background-color: black;
+  background: linear-gradient(to left, #6466d6, #232548);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,14 +30,14 @@
 
       .link {
         padding: 0 15px;
-        color: #cacaca;
+        color: white;
         font-size: 20px;
         text-underline: none;
         display: flex;
         align-items: center;
 
         &:hover {
-          color: white;
+          color: #a3a6ff;
         }
       }
     }

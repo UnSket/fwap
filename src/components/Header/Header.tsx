@@ -7,6 +7,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Link } from 'react-router-dom';
+
 
 
 const Header: React.FC = () => {
@@ -26,7 +28,9 @@ const Header: React.FC = () => {
                         </div>
                         </Hidden>
                         <div className={styles.logo}>
-                            <img src={logo}/>
+                            <Link to='/' >
+                                <img src={logo}/>
+                            </Link>
                         </div>
                         <Hidden xsDown>
                         <div className={styles.linkWrapper}>
