@@ -1,5 +1,5 @@
 .container {
-  background: linear-gradient(to left, #6466d6, #232548);
+  background: rgba(0,0,0,.6);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,15 +29,15 @@
       justify-content: center;
 
       .link {
-        padding: 0 15px;
+        padding: 5px 15px;
         color: white;
         font-size: 20px;
-        text-underline: none;
+        text-decoration: none;
         display: flex;
         align-items: center;
-
+        border-radius: 3px;
         &:hover {
-          color: #a3a6ff;
+          background: rgba(0, 0, 0, .08);
         }
       }
     }
