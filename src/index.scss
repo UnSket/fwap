@@ -9,22 +9,3 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
-@mixin smDown {
-  @media screen and (max-width: 600px) {
-    @content;
-  }
-}
-
-@include smDown {
-  html {
-    font-size: 9px;
-  }
-}
-/*
-lg: 1280
-md: 960
-sm: 600
-xl: 1920
-xs: 0
-*/

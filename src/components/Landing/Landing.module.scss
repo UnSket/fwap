@@ -1,24 +1,62 @@
-.container{
-  height: 100vh;
-  min-height: 400px;
-  //padding-top: 64px;
-  margin-top: -64px;
-  background-image: url(./study.png);
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  .content{
-    flex-grow: 1;
-    background: rgba(32, 44, 45, 0.65);
+@import "../../mixins";
+
+.mainContent {
+  section {
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .intro {
+    min-height: 400px;
+    //padding-top: 64px;
+    margin-top: -64px;
+    background: url(./study.png) center;
+    background-size: cover;
     display: flex;
-    padding-top: 20%;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    h1, h3 {
-      color: white;
-      text-align: center;
-      max-width: 80%;
+    .content {
+      flex-grow: 1;
+      background: rgba(32, 44, 45, 0.65);
+      padding-top: 20%;
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+      }
+      h1, h3 {
+        color: white;
+        text-align: center;
+        max-width: 80%;
+        line-height: 1.3em;
+      }
+      @include smDown {
+        h1 {
+          font-size: 70px;
+        }
+        h3 {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+  .whatIsIt{
+    background-color: #c3d5f5;
+    padding: 10% 0;
+    color: #1c1c1c;
+    position: relative;
+    .gears {
+      position: absolute;
+      top: 20px;
+      right: -20px;
+      opacity: .5;
+    }
+    h2 {
+      color: #03296b;
+      margin-bottom: 50px;
+    }
+    p {
+      color: #03296b;
     }
   }
 }
