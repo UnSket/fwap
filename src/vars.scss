@@ -3,6 +3,16 @@
     @content;
   }
 }
+
+$mainColor: #53d45a;
+
+%bigButton {
+  border-width: 2px;
+  font-size: 25px;
+  @include smDown {
+    font-size: 20px;
+  }
+}
 /*
 lg: 1280
 md: 960

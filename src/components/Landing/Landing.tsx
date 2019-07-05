@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Landing.module.scss';
-import {Typography, Container} from '@material-ui/core';
+import {Typography, Container, Button} from '@material-ui/core';
 import gearsImg from './gears.png';
 
 const Landing: React.FC = () => {
@@ -10,7 +10,7 @@ const Landing: React.FC = () => {
         <div className={styles.content}>
           <Container className={styles.container}>
             <Typography variant={'h1'}>FWAP</Typography>
-            <Typography variant={'h3'}>THIS IS TOOL WHICH WILL HELP YOU TO LEARN LANGUAGES FUN</Typography>
+            <Typography variant={'h3'}>Fun Words And Progress - make study easy</Typography>
           </Container>
         </div>
       </section>
@@ -23,6 +23,11 @@ const Landing: React.FC = () => {
               Текст (от лат. textus — ткань; сплетение, сочетание) — зафиксированная на каком-либо материальном носителе человеческая мысль; в общем плане связная и полная последовательность символов.
               Существуют две основные трактовки понятия «текст»: имманентная (расширенная, философски нагруженная) и репрезентативная (более частная)
             </Typography>
+            <div className={styles.actionWrapper}>
+              <Button variant="contained" className={styles.action}>
+                Some action
+              </Button>
+            </div>
           </Container>
         </div>
       </section>

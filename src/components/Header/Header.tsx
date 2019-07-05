@@ -3,7 +3,7 @@ import styles from './Header.module.scss';
 import logo from './logo_white.svg';
 import { HashLink } from 'react-router-hash-link';
 import { AppBar, IconButton, Toolbar, Button, Container } from '@material-ui/core';
-//import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,7 +24,7 @@ const Header: React.FC = () => {
                         <Hidden smUp>
                         <div className={styles.toggleMenu}>
                             <IconButton onClick={openMenu}>
-                              {/*<MenuIcon className={styles.toggleMenu} />*/}
+                              <MenuIcon className={styles.toggleMenu} />
                             </IconButton>
                         </div>
                         </Hidden>

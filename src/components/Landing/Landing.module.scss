@@ -1,13 +1,12 @@
-@import "../../mixins";
+@import "../../vars";
 
 .mainContent {
   section {
-    height: 100vh;
+    min-height: 100vh;
     box-sizing: border-box;
     overflow: hidden;
   }
   .intro {
-    min-height: 400px;
     //padding-top: 64px;
     margin-top: -64px;
     background: url(./study.png) center;
@@ -41,22 +40,44 @@
     }
   }
   .whatIsIt{
-    background-color: #c3d5f5;
+    background-color: #fdfdfd;
     padding: 10% 0;
     color: #1c1c1c;
     position: relative;
+    display: flex;
     .gears {
       position: absolute;
-      top: 20px;
-      right: -20px;
+      bottom: 20px;
+      right: 30px;
       opacity: .5;
+      width: 150px;
+      max-width: 40%;
     }
     h2 {
-      color: #03296b;
       margin-bottom: 50px;
     }
-    p {
-      color: #03296b;
+    .actionWrapper {
+      text-align: center;
+      .action {
+        @extend %bigButton;
+        color: white;
+        background: $mainColor;
+        margin-top: 50px;
+        align-self: center;
+      }
+    }
+    @include smDown {
+      h2 {
+        font-size: 35px;
+      }
+      p {
+        font-size: 18px;
+      }
+      .gears {
+        bottom: unset;
+        top: 20px;
+        width: 105px;
+      }
     }
   }
 }
