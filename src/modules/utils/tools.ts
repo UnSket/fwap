@@ -1,0 +1,1 @@
+export const useClasses = (...classes: Array<string>) => classes.join(' ');
