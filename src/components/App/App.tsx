@@ -5,7 +5,6 @@ import Header from '../Header/Header';
 import { createMuiTheme } from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles'
 import green from '@material-ui/core/colors/green';
-import gray from '@material-ui/core/colors/grey';
 
 const theme = createMuiTheme({
   palette: {
@@ -14,7 +13,6 @@ const theme = createMuiTheme({
       contrastText: '#fff'
     },
   },
-
 });
 const App: React.FC = () => {
   return (

@@ -35,7 +35,7 @@ const Header: React.FC = () => {
                         </Hidden>
                         <div className={styles.logo}>
                             <Link to='/' >
-                                <img src={logo}/>
+                                <img src={logo} alt='logo'/>
                             </Link>
                         </div>
                         <Hidden xsDown>

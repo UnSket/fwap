@@ -20,7 +20,7 @@ const Landing: React.FC = () => {
         </div>
       </section>
       <section className={styles.whatIsIt} id='about'>
-        <img className={styles.gears} src={gearsImg} />
+        <img className={styles.gears} src={gearsImg} alt='' />
         <div className={styles.content}>
           <Container className={styles.container}>
             <Typography variant={'h2'}>How it works?</Typography>
@@ -41,10 +41,11 @@ const Landing: React.FC = () => {
           <Typography variant={'h2'} component={'h3'}>Decks</Typography>
           <div className={styles.cardsWrapper}>
             {mockDecks.map(deck => <DeckPreview key={deck.id} {...deck} />)}
-
-{/*
-            <Carousel imgArray={[gearsImg, studyImg, 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ce7d2c19-50bd-4b62-8a7a-edbce0d143fa/d9wxh6c-37c09d73-ad60-4031-a831-0e680dde7837.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2NlN2QyYzE5LTUwYmQtNGI2Mi04YTdhLWVkYmNlMGQxNDNmYVwvZDl3eGg2Yy0zN2MwOWQ3My1hZDYwLTQwMzEtYTgzMS0wZTY4MGRkZTc4MzcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.gHEOIm4gJ3t_kxP7oelxtoMphZyjDGjzxWjzY2wqElQ']} />
-*/}
+          </div>
+          <div className={styles.action}>
+            <Button variant="contained" color='primary' className={styles.action}>
+              Look all
+            </Button>
           </div>
         </Container>
       </section>

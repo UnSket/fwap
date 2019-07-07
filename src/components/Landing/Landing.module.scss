@@ -120,6 +120,13 @@
         grid-template-columns: 1fr;
       }
     }
+    .action {
+      text-align: center;
+      margin-top: 50px;
+      button {
+        @extend %bigButton;
+      }
+    }
   }
   .account {
     background: url("./work.png") center;

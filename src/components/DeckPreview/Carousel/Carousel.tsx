@@ -63,9 +63,9 @@ class Carousel extends React.Component<Props, State> {
     const {imgArray} = this.props;
     return (
       <div className={styles.container} onClick={this.forceUpdateImage}>
-        <img key={prevImg} className={styles.prevImg} src={imgArray[prevImg]} />
-        <img key={currentImg} className={styles.currentImg} src={imgArray[currentImg]} />
-        <img key={nextImg} className={styles.nextImg} src={imgArray[nextImg]} />
+        <img key={prevImg} className={styles.prevImg} src={imgArray[prevImg]} alt='' />
+        <img key={currentImg} className={styles.currentImg} src={imgArray[currentImg]} alt='' />
+        <img key={nextImg} className={styles.nextImg} src={imgArray[nextImg]} alt='' />
       </div>
   )}
 }
