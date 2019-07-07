@@ -22,6 +22,17 @@ class Carousel extends React.Component<Props, State> {
     };
   }
 
+  forceUpdateImage = () => {
+    if (this.state.updateIntervalID) {
+      clearInterval(this.state.updateIntervalID);
+    }
+    const intervalID = setInterval(() => {
+      this.updateImages();
+    }, 2000);
+    this.setState(() => ({ ...this.state, updateIntervalID: intervalID }));
+    this.updateImages();
+  };
+
   updateImages = () => {
     const {nextImg, currentImg} = this.state;
     const nextIndex = nextImg + 1 === this.props.imgArray.length ? 0 : nextImg + 1;
@@ -51,7 +62,7 @@ class Carousel extends React.Component<Props, State> {
     const {currentImg, nextImg, prevImg} = this.state;
     const {imgArray} = this.props;
     return (
-      <div className={styles.container}>
+      <div className={styles.container} onClick={this.forceUpdateImage}>
         <img key={prevImg} className={styles.prevImg} src={imgArray[prevImg]} />
         <img key={currentImg} className={styles.currentImg} src={imgArray[currentImg]} />
         <img key={nextImg} className={styles.nextImg} src={imgArray[nextImg]} />

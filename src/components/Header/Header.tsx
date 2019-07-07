@@ -8,6 +8,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
+import LoginDialog from '../LoginDialog/LoginDialog';
 
 
 
@@ -15,8 +16,12 @@ const Header: React.FC = () => {
     const [anchorForMenu, toggleMenu] = useState(null);
     const closeMenu = () => toggleMenu(null);
     const openMenu = (e: any) => toggleMenu(e.currentTarget);
+    const [isLoginOpen, toggleLogin] = useState(false);
+    const closeLogin = () => toggleLogin(false);
+    const openLogin = () => toggleLogin(true);
     return (
         <>
+            <LoginDialog isOpen={isLoginOpen} close={closeLogin}/>
             <AppBar position="static">
                 <Toolbar className={styles.header}>
                     <Container className={styles.container}>
@@ -41,7 +46,7 @@ const Header: React.FC = () => {
                         </Hidden>
                     </div>
                     <div className={styles.rightPart}>
-                        <Button color="inherit">Login</Button>
+                        <Button color="inherit" onClick={openLogin}>Login</Button>
                     </div>
                     </Container>
                     <Menu
@@ -52,10 +57,10 @@ const Header: React.FC = () => {
                         onClose={closeMenu}
                         className={styles.dropDownMenu}>
                         <MenuItem onClick={closeMenu}>
-                            <HashLink smooth to='#content1' className={styles.link}> nav 1</HashLink>
+                            <HashLink smooth to='/#about' className={styles.link}> About</HashLink>
                         </MenuItem>
                         <MenuItem onClick={closeMenu}>
-                            <HashLink smooth to='#content2' className={styles.link}> nav 2</HashLink>
+                            <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
                         </MenuItem>
                     </Menu>
                 </Toolbar>
