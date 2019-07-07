@@ -121,4 +121,77 @@
       }
     }
   }
+  .account {
+    background: url("./work.png") center;
+    background-size: cover;
+    display: flex;
+
+    .wrapper {
+      flex-grow: 1;
+      background: rgba(32, 44, 45, 0.65);
+      padding: 5% 0;
+
+      h3 {
+        text-align: center;
+        color: white;
+        @include smDown {
+          font-size: 40px;
+        }
+      }
+      p {
+        color: white;
+        @include smDown {
+          font-size: 22px;
+        }
+      }
+
+      .content {
+        margin-top: 50px;
+
+        .item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 40px;
+
+          .iconWrapper {
+            background: #02e660;
+            margin: 0 60px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 7px #02e660;
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include smDown {
+              margin: 0 30px;
+              width: 28px;
+              height: 28px;
+            }
+
+            .icon {
+              color: white;
+              font-size: 28px;
+              @include smDown {
+                font-size: 20px;
+              }
+            }
+          }
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15%;
+        flex-wrap: wrap;
+
+        .action {
+          @extend %bigButton;
+          margin: 20px;
+        }
+      }
+    }
+  }
 }

@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import styles from './LoginDialog.module.scss';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from '@material-ui/core';
+import { HashLink } from 'react-router-hash-link'
 
 type Props = {
   isOpen: boolean,
@@ -17,7 +18,7 @@ type Props = {
 const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
   return (
       <Dialog open={isOpen} onClose={close} aria-labelledby="form-dialog-title">
-        <DialogTitle className={styles.title}>Log in</DialogTitle>
+        <DialogTitle className={styles.title}>Sign in</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -38,7 +39,7 @@ const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
             fullWidth
           />
           <DialogContentText className={styles.text}>
-            Don't have account? You could <Link>buy it</Link>
+            Don't have account? Visit <Link onClick={close}> <HashLink smooth to='/#buy'>make your own</HashLink></Link>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -46,7 +47,7 @@ const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
             Cancel
           </Button>
           <Button onClick={close} color="primary">
-            Log in
+            Sign in
           </Button>
         </DialogActions>
       </Dialog>

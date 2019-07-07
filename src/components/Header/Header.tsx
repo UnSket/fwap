@@ -42,11 +42,12 @@ const Header: React.FC = () => {
                         <div className={styles.linkWrapper}>
                             <HashLink smooth to='/#about' className={styles.link}> About</HashLink>
                             <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
+                            <HashLink smooth to='/#buy' className={styles.link}> Make own</HashLink>
                         </div>
                         </Hidden>
                     </div>
                     <div className={styles.rightPart}>
-                        <Button color="inherit" onClick={openLogin}>Login</Button>
+                        <Button color="inherit" onClick={openLogin}>Sign in</Button>
                     </div>
                     </Container>
                     <Menu
@@ -61,6 +62,9 @@ const Header: React.FC = () => {
                         </MenuItem>
                         <MenuItem onClick={closeMenu}>
                             <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
+                        </MenuItem>
+                        <MenuItem onClick={closeMenu}>
+                            <HashLink smooth to='/#buy' className={styles.link}> Make own</HashLink>
                         </MenuItem>
                     </Menu>
                 </Toolbar>

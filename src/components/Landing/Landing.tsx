@@ -4,6 +4,9 @@ import {Typography, Container, Button} from '@material-ui/core';
 import gearsImg from './gears.png';
 import DeckPreview from '../DeckPreview/DeckPreview';
 import {mockDecks} from '../../model/Deck';
+import MoneyIcon from '@material-ui/icons/AttachMoney';
+import BuildIcon from '@material-ui/icons/Build';
+import Download from '@material-ui/icons/SaveAlt';
 
 const Landing: React.FC = () => {
   return (
@@ -44,6 +47,47 @@ const Landing: React.FC = () => {
 */}
           </div>
         </Container>
+      </section>
+      <section className={styles.account} id='buy'>
+        <div className={styles.wrapper} >
+        <Container>
+          <Typography variant={'h2'} component={'h3'}>Make your own</Typography>
+          <div className={styles.content}>
+            <div className={styles.item}>
+              <div className={styles.iconWrapper}>
+                <MoneyIcon color='primary' className={styles.icon} />
+              </div>
+              <Typography variant={'h4'} component={'p'}>
+                Buy account
+              </Typography>
+            </div>
+            <div className={styles.item}>
+              <div className={styles.iconWrapper}>
+                <BuildIcon color='primary' className={styles.icon} />
+              </div>
+              <Typography variant={'h4'} component={'p'}>
+                Create your own decks with 5, 6 or 8 images on the card
+              </Typography>
+            </div>
+            <div className={styles.item}>
+              <div className={styles.iconWrapper}>
+                <Download color='primary' className={styles.icon} />
+              </div>
+              <Typography variant={'h4'} component={'p'}>
+                Print deck or download as PDF
+              </Typography>
+            </div>
+          </div>
+          <div className={styles.actions}>
+            <Button variant="contained" color='primary' className={styles.action}>
+              Buy account
+            </Button>
+            <Button variant="contained" color='primary' className={styles.action}>
+              Sign in
+            </Button>
+          </div>
+        </Container>
+        </div>
       </section>
     </div>
   );
