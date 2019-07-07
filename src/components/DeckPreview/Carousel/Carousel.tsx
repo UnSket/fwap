@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './Carousel.module.scss';
 
 type Props = {
-  imgArray: Array<string>
+  imgArray: Array<string>,
+  isScrolling?: boolean
 };
 type State = {
   currentImg: number,
@@ -33,11 +34,17 @@ class Carousel extends React.Component<Props, State> {
 
   };
 
-  componentDidMount() {
-    const intervalID = setInterval(() => {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.isScrolling && !this.props.isScrolling) {
+      clearInterval(this.state.updateIntervalID);
+    }
+    if (!prevProps.isScrolling && this.props.isScrolling) {
+      const intervalID = setInterval(() => {
+        this.updateImages();
+      }, 2000);
+      this.setState(() => ({ ...this.state, updateIntervalID: intervalID }));
       this.updateImages();
-    }, 2000);
-    this.setState({...this.state, updateIntervalID: intervalID});
+    }
   };
 
   render() {

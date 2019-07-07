@@ -3,6 +3,11 @@
     @content;
   }
 }
+@mixin mdDown {
+  @media screen and (max-width: 960px) {
+    @content;
+  }
+}
 
 $mainColor: #53d45a;
 

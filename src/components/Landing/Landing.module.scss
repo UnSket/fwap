@@ -80,8 +80,6 @@
       text-align: center;
       .action {
         @extend %bigButton;
-        color: white;
-        background: $mainColor;
         margin-top: 50px;
         align-self: center;
       }
@@ -102,10 +100,24 @@
     }
   }
   .readyDecks {
-    background: #e2e2e2;
+    background: #f3f3f3;
     padding: 5% 0;
     h3 {
       text-align: center;
+    }
+    .cardsWrapper {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto;
+      grid-column-gap: 15px;
+      grid-row-gap: 15px;
+      @include mdDown {
+        grid-template-columns: 1fr 1fr;
+      }
+      @include smDown {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

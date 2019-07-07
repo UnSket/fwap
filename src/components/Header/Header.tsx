@@ -35,12 +35,12 @@ const Header: React.FC = () => {
                         </div>
                         <Hidden xsDown>
                         <div className={styles.linkWrapper}>
-                            <HashLink smooth to='#content1' className={styles.link}> nav 1</HashLink>
-                            <HashLink smooth to='#content2' className={styles.link}> nav 2</HashLink>
+                            <HashLink smooth to='/#about' className={styles.link}> About</HashLink>
+                            <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
                         </div>
                         </Hidden>
                     </div>
-                    <div className={styles.leftPart}>
+                    <div className={styles.rightPart}>
                         <Button color="inherit">Login</Button>
                     </div>
                     </Container>
