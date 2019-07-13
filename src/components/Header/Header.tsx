@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './Header.module.scss';
 import logo from './logo_white.svg';
 import { HashLink } from 'react-router-hash-link';
@@ -8,20 +8,17 @@ import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
-import LoginDialog from '../LoginDialog/LoginDialog';
+import { OpenModalContext } from '../App/App';
 
 
 
-const Header: React.FC = () => {
+const Header: React.FC = ({}) => {
     const [anchorForMenu, toggleMenu] = useState(null);
     const closeMenu = () => toggleMenu(null);
     const openMenu = (e: any) => toggleMenu(e.currentTarget);
-    const [isLoginOpen, toggleLogin] = useState(false);
-    const closeLogin = () => toggleLogin(false);
-    const openLogin = () => toggleLogin(true);
+    const openModal = useContext(OpenModalContext);
     return (
         <>
-            <LoginDialog isOpen={isLoginOpen} close={closeLogin}/>
             <AppBar position="static">
                 <Toolbar className={styles.header}>
                     <Container className={styles.container}>
@@ -47,7 +44,7 @@ const Header: React.FC = () => {
                         </Hidden>
                     </div>
                     <div className={styles.rightPart}>
-                        <Button color="inherit" onClick={openLogin}>Sign in</Button>
+                        <Button color="inherit" onClick={openModal}>Sign in</Button>
                     </div>
                     </Container>
                     <Menu

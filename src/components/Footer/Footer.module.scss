@@ -1,0 +1,26 @@
+@import '../../vars';
+.wrapper {
+  background: rgba(0, 0, 0, .8);
+}
+.content {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .link {
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  .logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    @include smDown {
+      width: 95px;
+      overflow: hidden;
+    }
+    img {
+      height: 80%;
+    }
+  }
+}

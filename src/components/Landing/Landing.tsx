@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Landing.module.scss';
 import {Typography, Container, Button} from '@material-ui/core';
 import gearsImg from './gears.png';
@@ -7,11 +7,13 @@ import {mockDecks} from '../../model/Deck';
 import MoneyIcon from '@material-ui/icons/AttachMoney';
 import BuildIcon from '@material-ui/icons/Build';
 import Download from '@material-ui/icons/SaveAlt';
+import { OpenModalContext } from '../App/App';
 
 const Landing: React.FC = () => {
+  const openModal = useContext(OpenModalContext);
   return (
     <div className={styles.mainContent}>
-      <section className={styles.intro}>
+      <section className={styles.intro} id={'intro'}>
         <div className={styles.content}>
           <Container className={styles.container}>
             <Typography variant={'h1'}>FWAP</Typography>
@@ -83,7 +85,7 @@ const Landing: React.FC = () => {
             <Button variant="contained" color='primary' className={styles.action}>
               Buy account
             </Button>
-            <Button variant="contained" color='primary' className={styles.action}>
+            <Button variant="contained" color='primary' className={styles.action} onClick={openModal}>
               Sign in
             </Button>
           </div>

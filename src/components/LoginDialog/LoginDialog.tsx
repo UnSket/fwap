@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import styles from './LoginDialog.module.scss';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from '@material-ui/core';
-import { HashLink } from 'react-router-hash-link'
+import { CollisionLink} from '../utils/utils';
 
 type Props = {
   isOpen: boolean,
@@ -32,14 +32,17 @@ const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="password"
             label="Password"
             type="password"
             variant='outlined'
             fullWidth
           />
           <DialogContentText className={styles.text}>
-            Don't have account? Visit <Link onClick={close}> <HashLink smooth to='/#buy'>make your own</HashLink></Link>
+            Don't have account? Visit{' '}
+            <Link onClick={close} component={CollisionLink} to='/#buy'>
+              make your own
+            </Link>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
