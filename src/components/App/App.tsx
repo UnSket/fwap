@@ -7,6 +7,8 @@ import {ThemeProvider} from '@material-ui/styles'
 import green from '@material-ui/core/colors/green';
 import LoginDialog from '../LoginDialog/LoginDialog';
 import Footer from '../Footer/Footer'
+import MyDecks from '../MyDecks/MyDecks';
+import { ROUTE_PATHS } from '../../model/constans/routePaths';
 
 const theme = createMuiTheme({
   palette: {
@@ -16,6 +18,7 @@ const theme = createMuiTheme({
     },
   },
 });
+
 export const OpenModalContext = React.createContext<() => void>(() => {});
 
 const App: React.FC = () => {
@@ -33,8 +36,8 @@ const App: React.FC = () => {
         <LoginDialog isOpen={isSignInModalOpen} close={closeModal} />
         <Header />
         <Router>
-          <Route path="/" exact component={Landing} />
-          <Route path="/some/" exact render={(): any => <div>asdf</div>} />
+          <Route path={ROUTE_PATHS.landing} exact component={Landing} />
+          <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
         </Router>
         <Footer/>
       </ThemeProvider>

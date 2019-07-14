@@ -3,7 +3,7 @@ import styles from './Landing.module.scss';
 import {Typography, Container, Button} from '@material-ui/core';
 import gearsImg from './gears.png';
 import DeckPreview from '../DeckPreview/DeckPreview';
-import {mockDecks} from '../../model/Deck';
+import {mockDecks} from '../../model/types/Deck';
 import MoneyIcon from '@material-ui/icons/AttachMoney';
 import BuildIcon from '@material-ui/icons/Build';
 import Download from '@material-ui/icons/SaveAlt';

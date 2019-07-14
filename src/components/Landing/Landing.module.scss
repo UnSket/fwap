@@ -7,8 +7,7 @@
     overflow: hidden;
   }
   .intro {
-    //padding-top: 64px;
-    margin-top: -64px;
+    margin-top: -$headerHeight;
     background: url(./study.png) center;
     background-size: cover;
     display: flex;
@@ -132,7 +131,7 @@
     background: url("./work.png") center;
     background-size: cover;
     display: flex;
-    margin-bottom: -58px;
+    margin-bottom: -$footerHeight;
 
     .wrapper {
       flex-grow: 1;

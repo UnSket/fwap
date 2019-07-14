@@ -7,19 +7,66 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { OpenModalContext } from '../App/App';
+import { currentLocation } from '../../modules/router/selectors';
+import { connect } from 'react-redux';
+import { Store } from '../../model/types/Store';
+import { Location } from 'history';
+import { ROUTE_PATHS } from '../../model/constans/routePaths';
 
+type Props = {
+    currentLocation: Location<any>
+};
 
+type LinkData = {
+    to: string,
+    text: string,
+    isHashLink?: boolean
+};
 
-const Header: React.FC = ({}) => {
+const LANDING_LINKS: Array<LinkData> = [
+    {to: '/#about', text: 'About', isHashLink: true},
+    {to: '/#decks', text: 'Decks', isHashLink: true},
+    {to: '/#buy', text: 'Buy', isHashLink: true}
+];
+
+const USER_LINKS: Array<LinkData> = [
+    {to: ROUTE_PATHS.myDecks, text: 'My decks'},
+    {to: '/#decks', text: 'All decks'},
+    {to: '/#buy', text: 'Create new'}
+];
+
+const getLinks:(location: string) => Array<LinkData> = (location) => {
+    if (location === ROUTE_PATHS.landing) {
+        return LANDING_LINKS;
+    } else {
+        return USER_LINKS;
+    }
+};
+
+const CustomLink: React.FC<{link: LinkData, key?: number}> = ({link, key}) => {
+    if (link.isHashLink) {
+        return <HashLink key={key} smooth to={link.to} className={styles.link}>{link.text}</HashLink>;
+    } else {
+        return (
+          <NavLink activeClassName={styles.active} key={key} to={link.to} className={styles.link}>
+            {link.text}
+          </NavLink>
+        )
+    }
+}
+
+const Header: React.FC<Props> = ({currentLocation}) => {
     const [anchorForMenu, toggleMenu] = useState(null);
     const closeMenu = () => toggleMenu(null);
     const openMenu = (e: any) => toggleMenu(e.currentTarget);
+    const links: Array<LinkData> = getLinks(currentLocation.pathname);
+
     const openModal = useContext(OpenModalContext);
     return (
         <>
-            <AppBar position="static">
+            <AppBar position="static" color={'default'}>
                 <Toolbar className={styles.header}>
                     <Container className={styles.container}>
                     <div className={styles.leftPart}>
@@ -37,9 +84,7 @@ const Header: React.FC = ({}) => {
                         </div>
                         <Hidden xsDown>
                         <div className={styles.linkWrapper}>
-                            <HashLink smooth to='/#about' className={styles.link}> About</HashLink>
-                            <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
-                            <HashLink smooth to='/#buy' className={styles.link}> Make own</HashLink>
+                            {links.map((data, index) => <CustomLink link={data} key={index} />)}
                         </div>
                         </Hidden>
                     </div>
@@ -54,15 +99,11 @@ const Header: React.FC = ({}) => {
                         open={Boolean(anchorForMenu)}
                         onClose={closeMenu}
                         className={styles.dropDownMenu}>
-                        <MenuItem onClick={closeMenu}>
-                            <HashLink smooth to='/#about' className={styles.link}> About</HashLink>
-                        </MenuItem>
-                        <MenuItem onClick={closeMenu}>
-                            <HashLink smooth to='/#decks' className={styles.link}> Decks</HashLink>
-                        </MenuItem>
-                        <MenuItem onClick={closeMenu}>
-                            <HashLink smooth to='/#buy' className={styles.link}> Make own</HashLink>
-                        </MenuItem>
+                        {links.map((data, index) =>
+                          <MenuItem  key={index} onClick={closeMenu}>
+                            <CustomLink link={data} />
+                          </MenuItem>
+                        )}
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -71,4 +112,8 @@ const Header: React.FC = ({}) => {
     )
 };
 
-export default Header;
+const mapStateToProps = (store: Store) => ({
+    currentLocation: currentLocation(store)
+});
+
+export default connect(mapStateToProps)(Header);

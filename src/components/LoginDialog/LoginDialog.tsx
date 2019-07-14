@@ -49,7 +49,7 @@ const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
           <Button onClick={close} color="primary">
             Cancel
           </Button>
-          <Button onClick={close} color="primary">
+          <Button onClick={close} color="primary" href={'/home'}>
             Sign in
           </Button>
         </DialogActions>

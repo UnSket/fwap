@@ -1,3 +1,7 @@
+$mainColor: #53d45a;
+$headerHeight: 64px;
+$footerHeight: 58px;
+
 @mixin smDown {
   @media screen and (max-width: 600px) {
     @content;
@@ -8,8 +12,6 @@
     @content;
   }
 }
-
-$mainColor: #53d45a;
 
 %bigButton {
   border-width: 2px;

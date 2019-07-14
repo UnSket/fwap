@@ -4,7 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {DeckPreviewT} from '../../model/Deck';
+import {DeckPreviewT} from '../../model/types/Deck';
 import Carousel from './Carousel/Carousel';
 import styles from './DeckPreview.module.scss';
 
