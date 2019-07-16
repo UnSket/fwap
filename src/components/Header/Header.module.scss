@@ -40,7 +40,7 @@
           align-items: center;
           border-radius: 3px;
           &.active {
-            color: $mainColor;
+            color: darken($mainColor, 10%);
           }
           &:hover {
             background: rgba(0, 0, 0, .08);

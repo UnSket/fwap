@@ -34,7 +34,7 @@ const LANDING_LINKS: Array<LinkData> = [
 const USER_LINKS: Array<LinkData> = [
     {to: ROUTE_PATHS.myDecks, text: 'My decks'},
     {to: '/#decks', text: 'All decks'},
-    {to: '/#buy', text: 'Create new'}
+    {to: ROUTE_PATHS.createDeck, text: 'Create new'}
 ];
 
 const getLinks:(location: string) => Array<LinkData> = (location) => {
@@ -47,10 +47,10 @@ const getLinks:(location: string) => Array<LinkData> = (location) => {
 
 const CustomLink: React.FC<{link: LinkData, key?: number}> = ({link, key}) => {
     if (link.isHashLink) {
-        return <HashLink key={key} smooth to={link.to} className={styles.link}>{link.text}</HashLink>;
+        return <HashLink key={key || link.to} smooth to={link.to} className={styles.link}>{link.text}</HashLink>;
     } else {
         return (
-          <NavLink activeClassName={styles.active} key={key} to={link.to} className={styles.link}>
+          <NavLink activeClassName={styles.active} key={key || link.to} to={link.to} className={styles.link}>
             {link.text}
           </NavLink>
         )

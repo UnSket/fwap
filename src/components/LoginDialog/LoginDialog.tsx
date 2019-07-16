@@ -9,6 +9,7 @@ import styles from './LoginDialog.module.scss';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { Link } from '@material-ui/core';
 import { CollisionLink} from '../utils/utils';
+import { ROUTE_PATHS } from '../../model/constans/routePaths';
 
 type Props = {
   isOpen: boolean,
@@ -49,7 +50,7 @@ const LoginDialog: React.FC<Props> = ({isOpen, close}) => {
           <Button onClick={close} color="primary">
             Cancel
           </Button>
-          <Button onClick={close} color="primary" href={'/home'}>
+          <Button onClick={close} color="primary" href={ROUTE_PATHS.myDecks}>
             Sign in
           </Button>
         </DialogActions>
