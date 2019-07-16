@@ -45,17 +45,17 @@ const getLinks:(location: string) => Array<LinkData> = (location) => {
     }
 };
 
-const CustomLink: React.FC<{link: LinkData, key?: number}> = ({link, key}) => {
+const CustomLink: React.FC<{link: LinkData}> = ({link}) => {
     if (link.isHashLink) {
-        return <HashLink key={key || link.to} smooth to={link.to} className={styles.link}>{link.text}</HashLink>;
+        return <HashLink smooth to={link.to} className={styles.link}>{link.text}</HashLink>;
     } else {
         return (
-          <NavLink activeClassName={styles.active} key={key || link.to} to={link.to} className={styles.link}>
+          <NavLink activeClassName={styles.active} to={link.to} className={styles.link}>
             {link.text}
           </NavLink>
         )
     }
-}
+};
 
 const Header: React.FC<Props> = ({currentLocation}) => {
     const [anchorForMenu, toggleMenu] = useState(null);
