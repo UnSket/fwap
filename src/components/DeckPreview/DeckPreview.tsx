@@ -8,8 +8,11 @@ import {DeckPreviewT} from '../../model/types/Deck';
 import Carousel from './Carousel/Carousel';
 import styles from './DeckPreview.module.scss';
 
+interface Props extends DeckPreviewT {
+  own?: boolean
+}
 
-const DeckPreview: React.FC<DeckPreviewT> = ({images, name, description}) => {
+const DeckPreview: React.FC<Props> = ({images, name, description, own}) => {
   const [isFocused, setFocused] = useState(false);
   return (
     <Card onMouseEnter={() => setFocused(true)} onMouseLeave={() => setFocused(false)}>
@@ -26,10 +29,10 @@ const DeckPreview: React.FC<DeckPreviewT> = ({images, name, description}) => {
         </CardContent>
       <CardActions>
         <Button color="primary">
-          Buy
+          {own ? 'Print' : 'Buy'}
         </Button>
         <Button color="primary">
-          Learn More
+          {own ? 'Edit' : 'Learn More'}
         </Button>
       </CardActions>
     </Card>

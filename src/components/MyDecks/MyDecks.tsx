@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Tab, Tabs } from '@material-ui/core';
+import { Button, Paper, Tab, Tabs } from '@material-ui/core';
 import SwipeableViews from 'react-swipeable-views';
 import styles from './MyDecks.module.scss';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { mockDecks } from '../../model/types/Deck';
+import DeckPreview from '../DeckPreview/DeckPreview';
 
 const MyDecks: React.FC = () => {
   const [currentTab, changeTab] = useState(0);
@@ -14,7 +16,12 @@ const MyDecks: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       <Container>
-        <Typography variant={'h3'}>My decks</Typography>
+        <Paper className={styles.paper}>
+          <Typography variant={'h3'} gutterBottom>My decks</Typography>
+            <div className={styles.decks}>
+              {mockDecks.map(deck => <DeckPreview key={deck.id} {...deck} own />)}
+            </div>
+        </Paper>
       </Container>
       {/*<Tabs
       value={currentTab}

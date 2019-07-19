@@ -1,0 +1,38 @@
+.wrapper {
+  outline: none;
+  display: inline-block;
+  .imageWrapper {
+    display: inline-flex;
+    position: relative;
+    user-select: none;
+    img {
+      height: 100%;
+    }
+    .rotate {
+      display: none;
+    }
+    &.active {
+      display: inline-flex;
+      outline: 1px solid black;
+      .scale {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 5px;
+        height: 5px;
+        background-color: #fff;
+        border: 1px solid black;
+        cursor: nesw-resize;
+        transform: translate(50%, -50%);
+      }
+      .rotate {
+        display: inline-block;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translate(50%, -50%);
+        cursor: alias;
+      }
+    }
+  }
+}

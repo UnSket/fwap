@@ -11,6 +11,7 @@ import Footer from '../Footer/Footer'
 import MyDecks from '../MyDecks/MyDecks';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import CreateDeck from '../CreateDeck/CreateDeck';
+import EditDeck from '../EditDeck/EditDeck';
 
 const theme = createMuiTheme({
   palette: {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
             <Route path={ROUTE_PATHS.landing} exact component={Landing} />
             <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
             <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
+            <Route path={ROUTE_PATHS.editDeck} exact component={EditDeck} />
           <Footer/>
         </div>
       </ThemeProvider>

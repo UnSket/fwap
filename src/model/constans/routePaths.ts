@@ -1,5 +1,6 @@
 export const ROUTE_PATHS = {
   landing: '/',
   myDecks: '/myDecks',
-  createDeck: '/createDeck'
+  createDeck: '/createDeck',
+  editDeck: '/editDeck'
 };

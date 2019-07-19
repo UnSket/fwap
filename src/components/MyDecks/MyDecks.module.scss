@@ -2,8 +2,19 @@
 
 
 .wrapper {
-  min-height: 100vh;
-  margin: (-$headerHeight) 0 (-$footerHeight);
-  padding: ($headerHeight + 30px) 0 $footerHeight;
-  box-sizing: border-box;
+  @extend %wrapper;
+  .paper {
+    @extend %paper;
+    .decks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 15px;
+      @include mdDown {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    h3 {
+      text-align: center;
+    }
+  }
 }

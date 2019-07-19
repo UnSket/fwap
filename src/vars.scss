@@ -20,6 +20,17 @@ $footerHeight: 58px;
     font-size: 20px;
   }
 }
+
+%wrapper {
+  min-height: 100vh;
+  margin: (-$headerHeight) 0 (-$footerHeight);
+  padding: ($headerHeight + 30px) 0 $footerHeight;
+  box-sizing: border-box;
+}
+
+%paper {
+  padding: 30px;
+}
 /*
 lg: 1280
 md: 960
