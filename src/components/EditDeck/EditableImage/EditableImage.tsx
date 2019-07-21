@@ -32,7 +32,6 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     const cos = Math.cos((360 - angle) * degreeToRadK);
     const xWithRotate = x * cos - y * sin;
     const yWithRotate = x * sin + y * cos;
-    console.log(sin, cos, yWithRotate);
     return {x: xWithRotate, y: yWithRotate};
   };
 
@@ -47,21 +46,9 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
 
   const resizing = (e: React.DragEvent) => {
     if (e.clientY === 0 && e.clientX === 0) return;
-    /*let changedX, changedY;
-
-    if ((angle > 45 && angle < 135) || (angle > 225 && angle < 315)) {
-      changedX = -(startPoint.x - e.clientX) * sin;
-      changedY = (startPoint.y - e.clientY) * sin;
-    } else {
-      changedX = -(startPoint.x - e.clientX) * cos;
-      changedY = (startPoint.y - e.clientY) * cos;
-    }
-    const maxChanged = Math.abs(changedX) > Math.abs(changedY) ? changedX : changedY;*/
 
     const {x, y} = calculateXYWithRotate(e.clientX, e.clientY);
-
     const changedY = startPoint.y - y;
-
     const newSize = Math.abs(initSize * scale + changedY);
     const newScale = newSize / initSize;
 
@@ -70,7 +57,7 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
 
   };
 
-  const startRotate = () => {
+  const startRotate = (e: React.DragEvent) => {
     if (object && object.current) {
       const objectX = object.current.offsetLeft;
       const objectY = object.current.offsetTop;
@@ -91,7 +78,7 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     <div className={styles.wrapper} tabIndex={1} onFocus={focus} onBlur={() => setActive(false)}>
       <div className={wrapperStyles} style={{transform: `rotate(${angle}deg)`, height}} ref={object}>
         <div className={styles.scale} onDragStart={startResizing} onDrag={resizing} draggable={true} />
-        <div className={styles.rotate} onDragStart={startRotate} onDrag={rotate} draggable={true} >
+        <div className={styles.rotate}  onDragStart={startRotate} onDrag={rotate} draggable={true} >
           <RotateIcon />
         </div>
         <img src={image} alt=''/>

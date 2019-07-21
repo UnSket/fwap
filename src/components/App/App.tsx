@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import styles from './App.module.scss';
 import Landing from '../Landing/Landing';
 import Header from '../Header/Header';
@@ -42,7 +42,7 @@ const App: React.FC = () => {
             <Route path={ROUTE_PATHS.landing} exact component={Landing} />
             <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
             <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
-            <Route path={ROUTE_PATHS.editDeck} exact component={EditDeck} />
+            <Route path={ROUTE_PATHS.editDeck.route} exact component={EditDeck} />
           <Footer/>
         </div>
       </ThemeProvider>
