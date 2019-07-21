@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Paper } from '@material-ui/core';
 import styles from './MyDecks.module.scss';
 import Typography from '@material-ui/core/Typography';

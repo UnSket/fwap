@@ -35,25 +35,24 @@ const DropFile:React.FC<any> = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const onDrop = (item: any) => {
-    setLoading(true);
     if (item.files) {
       loadFiles(item.files);
     }
   };
 
   const onInputChange = (e: any) => {
-    console.log(e.currentTarget.files);
-    loadFiles(Object.values(e.currentTarget.files));
+    const files = Object.values(e.currentTarget.files);
+    loadFiles(files);
   };
 
   const loadFiles = (files: any) => {
-    const loadPromises = files.map((file: File) => {
-      if (file.type.startsWith('image')) {
-        const reader = new FileReader();
-        const promise = loadPromise(reader, file.name);
-        reader.readAsDataURL(file);
-        return promise;
-      }
+    setLoading(true);
+    const imageFiles = files.filter((file: File) => file.type.startsWith('image'));
+    const loadPromises = imageFiles.map((file: File) => {
+      const reader = new FileReader();
+      const promise = loadPromise(reader, file.name);
+      reader.readAsDataURL(file);
+      return promise;
     });
     Promise.all(loadPromises).then((newImages: Array<any>) => {
       setImages(images.concat(newImages));

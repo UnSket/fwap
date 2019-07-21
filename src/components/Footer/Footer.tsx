@@ -13,7 +13,7 @@ const Footer: React.FC = () => (
         <Link component={CollisionLink} to={'/#buy'} className={styles.link}>Buy</Link>
       </div>
         <Link component={CollisionLink} to={'/#intro'} className={styles.logo}>
-          <img src={logo}/>
+          <img src={logo} alt='FWAP logo' />
         </Link>
     </Container>
   </footer>
