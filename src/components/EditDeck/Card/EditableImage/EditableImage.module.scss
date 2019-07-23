@@ -1,10 +1,9 @@
 .wrapper {
   outline: none;
-  display: inline-block;
-  .imageWrapper {
-    display: inline-flex;
-    position: relative;
-    user-select: none;
+  position: absolute;
+  cursor: move;
+  display: inline-flex;
+  user-select: none;
     img {
       height: 100%;
     }
@@ -14,6 +13,7 @@
     &.active {
       display: inline-flex;
       outline: 1px solid black;
+      z-index: 1;
       .scale {
         position: absolute;
         right: 0;
@@ -32,7 +32,8 @@
         left: 50%;
         transform: translate(50%, -50%);
         cursor: alias;
+        background: white;
+        border-radius: 50%;
       }
     }
-  }
 }

@@ -3,6 +3,7 @@ import { Container, Paper, Tabs, Typography, Tab } from '@material-ui/core';
 import styles from './EditDeck.module.scss';
 import { RouteComponentProps } from 'react-router';
 import FileManagment from './FileManagment/FileManagment';
+import Card from './Card/Card';
 
 interface MatchParams {
   id: string;
@@ -18,7 +19,8 @@ const EditDeck: React.FC<Props> = ({match}) => {
   const CurrentTabComponent: React.FC = () => {
     switch (currentTab) {
       case 0: return <FileManagment />;
-      case 1: return <div>edit history</div>;
+      case 1: return <Card />;
+      case 2: return <span>Edit history</span>;
       default: return <div>settings</div>;
     }
   };
@@ -33,6 +35,7 @@ const EditDeck: React.FC<Props> = ({match}) => {
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth">
+            <Tab label="Image managment" />
             <Tab label="Edit cards" />
             <Tab label="Edit history" />
             <Tab label="Settings" />

@@ -25,7 +25,10 @@
       color: #a6c1ef;
     }
   }
-
+  .previewTitle {
+    text-align: center;
+    margin-top: 20px;
+  }
   .imagePreview {
     display: flex;
     flex-wrap: wrap;
@@ -35,13 +38,25 @@
       align-items: center;
       width: 150px;
       text-align: center;
-      margin: 7px;
+      margin-top: 25px;
+      margin-right: 25px;
+      position: relative;
       img {
         height: 150px;
         width: 100%;
         object-fit: contain;
+        box-shadow: 0 0 5px #00000040;
+      }
+      .remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%) scale(.8);
       }
     }
+  }
+  .submit {
+    margin-top: 20px;
   }
 }
 

@@ -24,7 +24,7 @@ $footerHeight: 58px;
 %wrapper {
   min-height: 100vh;
   margin: (-$headerHeight) 0 (-$footerHeight);
-  padding: ($headerHeight + 30px) 0 $footerHeight;
+  padding: ($headerHeight + 30px) 0 ($footerHeight + 30px);
   box-sizing: border-box;
 }
 
