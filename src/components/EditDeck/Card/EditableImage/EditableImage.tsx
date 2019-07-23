@@ -85,7 +85,6 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
   const startMoving = (e: React.MouseEvent) => {
     setStartPoint({x: e.clientX, y: e.clientY});
     setIsMoving(true);
-    console.log(e.clientX, e.clientY);
   };
   const move = (e: React.MouseEvent) => {
     if (!isMoving) {
@@ -122,8 +121,9 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
           className={styles.rotate}
           onDragStart={startRotate}
           onDrag={rotate}
-          draggable={true} >
-            <RotateIcon />
+          draggable={true}
+          onMouseDown={e => e.stopPropagation()}>
+          <RotateIcon />
         </div>
         <img src={image} alt='' draggable={false}/>
     </div>

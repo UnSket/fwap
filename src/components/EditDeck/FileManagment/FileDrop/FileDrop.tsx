@@ -82,7 +82,7 @@ const DropFile:React.FC<any> = () => {
       </label>
       {images.length > 0 &&
         <>
-          <Typography variant='h4' className={styles.previewTitle}>Image preview</Typography>
+          <Typography variant='h5' className={styles.previewTitle}>Image preview</Typography>
           <div className={styles.imagePreview}>
             {images.map((image, i) => (
               <div className={styles.item} key={i}>

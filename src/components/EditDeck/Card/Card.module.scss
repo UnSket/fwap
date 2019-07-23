@@ -3,8 +3,8 @@
   width: 336px;
   height: 336px;
   position: relative;
-  border: 1px solid #939393;
   overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .4);
   &.active {
     overflow: visible;
   }

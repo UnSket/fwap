@@ -12,6 +12,8 @@ import MyDecks from '../MyDecks/MyDecks';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import CreateDeck from '../CreateDeck/CreateDeck';
 import EditDeck from '../EditDeck/EditDeck';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,19 +36,21 @@ const App: React.FC = () => {
   };
 
   return (
-    <OpenModalContext.Provider value={_openModal}>
-      <ThemeProvider theme={theme}>
-        <div className={styles.mainBackground}>
-          <LoginDialog isOpen={isSignInModalOpen} close={closeModal} />
-          <Header />
-            <Route path={ROUTE_PATHS.landing} exact component={Landing} />
-            <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
-            <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
-            <Route path={ROUTE_PATHS.editDeck.route} exact component={EditDeck} />
-          <Footer/>
-        </div>
-      </ThemeProvider>
-    </OpenModalContext.Provider>
+    <DndProvider backend={HTML5Backend}>
+      <OpenModalContext.Provider value={_openModal}>
+        <ThemeProvider theme={theme}>
+          <div className={styles.mainBackground}>
+            <LoginDialog isOpen={isSignInModalOpen} close={closeModal} />
+            <Header />
+              <Route path={ROUTE_PATHS.landing} exact component={Landing} />
+              <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
+              <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
+              <Route path={ROUTE_PATHS.editDeck.route} exact component={EditDeck} />
+            <Footer/>
+          </div>
+        </ThemeProvider>
+      </OpenModalContext.Provider>
+    </DndProvider>
   );
 };
 
