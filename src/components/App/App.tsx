@@ -14,6 +14,10 @@ import CreateDeck from '../CreateDeck/CreateDeck';
 import EditDeck from '../EditDeck/EditDeck';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { connect } from 'react-redux';
+import { Store } from '../../model/types/Store';
+import { currentLocation } from '../../modules/router/selectors';
+import { loginRequest } from '../../modules/user/actions';
 
 const theme = createMuiTheme({
   palette: {

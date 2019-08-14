@@ -78,5 +78,6 @@
     "printWidth": 100,
     "tabWidth": 2,
     "useTabs": false
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

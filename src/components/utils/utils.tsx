@@ -6,3 +6,5 @@ export const CollisionLink = React.forwardRef<HTMLAnchorElement, any>(
     <HashLink smooth {...props} />
   ),
 );
+
+export const useClasses = (...classes: Array<string>) => classes.join(' ');

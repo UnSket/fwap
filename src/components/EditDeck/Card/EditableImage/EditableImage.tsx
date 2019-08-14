@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { EditableImageT } from '../../../../model/types/Card';
 import styles from './EditableImage.module.scss';
-import { useClasses } from '../../../../modules/utils/tools';
+import { useClasses } from '../../../utils/utils';
 import RotateIcon from '@material-ui/icons/Replay';
 
 interface Props extends EditableImageT {
@@ -52,8 +52,8 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     const {x, y} = calculateXYWithRotate(e.clientX, e.clientY);
     setStartPoint({x, y});
   };
-  const resizing = (e: React.DragEvent) => {
-    if (e.clientY === 0 && e.clientX === 0) return;
+  const resizing = (e: any) => {
+    if ((e.clientY === 0 && e.clientX === 0) || (e.screenX === 0 && e.screenY === 0)) return;
 
     const {x, y} = calculateXYWithRotate(e.clientX, e.clientY);
     const changedY = startPoint.y - y;
@@ -61,6 +61,11 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     const newScale = newSize / initSize;
 
     setScale(newScale);
+    const print: any = {};
+    for (const key in e) {
+      print[key] = e[key];
+    }
+    console.log(print);
     setStartPoint({x, y});
 
   };
@@ -78,7 +83,7 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     if (e.clientY === 0 && e.clientX === 0) return;
     const changedX = -(centerPoint.x - e.clientX);
     const changedY = (centerPoint.y - e.clientY);
-    const newAngle = Math.atan2(changedX, changedY) / degreeToRadK;
+    const newAngle = degreeToRadK / Math.atan2(changedY, changedX);
     setAngle(newAngle);
   };
 

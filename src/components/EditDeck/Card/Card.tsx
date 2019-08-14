@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Card.module.scss';
 import logo from '../../Header/logo.svg';
 import EditableImage from './EditableImage/EditableImage';
-import { useClasses } from '../../../modules/utils/tools';
+import { useClasses } from '../../utils/utils';
 
 const mockCard = [
   {
