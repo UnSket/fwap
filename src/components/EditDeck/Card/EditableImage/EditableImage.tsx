@@ -76,14 +76,18 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
       const objectY = object.current.parentElement.offsetTop + position.y;
       const width = object.current.offsetWidth;
       const height = object.current.offsetHeight;
-      setCenter({x: objectX + width / 2, y: objectY + height / 2});
+      const centerX = objectX + width / 2;
+      const centerY = objectY + height / 2;
+      setCenter({x: centerX, y: centerY});
+      console.log(centerX, centerY);
     }
   };
   const rotate = (e: React.DragEvent) => {
     if (e.clientY === 0 && e.clientX === 0) return;
     const changedX = -(centerPoint.x - e.clientX);
     const changedY = (centerPoint.y - e.clientY);
-    const newAngle = degreeToRadK / Math.atan2(changedY, changedX);
+    console.log(changedX, changedY);
+    const newAngle = Math.atan2(changedX, changedY) / degreeToRadK;
     setAngle(newAngle);
   };
 

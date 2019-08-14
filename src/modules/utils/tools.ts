@@ -9,15 +9,16 @@ type Response = {
   error?: any
 }
 
-export const request: (request: Request) => Promise<Response> = async ({url, headers, body}) => {
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  'charset': 'UTF-8',
+};
+
+export const request: (request: Request) => Promise<Response> = async ({url, headers = defaultHeaders, body}) => {
   const response = await fetch(url, {
     method: 'POST',
     body,
-    headers: {
-      'Content-Type': 'application/json',
-      'charset': 'UTF-8',
-      ...headers
-    }
+    headers
   });
   if (response.status === 200) {
     const data = await response.json();

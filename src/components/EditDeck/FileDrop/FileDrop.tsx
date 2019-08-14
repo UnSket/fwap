@@ -7,15 +7,11 @@ import AddImageIcon from '@material-ui/icons/AddPhotoAlternate'
 import RemoveIcon from '@material-ui/icons/Close';
 import { saveFileRequest } from '../../../modules/files/actions';
 import { connect } from 'react-redux';
-
-type ImageData = {
-  url: string,
-  name: string,
-}
+import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   multiple?: boolean,
-  saveFileRequest: (image: Array<ImageData>) => void
+  saveFileRequest: (image: Array<ImageWithPreview>) => void
 }
 
 function collect(monitor: DropTargetMonitor) {
@@ -26,9 +22,9 @@ function collect(monitor: DropTargetMonitor) {
   };
 }
 
-const loadPromise = (reader: FileReader, name: string) => {
-  return new Promise<ImageData>(resolve => {
-    reader.onload = (loaded: any) => resolve({url: loaded.target.result, name});
+const loadPromise = (reader: FileReader, file: File) => {
+  return new Promise<ImageWithPreview>(resolve => {
+    reader.onload = (loaded: any) => resolve({url: loaded.target.result, file});
   })
 };
 
@@ -39,7 +35,7 @@ const Progress:React.FC = () => (
 );
 
 const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
-  const [images, setImages] = useState<Array<ImageData>>([]);
+  const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const onDrop = (item: any) => {
@@ -60,14 +56,13 @@ const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
     console.log(imageFilesToLoad);
     const loadPromises = imageFilesToLoad.map((file: File) => {
       const reader = new FileReader();
-      const promise = loadPromise(reader, file.name);
+      const promise = loadPromise(reader, file);
       reader.readAsDataURL(file);
       return promise;
     });
     Promise.all(loadPromises).then((newImages: Array<any>) => {
       setImages(images.concat(newImages));
       setLoading(false);
-      console.log(newImages);
     })
   };
 
@@ -109,7 +104,7 @@ const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
                   <RemoveIcon className={styles.icon}/>
                 </Fab>
                 <img src={image.url} alt='' />
-                <span>{image.name}</span>
+                <span>{image.file.name}</span>
               </div>
             ))}
           </div>

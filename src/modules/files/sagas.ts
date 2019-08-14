@@ -1,14 +1,19 @@
 import { put, takeEvery, delay } from 'redux-saga/effects';
 import { saveFileFailure, saveFileSuccess, saveFileRequest } from './actions';
 import { request } from '../utils/tools';
+import { ImageWithPreview } from '../../model/types/ImageWithPreview';
 
-function* saveFile({payload}: any): Iterable<any> {
+type Action = {
+  payload: {
+    files: Array<ImageWithPreview>
+  }
+}
+
+function* saveFile({payload}: Action): Iterable<any> {
   const {files} = payload;
-  const base64 = files[0].url.split('base64,')[1];
   const data = new FormData();
-  debugger
-  data.append(files.name, atob(base64));
-  const {imageUrl, error} = yield request({url: '/api/addFile', body: data, headers: {'Content-Type': 'multipart/form-data'}});
+  data.append(files[0].file.name, files[0].file);
+  const {imageUrl, error} = yield request({url: '/api/addFile', body: data, headers: {} });
   yield put(saveFileSuccess(imageUrl));
 }
 
