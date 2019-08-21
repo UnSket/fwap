@@ -38,7 +38,7 @@ const USER_LINKS: Array<LinkData> = [
 ];
 
 const getLinks:(location: string) => Array<LinkData> = (location) => {
-    if (location === ROUTE_PATHS.landing) {
+    if (location === ROUTE_PATHS.login) {
         return LANDING_LINKS;
     } else {
         return USER_LINKS;

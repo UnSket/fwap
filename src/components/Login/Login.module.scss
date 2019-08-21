@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, #8589ff, #6a55ff);
+  .header {
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      height: 130px;
+      margin-right: 15px;
+    }
+  }
+  .title {
+    text-align: center;
+  }
+  .paperContainer {
+    padding: 20px;
+  }
+  .submit {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .error {
+    margin-top: 20px;
+    color: red;
+  }
+}

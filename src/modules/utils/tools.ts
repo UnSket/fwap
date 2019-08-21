@@ -1,7 +1,8 @@
 type Request = {
   url: string,
   headers?: any,
-  body?: any
+  body?: any,
+  method?: string
 };
 
 type Response = {
@@ -14,9 +15,9 @@ const defaultHeaders = {
   'charset': 'UTF-8',
 };
 
-export const request: (request: Request) => Promise<Response> = async ({url, headers = defaultHeaders, body}) => {
+export const request: (request: Request) => Promise<Response> = async ({url, headers = defaultHeaders, body, method = 'GET'}) => {
   const response = await fetch(url, {
-    method: 'POST',
+    method,
     body,
     headers
   });
@@ -24,7 +25,6 @@ export const request: (request: Request) => Promise<Response> = async ({url, hea
     const data = await response.json();
     return {response: data};
   } else {
-    const error = await response.text();
-    return {error};
+    return {error: response};
   }
 };

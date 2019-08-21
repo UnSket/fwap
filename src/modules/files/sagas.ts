@@ -2,18 +2,23 @@ import { put, takeEvery, delay } from 'redux-saga/effects';
 import { saveFileFailure, saveFileSuccess, saveFileRequest } from './actions';
 import { request } from '../utils/tools';
 import { ImageWithPreview } from '../../model/types/ImageWithPreview';
+import { file } from '@babel/types';
 
 type Action = {
   payload: {
-    files: Array<ImageWithPreview>
+    files: Array<ImageWithPreview>,
+    deckId: string
   }
 }
 
 function* saveFile({payload}: Action): Iterable<any> {
-  const {files} = payload;
+  const {files, deckId} = payload;
   const data = new FormData();
-  data.append(files[0].file.name, files[0].file);
-  const {imageUrl, error} = yield request({url: '/api/addFile', body: data, headers: {} });
+  files.forEach((file, index) => {
+    data.append('files', file.file);
+  });
+  data.append('deckId', deckId);
+  const {imageUrl, error} = yield request({url: '/api/files', body: data, headers: {}, method: 'POST' });
   yield put(saveFileSuccess(imageUrl));
 }
 

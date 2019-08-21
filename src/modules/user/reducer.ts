@@ -7,10 +7,10 @@ const defaultState: State = {
   user: null
 };
 
-export default handleActions<State>(
+export default handleActions<State, any>(
   {
     [loginRequest.toString()]: () => ({user: null, loading: true}),
-    [loginFailure.toString()]: () => ({user: null, loading: false}),
+    [loginFailure.toString()]: (state, {payload: error}) => ({user: null, loading: false, error}),
     [loginSuccess.toString()]: (state, {payload: user}) => ({user, loading: false})
   },
   defaultState

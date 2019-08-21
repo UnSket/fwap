@@ -11,7 +11,7 @@ import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   multiple?: boolean,
-  saveFileRequest: (image: Array<ImageWithPreview>) => void
+  saveFileRequest: (image: Array<ImageWithPreview>, deckId: string) => void
 }
 
 function collect(monitor: DropTargetMonitor) {
@@ -67,7 +67,7 @@ const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
   };
 
   const loadPressed = () => {
-    saveFileRequest(images);
+    saveFileRequest(images, '1');
   };
 
   const removeImage = (imageIndex: number) => {

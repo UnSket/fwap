@@ -27,7 +27,7 @@ interface State extends RouteComponentProps {
 const CreateDeck: React.FC<State> = ({createDeckRequest, error, createdDeck, history}) => {
   const [name, changeName] = useState<any>({value: ''});
   const [description, changeDescription] = useState<any>({value: ''});
-  const [imagePerCard, changeImagePerCard] = useState(5);
+  const [imagesOnCard, changeImagePerCard] = useState(5);
 
   useEffect(() => {
     console.log(createdDeck);
@@ -53,7 +53,7 @@ const CreateDeck: React.FC<State> = ({createDeckRequest, error, createdDeck, his
     if (!description.value) changeDescription({value: description.value, error: 'Field is required'});
 
     if (name.value && description.value) {
-      createDeckRequest({name: name.value, description: description.value, imagePerCard});
+      createDeckRequest({name: name.value, description: description.value, imagesOnCard});
     }
   };
 
@@ -83,7 +83,7 @@ const CreateDeck: React.FC<State> = ({createDeckRequest, error, createdDeck, his
           <FormControl className={styles.select}>
             <InputLabel htmlFor="age-helper">Image count per card</InputLabel>
             <Select
-              value={imagePerCard}
+              value={imagesOnCard}
               onChange={imagePerCardSelectChange}
             >
               <MenuItem value={5}>Five</MenuItem>

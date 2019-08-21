@@ -1,4 +1,5 @@
 export type State = {
   loading: boolean,
-  user: any
+  user: any,
+  error?: string
 };
