@@ -1,5 +1,7 @@
+import { User } from '../../model/types/User';
+
 export type State = {
   loading: boolean,
-  user: any,
+  user: User,
   error?: string
 };
