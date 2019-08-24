@@ -4,7 +4,7 @@ export const ROUTE_PATHS = {
   createDeck: '/createDeck',
   editDeck: {
     base: '/editDeck',
-    withID: (id: string) => `/editDeck/${id}`,
+    withID: (id: string | number) => `/editDeck/${id}`,
     route: '/editDeck/:deckId'
   }
 };

@@ -5,7 +5,7 @@ import styles from './FileDrop.module.scss';
 import { useClasses } from '../../utils/utils';
 import AddImageIcon from '@material-ui/icons/AddPhotoAlternate'
 import RemoveIcon from '@material-ui/icons/Close';
-import { saveFileRequest } from '../../../modules/files/actions';
+import { saveFileRequest } from '../../../modules/decks/files/actions';
 import { connect } from 'react-redux';
 import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 

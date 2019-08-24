@@ -61,6 +61,13 @@ class Carousel extends React.Component<Props, State> {
   render() {
     const {currentImg, nextImg, prevImg} = this.state;
     const {imgArray} = this.props;
+    if (imgArray.length < 3) {
+      return (
+        <div className={styles.noImageWrapper}>
+          <span>Not enough images for preview</span>
+        </div>
+      );
+    }
     return (
       <div className={styles.container} onClick={this.forceUpdateImage}>
         <img key={prevImg} className={styles.prevImg} src={imgArray[prevImg]} alt='' />

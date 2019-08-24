@@ -21,8 +21,12 @@ function* login({payload}: any) {
 function* getCurrentUser() {
   const {user, error} = yield request({url: '/api/currentUser', method: 'GET'});
   if (error) {
-    const data = yield error.text();
-    yield put(getUserFailed(data));
+    if (error.status === 401) {
+      yield put(getUserFailed(true));
+    } else {
+      const data = yield error.text();
+      yield put(getUserFailed(data));
+    }
   } else {
     yield put(gotUser(user));
   }

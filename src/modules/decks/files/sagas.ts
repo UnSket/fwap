@@ -1,7 +1,7 @@
 import { put, takeEvery, delay } from 'redux-saga/effects';
 import { saveFileFailure, saveFileSuccess, saveFileRequest } from './actions';
-import { request } from '../utils/tools';
-import { ImageWithPreview } from '../../model/types/ImageWithPreview';
+import { request } from '../../utils/tools';
+import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 import { file } from '@babel/types';
 
 type Action = {
@@ -18,8 +18,13 @@ function* saveFile({payload}: Action): Iterable<any> {
     data.append('files', file.file);
   });
   data.append('deckId', deckId);
-  const {imageUrl, error} = yield request({url: '/api/files', body: data, headers: {}, method: 'POST' });
-  yield put(saveFileSuccess(imageUrl));
+  const {response: images, error} = yield request({url: '/api/files', body: data, headers: {}, method: 'POST' });
+  if (images) {
+    yield put(saveFileSuccess(images, deckId));
+  } else {
+    const errorText = yield error.text();
+    yield put(saveFileFailure(errorText))
+  }
 }
 
 export default function* loginSaga() {
