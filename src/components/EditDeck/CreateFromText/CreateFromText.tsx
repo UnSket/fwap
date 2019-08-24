@@ -3,10 +3,15 @@ import styles from './CreateFromText.module.scss';
 import TextField from '@material-ui/core/TextField';
 import { ColorResult, GithubPicker } from 'react-color';
 import { Button, Typography } from '@material-ui/core';
-import { number } from 'prop-types';
+import { useClasses } from '../../utils/utils';
 
 // TODO: 12 - 150
-const CreateFromText: React.FC = () => {
+
+type Props = {
+  className?: string
+}
+
+const CreateFromText: React.FC<Props> = ({className = ''}) => {
   const [color, setColor] = useState<string>('#000');
   const [word, setWord] = useState<string>('');
   const [fontSize, setFontSize] = useState<number>(18);
@@ -24,26 +29,28 @@ const CreateFromText: React.FC = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.input} >
-        <TextField
-          margin="dense"
-          id="word"
-          label="Word to add"
-          type="text"
-          variant='outlined'
-          onChange={wordChange}
-        />
-        <TextField
-          margin="dense"
-          id="fontSize"
-          label="Font size"
-          type="number"
-          variant='outlined'
-          value={fontSize}
-          onChange={fontSizeChange}
-        />
-        <div>
+    <div className={useClasses(styles.wrapper, className)}>
+      <div className={styles.inputWrapper} >
+        <div className={styles.input}>
+          <TextField
+            margin="dense"
+            id="word"
+            label="Word to add"
+            type="text"
+            variant='outlined'
+            onChange={wordChange}
+          />
+          <TextField
+            margin="dense"
+            id="fontSize"
+            label="Font size"
+            type="number"
+            variant='outlined'
+            value={fontSize}
+            onChange={fontSizeChange}
+          />
+        </div>
+        <div className={styles.pickColor}>
           <Typography variant='subtitle1' gutterBottom>Pick color:</Typography>
           <GithubPicker onChange={colorChanged} triangle='hide' />
         </div>

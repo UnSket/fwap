@@ -1,6 +1,7 @@
 $mainColor: #53d45a;
 $headerHeight: 64px;
 $footerHeight: 58px;
+$disabledColor: #909090;
 
 @mixin smDown {
   @media screen and (max-width: 600px) {

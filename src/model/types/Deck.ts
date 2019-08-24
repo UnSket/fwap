@@ -3,8 +3,9 @@ import { Image } from './Image';
 export type Deck = {
   name: string,
   description: string,
-  id: string | number,
-  images: Image[]
+  id: string,
+  images: Image[],
+  backside?: Image
 }
 
 export type DeckByID = {
@@ -13,7 +14,7 @@ export type DeckByID = {
 
 export const mockDecks: Deck[] = [
   {
-    id: 0,
+    id: '0',
     name: 'example1',
     description: 'It is example deck description',
     images: [
@@ -23,7 +24,7 @@ export const mockDecks: Deck[] = [
     ]
   },
   {
-    id: 1,
+    id: '1',
     name: 'example1',
     description: 'It is example deck description',
     images: [
@@ -33,7 +34,7 @@ export const mockDecks: Deck[] = [
     ]
   },
   {
-    id: 2,
+    id: '2',
     name: 'example1',
     description: 'It is example deck description',
     images: [

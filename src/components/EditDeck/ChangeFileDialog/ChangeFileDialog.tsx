@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,20 +7,27 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DropFile from '../FileDrop/FileDrop';
 import { Tab, Tabs } from '@material-ui/core';
 import CreateFromText from '../CreateFromText/CreateFromText';
+import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   isOpen: boolean,
-  close: () => void
-}
+  close: () => void,
+  saveHandler: (images: Array<ImageWithPreview>) => void,
+};
 
-const ChangeFileDialog: React.FC<Props> = ({isOpen, close}) => {
+const ChangeFileDialog: React.FC<Props> = ({isOpen, close, saveHandler}) => {
   const [currentTab, changeTab] = useState<number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     changeTab(newValue);
   };
+
+  const saveAndExit = useCallback((images: Array<ImageWithPreview>) => {
+    saveHandler(images);
+    close();
+  }, [saveHandler, close]);
   const Content: React.FC = () => {
     switch (currentTab) {
-      case 0: return <DropFile />;
+      case 0: return <DropFile saveHandler={saveAndExit} />;
       default: return <CreateFromText />;
     }
   };
@@ -47,6 +54,6 @@ const ChangeFileDialog: React.FC<Props> = ({isOpen, close}) => {
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 export default ChangeFileDialog;

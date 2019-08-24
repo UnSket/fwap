@@ -5,13 +5,11 @@ import styles from './FileDrop.module.scss';
 import { useClasses } from '../../utils/utils';
 import AddImageIcon from '@material-ui/icons/AddPhotoAlternate'
 import RemoveIcon from '@material-ui/icons/Close';
-import { saveFileRequest } from '../../../modules/decks/files/actions';
-import { connect } from 'react-redux';
 import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   multiple?: boolean,
-  saveFileRequest: (image: Array<ImageWithPreview>, deckId: string) => void
+  saveHandler: (images: Array<ImageWithPreview>) => void,
 }
 
 function collect(monitor: DropTargetMonitor) {
@@ -34,7 +32,7 @@ const Progress:React.FC = () => (
   </div>
 );
 
-const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
+const DropFile:React.FC<Props> = ({multiple, saveHandler}) => {
   const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -67,7 +65,7 @@ const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
   };
 
   const loadPressed = () => {
-    saveFileRequest(images, '1');
+    saveHandler(images);
   };
 
   const removeImage = (imageIndex: number) => {
@@ -114,8 +112,4 @@ const DropFile:React.FC<Props> = ({multiple, saveFileRequest}) => {
   );
 };
 
-const mapDispatchToProps = {
-  saveFileRequest
-};
-
-export default connect(null, mapDispatchToProps)(DropFile);
+export default DropFile;

@@ -2,9 +2,12 @@
   margin-top: 30px;
   .add {
     margin-bottom: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     grid-column-gap: 30px;
+    .fromText {
+      margin-top: 40px;
+    }
     h4 {
       text-align: center;
     }

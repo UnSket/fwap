@@ -1,9 +1,17 @@
 .wrapper {
-  .input {
-    display: grid;
-    grid-template: '1fr 1fr'
-                    '1fr';
-
+  .inputWrapper {
+    display: flex;
+    .input {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .pickColor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
   }
   .color {
     width: 20px;

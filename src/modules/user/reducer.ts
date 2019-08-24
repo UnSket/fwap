@@ -1,4 +1,4 @@
-import { handleActions, combineActions } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 import { loginRequest, gotUser, getUserFailed } from './actions';
 import { State } from './types';
 

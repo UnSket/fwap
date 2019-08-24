@@ -1,8 +1,8 @@
-import { put, takeEvery, delay } from 'redux-saga/effects';
-import { saveFileFailure, saveFileSuccess, saveFileRequest } from './actions';
+import { put, takeEvery } from 'redux-saga/effects';
+import { saveFileFailure, saveFileSuccess, saveFileRequest, updateImageRequest, updateImageSuccess, updateBacksideRequest } from './actions';
+import { getDeckSuccess } from '../actions';
 import { request } from '../../utils/tools';
 import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
-import { file } from '@babel/types';
 
 type Action = {
   payload: {
@@ -27,6 +27,37 @@ function* saveFile({payload}: Action): Iterable<any> {
   }
 }
 
-export default function* loginSaga() {
+function* updateFile({payload}: any): Iterable<any> {
+  const {file, deckId, image} = payload;
+  const data = new FormData();
+  data.append('file', file);
+  data.append('imageId', image.id);
+  const {response: newImage, error} = yield request({url: '/api/files/change', body: data, headers: {}, method: 'POST' });
+  if (newImage) {
+    yield put(updateImageSuccess(newImage, deckId));
+  } else {
+    const errorText = yield error.text();
+    yield put(saveFileFailure(errorText))
+  }
+}
+
+
+function* updateBackside({payload}: any): Iterable<any> {
+  const {image, deckId} = payload;
+  const data = new FormData();
+  data.append('file', image);
+  data.append('deckId', deckId);
+  const {response: deck, error} = yield request({url: '/api/deck/backside', body: data, headers: {}, method: 'POST' });
+  if (deck) {
+    yield put(getDeckSuccess(deck));
+  } else {
+    const errorText = yield error.text();
+    yield put(saveFileFailure(errorText))
+  }
+}
+
+export default function* fileSaga() {
   yield takeEvery(saveFileRequest, saveFile);
+  yield takeEvery(updateImageRequest, updateFile);
+  yield takeEvery(updateBacksideRequest, updateBackside);
 }

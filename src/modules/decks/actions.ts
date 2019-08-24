@@ -7,7 +7,8 @@ export const {
   getDeckRequest,
   getDeckSuccess,
   getDecksRequest,
-  getDecksSuccess
+  getDecksSuccess,
+  updateDeckRequest
 } = createActions({
   CREATE_DECK_REQUEST: (deck) => ({deck}),
   CREATE_DECK_SUCCESS: (deck) => ({deck}),
@@ -15,5 +16,6 @@ export const {
   GET_DECK_REQUEST: (id) => ({id}),
   GET_DECK_SUCCESS: (deck) => ({deck}),
   GET_DECKS_REQUEST: () => null,
-  GET_DECKS_SUCCESS: (decks) => ({decks})
+  GET_DECKS_SUCCESS: (decks) => ({decks}),
+  UPDATE_DECK_REQUEST: (deckId, name, description) => ({deckId, name, description})
 });

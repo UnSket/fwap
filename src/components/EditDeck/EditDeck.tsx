@@ -11,6 +11,9 @@ import { connect } from 'react-redux';
 import { decksById } from '../../modules/decks/selectors';
 import { StoreState } from '../../modules/types';
 import { Deck, DeckByID } from '../../model/types/Deck';
+import { Image } from '../../model/types/Image';
+import Settings from './Settings/Settings';
+import { ImageWithPreview } from '../../model/types/ImageWithPreview';
 
 interface MatchParams {
   deckId: string;
@@ -19,7 +22,11 @@ interface Props extends RouteComponentProps<MatchParams> {
   getDeckRequest: (id: string) => void,
   decksById: DeckByID
 }
-export const OpenChangeFileModalContext = React.createContext<() => void>(() => {});
+type DialogData = {
+  isOpen: boolean,
+  saveHandler: (images: Array<ImageWithPreview>) => void
+}
+export const OpenChangeFileModalContext = React.createContext<(saveHandler: (images: Array<ImageWithPreview>) => void) => void>(() => {});
 
 const useDeck = (decksById: DeckByID, currentDeckId: string) => {
   const [deck, setDeck] = useState<Deck | null>(null);
@@ -32,23 +39,25 @@ const useDeck = (decksById: DeckByID, currentDeckId: string) => {
 
 const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest}) => {
   const [currentTab, changeTab] = useState<number>(0);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const deck = useDeck(decksById, match.params.deckId);
-  const _openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const [dialogData, setDialogData] = useState<DialogData>({isOpen: false, saveHandler: () => null});
+  const _openModal = (saveHandler: (images: Array<ImageWithPreview>) => void) => {
+    setDialogData({isOpen: true, saveHandler: saveHandler});
+  };
+  const closeModal = () => setDialogData({isOpen: false, saveHandler: () => null});
   useEffect(() => {
     if (!deck) getDeckRequest(match.params.deckId);
-  }, []);
+  }, [deck]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     changeTab(newValue);
   };
 
   const CurrentTabComponent: React.FC = () => {
     switch (currentTab) {
-      case 0: return <FileManagment images={deck && deck.images} />;
+      case 0: return deck ? <FileManagment images={deck && deck.images} deckId={deck.id} /> : null;
       case 1: return <Card />;
       case 2: return <span>Edit history</span>;
-      default: return <div>settings</div>;
+      default: return deck ? <Settings deck={deck} /> : null;
     }
   };
 
@@ -70,7 +79,8 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest}) => {
             </Tabs>
             <CurrentTabComponent />
         </Paper>
-        <ChangeFileDialog isOpen={isOpen} close={closeModal}/>
+        {console.log(dialogData)}
+        <ChangeFileDialog {...dialogData} close={closeModal}/>
       </Container>
     </OpenChangeFileModalContext.Provider>
   )
