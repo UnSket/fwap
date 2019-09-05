@@ -3,7 +3,7 @@ import { Paper } from '@material-ui/core';
 import styles from './MyDecks.module.scss';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { Deck, mockDecks } from '../../model/types/Deck';
+import { Deck } from '../../model/types/Deck';
 import DeckPreview from '../DeckPreview/DeckPreview';
 import { StoreState } from '../../modules/types';
 import { decksById } from '../../modules/decks/selectors'

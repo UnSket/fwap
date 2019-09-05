@@ -9,8 +9,7 @@ import Carousel from './Carousel/Carousel';
 import styles from './DeckPreview.module.scss';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import { getUrlFromImgKey } from '../utils/utils';
-import { Link, NavLink } from 'react-router-dom';
-import { whileStatement } from '@babel/types';
+import { Link } from 'react-router-dom';
 
 interface Props extends Deck {
   own?: boolean
@@ -35,7 +34,7 @@ const DeckPreview: React.FC<Props> = ({images, name, description, own, id}) => {
         <Button color="primary">
           {own ? 'Print' : 'Buy'}
         </Button>
-        <Button color="primary" href={ROUTE_PATHS.editDeck.withID(id)}>
+        <Button color="primary">
           <Link to={ROUTE_PATHS.editDeck.withID(id)} className={styles.link}>
             Edit
           </Link>

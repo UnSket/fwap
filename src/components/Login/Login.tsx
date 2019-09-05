@@ -8,16 +8,17 @@ import logo from './logo.png';
 import { loginRequest } from '../../modules/user/actions';
 import { connect } from 'react-redux';
 import { StoreState } from '../../modules/types';
-import { user } from '../../modules/user/selectors';
+import { userState } from '../../modules/user/selectors';
+import { State as UserStateT } from '../../modules/user/types';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 
 interface Props extends RouteComponentProps {
   loginRequest: (username: string, password: string) => void,
-  user: any
+  userState: UserStateT
 };
 
-const Login: React.FC<Props> = ({loginRequest, history, user}) => {
+const Login: React.FC<Props> = ({loginRequest, history, userState}) => {
   const [username, setUsername] = useState<string>('');
   const usernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -30,11 +31,13 @@ const Login: React.FC<Props> = ({loginRequest, history, user}) => {
     loginRequest(username, password);
   };
 
+  console.log(userState);
+
   useEffect(() => {
-    if (user.user) {
+    if (userState.user) {
       history.push(ROUTE_PATHS.myDecks)
     }
-  }, [user.user]);
+  }, [userState.user]);
 
   const enterPressed = (e: React.KeyboardEvent) =>{
     if (e.key === 'Enter') {
@@ -85,7 +88,7 @@ const Login: React.FC<Props> = ({loginRequest, history, user}) => {
             Sign in
           </Button>
         </div>
-        {user.error && <span className={styles.error}>{user.error}</span>}
+        {userState.error && <span className={styles.error}>{userState.error}</span>}
       </Paper>
       </div>
     </div>
@@ -93,7 +96,7 @@ const Login: React.FC<Props> = ({loginRequest, history, user}) => {
 };
 
 const mapStateToProps = (state: StoreState) => ({
-  user: user(state)
+  userState: userState(state)
 });
 
 const mapDispatchToProps = {

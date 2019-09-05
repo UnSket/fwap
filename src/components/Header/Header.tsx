@@ -9,14 +9,15 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link, NavLink } from 'react-router-dom';
 import { OpenModalContext } from '../App/App';
-import { currentLocation } from '../../modules/router/selectors';
 import { connect } from 'react-redux';
-import { Store } from '../../model/types/Store';
-import { Location } from 'history';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
+import { user } from '../../modules/user/selectors';
+import { User } from '../../model/types/User';
+import { StoreState } from '../../modules/types';
+import { AUTHORITIES } from '../../model/constans/userAuthorities';
 
 type Props = {
-    currentLocation: Location<any>
+    user: User | null
 };
 
 type LinkData = {
@@ -25,24 +26,25 @@ type LinkData = {
     isHashLink?: boolean
 };
 
-const LANDING_LINKS: Array<LinkData> = [
-    {to: '/#about', text: 'About', isHashLink: true},
-    {to: '/#decks', text: 'Decks', isHashLink: true},
-    {to: '/#buy', text: 'Buy', isHashLink: true}
-];
-
 const USER_LINKS: Array<LinkData> = [
     {to: ROUTE_PATHS.myDecks, text: 'My decks'},
     {to: '/#decks', text: 'All decks'},
     {to: ROUTE_PATHS.createDeck, text: 'Create new'}
 ];
 
-const getLinks:(location: string) => Array<LinkData> = (location) => {
-    if (location === ROUTE_PATHS.login) {
-        return LANDING_LINKS;
-    } else {
+const ADMIN_LINKS: Array<LinkData> = [
+    {to: ROUTE_PATHS.userManagement, text: 'User management'}
+];
+
+const getLinks:(user: User | null) => Array<LinkData> = (user) => {
+    if (user && user.authorities) {
+        const isAdmin = user.authorities.some(authority => authority.authority === AUTHORITIES.ADMIN);
+        if (isAdmin) {
+            return USER_LINKS.concat(ADMIN_LINKS);
+        }
         return USER_LINKS;
     }
+    return [];
 };
 
 const CustomLink: React.FC<{link: LinkData}> = ({link}) => {
@@ -57,11 +59,11 @@ const CustomLink: React.FC<{link: LinkData}> = ({link}) => {
     }
 };
 
-const Header: React.FC<Props> = ({currentLocation}) => {
+const Header: React.FC<Props> = ({user}) => {
     const [anchorForMenu, toggleMenu] = useState(null);
     const closeMenu = () => toggleMenu(null);
     const openMenu = (e: any) => toggleMenu(e.currentTarget);
-    const links: Array<LinkData> = getLinks(currentLocation.pathname);
+    const links: Array<LinkData> = getLinks(user);
 
     const openModal = useContext(OpenModalContext);
     return (
@@ -112,8 +114,8 @@ const Header: React.FC<Props> = ({currentLocation}) => {
     )
 };
 
-const mapStateToProps = (store: Store) => ({
-    currentLocation: currentLocation(store)
+const mapStateToProps = (store: StoreState) => ({
+    user: user(store)
 });
 
 export default connect(mapStateToProps)(Header);

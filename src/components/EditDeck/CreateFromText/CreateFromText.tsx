@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './CreateFromText.module.scss';
 import TextField from '@material-ui/core/TextField';
 import { ColorResult, GithubPicker } from 'react-color';
@@ -8,13 +8,15 @@ import { useClasses } from '../../utils/utils';
 // TODO: 12 - 150
 
 type Props = {
-  className?: string
+  className?: string,
+  saveHandler: (image: Blob | null) => void,
 }
 
-const CreateFromText: React.FC<Props> = ({className = ''}) => {
+const CreateFromText: React.FC<Props> = ({className = '', saveHandler}) => {
   const [color, setColor] = useState<string>('#000');
   const [word, setWord] = useState<string>('');
-  const [fontSize, setFontSize] = useState<number>(18);
+  const [fontSize, setFontSize] = useState<number>(40);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   //const [isColor]
   const colorChanged = (e: ColorResult) => {
     setColor(e.hex);
@@ -27,6 +29,26 @@ const CreateFromText: React.FC<Props> = ({className = ''}) => {
   const fontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFontSize(+e.target.value);
   };
+
+  const saveWord = () => {
+    canvasRef.current!.toBlob(saveHandler);
+  };
+
+  useEffect(() => {
+    if (word && canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d');
+      const {width, height} = canvasRef.current;
+      if (ctx) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = color;
+        ctx.font = `${fontSize}pt Roboto`;
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+
+        ctx.fillText(word, width/2, height/2);
+      }
+    }
+  }, [word, color, fontSize]);
 
   return (
     <div className={useClasses(styles.wrapper, className)}>
@@ -58,10 +80,8 @@ const CreateFromText: React.FC<Props> = ({className = ''}) => {
       {word &&
         <div className={styles.preview}>
           <Typography variant={'h5'} gutterBottom>Preview</Typography>
-          <div className={styles.wordWrapper}>
-            <span style={{color, fontSize}}>{word}</span>
-          </div>
-          <Button className={styles.submit} variant='contained' color='primary'>Save</Button>
+          <canvas className={styles.wordWrapper} height={200} width={200} ref={canvasRef} />
+          <Button className={styles.submit} variant='contained' color='primary' onClick={saveWord}>Save</Button>
         </div>
       }
     </div>

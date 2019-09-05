@@ -79,8 +79,8 @@ const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksi
             <div className={styles.settings}>
               <SettingIcon className={styles.settingIcon} />
             </div>
-            {deck.backside ?
-              <img src={getUrlFromImgKey(deck.backside.url)} alt='backside image' />
+            {deck.backsideKey ?
+              <img src={getUrlFromImgKey(deck.backsideKey)} alt='backside image' />
             :
               <p className={styles.warning}>Deck have not backside</p>}
           </div>

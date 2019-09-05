@@ -58,6 +58,12 @@ class Carousel extends React.Component<Props, State> {
     }
   };
 
+  componentWillUnmount(): void {
+    if (this.state.updateIntervalID) {
+      clearInterval(this.state.updateIntervalID);
+    }
+  }
+
   render() {
     const {currentImg, nextImg, prevImg} = this.state;
     const {imgArray} = this.props;

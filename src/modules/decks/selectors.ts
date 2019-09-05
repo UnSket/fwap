@@ -6,7 +6,5 @@ export const createdDeck = (state: StoreState) => {
   }
   return null;
 };
-
 export const decksError = (state: StoreState) => state.decks.error;
-
 export const decksById = (state: StoreState) => state.decks.decksById;

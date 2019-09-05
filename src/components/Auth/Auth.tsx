@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './Auth.module.scss';
 import { CircularProgress } from '@material-ui/core';
-import { user } from '../../modules/user/selectors';
+import { userState } from '../../modules/user/selectors';
 import { getCurrentUserRequest } from '../../modules/user/actions';
 import { connect } from 'react-redux';
 import { StoreState } from '../../modules/types';
@@ -11,24 +11,24 @@ import { State as UserT } from '../../modules/user/types'
 
 interface Props extends RouteComponentProps {
   children?: any
-  user: UserT,
+  userState: UserT,
   getCurrentUserRequest: () => void
 }
 
-const Auth: React.FC<Props> = ({children, user, history, getCurrentUserRequest}) => {
+const Auth: React.FC<Props> = ({children, userState, history, getCurrentUserRequest}) => {
   useEffect(() => {
-    if (user.error) {
+    if (userState.error) {
       history.push(ROUTE_PATHS.login);
     }
-  }, [user]);
+  }, [userState]);
 
   useEffect(() => {
-    if (!user.loading) {
+    if (!userState.loading) {
       getCurrentUserRequest();
     }
   }, []);
 
-  if (!user) {
+  if (!userState) {
     return (
       <div className={styles.container}>
         <CircularProgress size={80}/>
@@ -39,7 +39,7 @@ const Auth: React.FC<Props> = ({children, user, history, getCurrentUserRequest})
 };
 
 const mapStateToProps = (state: StoreState) => ({
-  user: user(state)
+  userState: userState(state)
 });
 
 const mapDispatchToProps = {

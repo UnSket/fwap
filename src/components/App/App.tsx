@@ -14,6 +14,7 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Login from '../Login/Login';
 import Auth from '../Auth/Auth';
+import UserManagement from '../UserManagment/UserManagement';
 
 const theme = createMuiTheme({
   palette: {
@@ -40,6 +41,7 @@ const App: React.FC = () => {
               <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
               <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
               <Route path={ROUTE_PATHS.editDeck.route} exact component={EditDeck} />
+              <Route path={ROUTE_PATHS.userManagement} exact component={UserManagement} />
               <Footer />
             </Auth>} />
           </Switch>

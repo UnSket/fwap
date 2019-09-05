@@ -1,0 +1,11 @@
+@import "../../vars";
+
+.container {
+  @extend %wrapper;
+  .paper {
+    @extend %paper;
+    h3 {
+      text-align: center;
+    }
+  }
+}

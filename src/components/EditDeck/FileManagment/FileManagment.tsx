@@ -15,15 +15,22 @@ import { connect } from 'react-redux';
 type Props = {
   images: Array<Image> | null,
   deckId: string,
-  saveFileRequest: (images: Array<ImageWithPreview>, deckId: string) => void
-  updateImageRequest: (image: Image, file: File, deckId: string) => void
+  imagesLeft: number,
+  saveFileRequest: (images: Array<File | Blob>, deckId: string) => void
+  updateImageRequest: (image: Image, file: File | Blob, deckId: string) => void
 };
 
-const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, saveFileRequest}) => {
+const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, saveFileRequest, imagesLeft}) => {
   const openModal = useContext(OpenChangeFileModalContext);
 
   const saveHandler = useCallback((images: Array<ImageWithPreview>) => {
-    saveFileRequest(images, deckId);
+    saveFileRequest(images.map(image => image.file), deckId);
+  }, [deckId]);
+
+  const saveBlobHandler = useCallback((image: Blob | null) => {
+    if (image) {
+        saveFileRequest([image], deckId);
+    }
   }, [deckId]);
 
   const getUpdateHandler = useCallback((image: Image) => {
@@ -38,12 +45,12 @@ const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, sav
     <div className={styles.wrapper} >
       <div className={styles.add}>
         <div>
-          <Typography variant={'h4'} gutterBottom>Upload images</Typography>
-          <DropFile multiple saveHandler={saveHandler} />
+          <Typography variant={'h4'} gutterBottom>Upload images ({imagesLeft} left)</Typography>
+          <DropFile multiple saveHandler={saveHandler} max={imagesLeft} />
         </div>
         <div className={styles.fromText}>
           <Typography variant={'h4'} gutterBottom>Create from text</Typography>
-          <CreateFromText className={styles.fromText} />
+          <CreateFromText className={styles.fromText} saveHandler={saveBlobHandler}/>
         </div>
       </div>
       <Divider variant="middle" />

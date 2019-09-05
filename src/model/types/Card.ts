@@ -1,10 +1,8 @@
-export type DeckCard = {
-
-}
-
 export type EditableImageT = {
-  scale: number,
-  angle: number,
+  id: number,
+  imageId: number,
+  scaleFactor: number,
+  rotationAngle: number,
   positionX: number,
   positionY: number
 }

@@ -28,7 +28,7 @@ const ChangeFileDialog: React.FC<Props> = ({isOpen, close, saveHandler}) => {
   const Content: React.FC = () => {
     switch (currentTab) {
       case 0: return <DropFile saveHandler={saveAndExit} />;
-      default: return <CreateFromText />;
+      default: return <CreateFromText saveHandler={() => {}} />;
     }
   };
   return (

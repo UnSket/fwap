@@ -10,6 +10,7 @@ import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 type Props = {
   multiple?: boolean,
   saveHandler: (images: Array<ImageWithPreview>) => void,
+  max?: number
 }
 
 function collect(monitor: DropTargetMonitor) {
@@ -32,7 +33,7 @@ const Progress:React.FC = () => (
   </div>
 );
 
-const DropFile:React.FC<Props> = ({multiple, saveHandler}) => {
+const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -43,16 +44,25 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler}) => {
   };
 
   const onInputChange = (e: any) => {
-    const files = Object.values(e.currentTarget.files);
+    const files = Object.values(e.currentTarget.files) as Array<File>;
     loadFiles(files);
   };
 
-  const loadFiles = (files: any) => {
-    setLoading(true);
+  const getImagesToLoad = (files: Array<File>) => {
     const imageFiles = files.filter((file: File) => file.type.startsWith('image'));
-    const imageFilesToLoad = multiple ? imageFiles : imageFiles.slice(-1);
-    console.log(imageFilesToLoad);
-    const loadPromises = imageFilesToLoad.map((file: File) => {
+    if (!multiple) {
+      return imageFiles.slice(-1);
+    }
+    if (max && imageFiles.length > max) {
+      return imageFiles.slice(0, max);
+    }
+    return imageFiles;
+  };
+
+  const loadFiles = (files: Array<File>) => {
+    setLoading(true);
+    const filesToLoad = getImagesToLoad(files);
+    const loadPromises = filesToLoad.map((file: File) => {
       const reader = new FileReader();
       const promise = loadPromise(reader, file);
       reader.readAsDataURL(file);
@@ -82,7 +92,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler}) => {
   const containerClasses = useClasses(styles.wrapper, collectedProps.isOver ? '' : styles.hovered);
   const inputId = `file-input-${Math.round(Math.random() * 100000)}`;
 
-  const isLoadable = multiple || !images.length;
+  const isLoadable = (multiple && !max) || (max && (images.length < max!)) || (images.length === 0);
   const imagePreviewWrapperClasses = useClasses(styles.imagePreviewWrapper, multiple ? '' : styles.single);
   return (
     <div className={styles.container}>
@@ -90,7 +100,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler}) => {
       {isLoadable && <label ref={drop} className={containerClasses} htmlFor={inputId}>
         <AddImageIcon className={styles.icon}/>
         <span className={styles.dropLabel}>Drop images here or press to choose</span>
-        <input type='file' hidden accept='image/*' id={inputId} onChange={onInputChange} multiple={multiple}/>
+        <input type='file' hidden accept='image/*' id={inputId} onChange={onInputChange} multiple={multiple} max={max} />
       </label>}
       {images.length > 0 &&
         <div className={imagePreviewWrapperClasses}>

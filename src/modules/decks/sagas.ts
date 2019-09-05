@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { createDeckSuccess, deckFailure, createDeckRequest, getDeckSuccess, getDeckRequest, getDecksRequest, getDecksSuccess, updateDeckRequest } from './actions';
+import { createDeckSuccess, deckFailure, createDeckRequest, getDeckSuccess, getDeckRequest, getDecksRequest, getDecksSuccess, updateDeckRequest, getDeckCardsRequest } from './actions';
 import { request } from '../utils/tools';
 
 function* createDeck({payload: {deck}}: any): Iterable<any> {
@@ -30,7 +30,16 @@ function* getDecks(): Iterable<any> {
 }
 
 function* updateDeck({payload: {deckId, name, description}}: any): Iterable<any> {
-  const {response: createdDeck, error} = yield request({url: '/api/deck/edit', body: JSON.stringify({id: deckId, name, description}), method: 'POST'});
+  const {response: createdDeck, error} = yield request({url: `/api/deck/${deckId}`, body: JSON.stringify({name, description}), method: 'PUT'});
+  if (createdDeck) {
+    yield put(getDeckSuccess(createdDeck));
+  } else {
+    yield put(deckFailure(error));
+  }
+}
+
+function* getDeckCards({payload: {deckId}}: any): Iterable<any> {
+  const {response: createdDeck, error} = yield request({url: `/api/deck/enriched/${deckId}`});
   if (createdDeck) {
     yield put(getDeckSuccess(createdDeck));
   } else {
@@ -43,4 +52,5 @@ export default function* loginSaga() {
   yield takeEvery(getDeckRequest, getDeck);
   yield takeEvery(getDecksRequest, getDecks);
   yield takeEvery(updateDeckRequest, updateDeck);
+  yield takeEvery(getDeckCardsRequest, getDeckCards);
 }

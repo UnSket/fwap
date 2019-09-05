@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { EditableImageT } from '../../../../model/types/Card';
+import React, { useEffect, useRef, useState } from 'react';
+import { EditableImageT } from '../../../../../model/types/Card';
 import styles from './EditableImage.module.scss';
-import { useClasses } from '../../../utils/utils';
+import { getUrlFromImgKey, useClasses } from '../../../../utils/utils';
 import RotateIcon from '@material-ui/icons/Replay';
 
-interface Props extends EditableImageT {
+interface Props {
   image: string,
-  setCardActive: (isActive: boolean) => void
+  setCardActive: (isActive: boolean) => void,
+  updateImage: (image: EditableImageT) => void,
+  editableImage: EditableImageT
 }
 
 type Point = {
@@ -14,19 +16,33 @@ type Point = {
   y: number
 };
 
-const initSize = 60;
+const initSize = 102;
 const degreeToRadK = Math.PI / 180;
 
-const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initScale, positionX: startX, positionY: startY, setCardActive}) => {
+const EditableImage: React.FC<Props> = React.memo(({image, editableImage, setCardActive, updateImage}) => {
   const [active, setActive] = useState(false);
-  const [scale, setScale] = useState(initScale);
-  const [angle, setAngle] = useState(initAngle);
-  const [position, setPosition] = useState<Point>({x: startX, y: startY});
+  const [scale, setScale] = useState(editableImage.scaleFactor / 102);
+  const [angle, setAngle] = useState(editableImage.rotationAngle);
+  const [position, setPosition] = useState<Point>({x: editableImage.positionX, y: editableImage.positionY});
   const [centerPoint, setCenter] = useState<Point>({x: 0, y: 0});
   const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
   const [isMoving, setIsMoving] = useState<boolean>(false);
-  const object = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapperStyles = useClasses(styles.wrapper, active ? styles.active : '');
+
+  useEffect(() => {
+    console.log('recreated');
+  }, []);
+
+  useEffect(() => {
+    console.log('updated');
+  }, [editableImage]);
+
+  useEffect(() => {
+    setPosition({x: editableImage.positionX, y: editableImage.positionY});
+    setAngle(editableImage.rotationAngle);
+    setScale(editableImage.scaleFactor / 102);
+  }, [editableImage]);
 
   const height = initSize * scale;
 
@@ -45,7 +61,13 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
   const blur = () => {
     setActive(false);
     setCardActive(false);
-
+    updateImage({
+      ...editableImage,
+      positionX: position.x,
+      positionY: position.y,
+      rotationAngle: angle,
+      scaleFactor: scale
+    })
   };
 
   const startResizing = (e: React.DragEvent) => {
@@ -65,28 +87,22 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
     for (const key in e) {
       print[key] = e[key];
     }
-    console.log(print);
     setStartPoint({x, y});
 
   };
 
   const startRotate = (e: React.DragEvent) => {
-    if (object && object.current && object.current.parentElement) {
-      const objectX = object.current.parentElement.offsetLeft + position.x;
-      const objectY = object.current.parentElement.offsetTop + position.y;
-      const width = object.current.offsetWidth;
-      const height = object.current.offsetHeight;
-      const centerX = objectX + width / 2;
-      const centerY = objectY + height / 2;
+    if (wrapperRef && wrapperRef.current) {
+      const boundingRect = wrapperRef.current.getBoundingClientRect();
+      const centerX = boundingRect.left + boundingRect.width / 2;
+      const centerY = boundingRect.top + boundingRect.height / 2;
       setCenter({x: centerX, y: centerY});
-      console.log(centerX, centerY);
     }
   };
   const rotate = (e: React.DragEvent) => {
-    if (e.clientY === 0 && e.clientX === 0) return;
+    if ((e.clientY === 0 && e.clientX === 0) || (e.screenX === 0 && e.screenY === 0)) return;
     const changedX = -(centerPoint.x - e.clientX);
     const changedY = (centerPoint.y - e.clientY);
-    console.log(changedX, changedY);
     const newAngle = Math.atan2(changedX, changedY) / degreeToRadK;
     setAngle(newAngle);
   };
@@ -115,7 +131,7 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
       tabIndex={1}
       onFocus={focus}
       onBlur={blur}
-      ref={object}
+      ref={wrapperRef}
       onMouseDown={startMoving}
       onMouseMove={move}
       onMouseUp={stopMoving}
@@ -134,9 +150,9 @@ const EditableImage: React.FC<Props> = ({image, angle: initAngle, scale: initSca
           onMouseDown={e => e.stopPropagation()}>
           <RotateIcon />
         </div>
-        <img src={image} alt='' draggable={false}/>
+        <img src={getUrlFromImgKey(image)} alt='' draggable={false}/>
     </div>
   )
-};
+});
 
 export default EditableImage;

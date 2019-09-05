@@ -6,5 +6,6 @@ export const ROUTE_PATHS = {
     base: '/editDeck',
     withID: (id: string | number) => `/editDeck/${id}`,
     route: '/editDeck/:deckId'
-  }
+  },
+  userManagement: '/userManagement'
 };

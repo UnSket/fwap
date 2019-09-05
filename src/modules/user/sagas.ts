@@ -4,7 +4,7 @@ import { request } from '../utils/tools';
 
 function* login({payload}: any) {
   const {username, password} = payload;
-  const {user, error} = yield request({url: '/api/login', body: JSON.stringify({username, password}), method: 'POST'});
+  const {response: user, error} = yield request({url: '/api/login', body: JSON.stringify({username, password}), method: 'POST'});
   if (error) {
     if (error.status === 401) {
       const data = yield error.json();
@@ -19,7 +19,7 @@ function* login({payload}: any) {
 }
 
 function* getCurrentUser() {
-  const {user, error} = yield request({url: '/api/currentUser', method: 'GET'});
+  const {response: user, error} = yield request({url: '/api/currentUser', method: 'GET'});
   if (error) {
     if (error.status === 401) {
       yield put(getUserFailed(true));
