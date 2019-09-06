@@ -16,6 +16,7 @@ import Settings from './Settings/Settings';
 import { ImageWithPreview } from '../../model/types/ImageWithPreview';
 import { EditableImageT } from '../../model/types/Card';
 import EditCards from './EditCards/EditCards';
+import { updateImageRequest } from '../../modules/decks/files/actions';
 
 interface MatchParams {
   deckId: string;
@@ -27,9 +28,9 @@ interface Props extends RouteComponentProps<MatchParams> {
 }
 type DialogData = {
   isOpen: boolean,
-  saveHandler: (images: Array<ImageWithPreview>) => void
+  saveHandler: (images: Array<File | Blob>) => void
 }
-export const OpenChangeFileModalContext = React.createContext<(saveHandler: (images: Array<ImageWithPreview>) => void) => void>(() => {});
+export const OpenChangeFileModalContext = React.createContext<(saveHandler: (images: Array<File | Blob>) => void) => void>(() => {});
 
 const useDeck = (decksById: DeckByID, currentDeckId: string) => {
   const [deck, setDeck] = useState<Deck | null>(null);
@@ -44,7 +45,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
   const [currentTab, changeTab] = useState<number>(0);
   const deck: Deck | null = useDeck(decksById, match.params.deckId);
   const [dialogData, setDialogData] = useState<DialogData>({isOpen: false, saveHandler: () => null});
-  const _openModal = (saveHandler: (images: Array<ImageWithPreview>) => void) => {
+  const _openModal = (saveHandler: (images: Array<File | Blob>) => void) => {
     setDialogData({isOpen: true, saveHandler: saveHandler});
   };
   const closeModal = () => setDialogData({isOpen: false, saveHandler: () => null});
@@ -65,7 +66,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
       case 0: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
       case 1: {
         if (deck) {
-          return <EditCards images={deck.images} cards={deck.cards || []} deckId={deck.id}/>;
+          return <EditCards cards={deck.cards || []} deckId={deck.id}/>;
         }
         return null;
       }
@@ -86,9 +87,9 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
             textColor="primary"
             variant="fullWidth">
               <Tab label="Image managment" />
-              <Tab label="Edit cards" />
-              <Tab label="Edit history" />
-              <Tab label="Settings" />
+              <Tab disabled={!deck} label="Edit cards" />
+              <Tab disabled={!deck} label="Edit history" />
+              <Tab disabled={!deck} label="Settings" />
             </Tabs>
             <CurrentTabComponent />
         </Paper>

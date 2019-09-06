@@ -9,7 +9,7 @@ import { useClasses } from '../../utils/utils';
 
 type Props = {
   className?: string,
-  saveHandler: (image: Blob | null) => void,
+  saveHandler: (images: Array<File | Blob>) => void,
 }
 
 const CreateFromText: React.FC<Props> = ({className = '', saveHandler}) => {
@@ -31,7 +31,11 @@ const CreateFromText: React.FC<Props> = ({className = '', saveHandler}) => {
   };
 
   const saveWord = () => {
-    canvasRef.current!.toBlob(saveHandler);
+    canvasRef.current!.toBlob(blob => {
+      if (blob) {
+        saveHandler([blob]);
+      }
+    });
   };
 
   useEffect(() => {

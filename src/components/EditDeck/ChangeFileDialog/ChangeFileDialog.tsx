@@ -12,7 +12,7 @@ import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 type Props = {
   isOpen: boolean,
   close: () => void,
-  saveHandler: (images: Array<ImageWithPreview>) => void,
+  saveHandler: (images: Array<File | Blob>) => void,
 };
 
 const ChangeFileDialog: React.FC<Props> = ({isOpen, close, saveHandler}) => {
@@ -21,14 +21,14 @@ const ChangeFileDialog: React.FC<Props> = ({isOpen, close, saveHandler}) => {
     changeTab(newValue);
   };
 
-  const saveAndExit = useCallback((images: Array<ImageWithPreview>) => {
+  const saveAndExit = useCallback((images: Array<File | Blob>) => {
     saveHandler(images);
     close();
   }, [saveHandler, close]);
   const Content: React.FC = () => {
     switch (currentTab) {
       case 0: return <DropFile saveHandler={saveAndExit} />;
-      default: return <CreateFromText saveHandler={() => {}} />;
+      default: return <CreateFromText saveHandler={saveAndExit} />;
     }
   };
   return (

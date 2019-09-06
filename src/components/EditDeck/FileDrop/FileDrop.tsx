@@ -9,7 +9,7 @@ import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   multiple?: boolean,
-  saveHandler: (images: Array<ImageWithPreview>) => void,
+  saveHandler: (images: Array<File | Blob>) => void,
   max?: number
 }
 
@@ -75,7 +75,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   };
 
   const loadPressed = () => {
-    saveHandler(images);
+    saveHandler(images.map(image => image.file));
   };
 
   const removeImage = (imageIndex: number) => {

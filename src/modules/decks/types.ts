@@ -2,7 +2,9 @@ import { Deck } from '../../model/types/Deck';
 
 export type State = {
   loading: boolean,
-  decksById: any,
+  decksById: {
+    [key: string]: Deck
+  },
   createdDeckId: number | null,
   error?: string | null,
   files: {

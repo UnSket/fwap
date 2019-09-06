@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image } from '../../../model/types/Image';
-import keyBy from 'lodash/keyBy';
 import { EditableImageT } from '../../../model/types/Card';
 import Card from './Card/Card';
 import styles from './EditCards.module.scss';
 import cloneDeep from 'lodash/cloneDeep';
+import { Fab } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
+import { saveCardsRequest } from '../../../modules/decks/actions'
+import { connect } from 'react-redux';
 
 type Props = {
   cards: Array<Array<EditableImageT>>,
-  images: Array<Image>,
   deckId: string,
+  saveCardsRequest: (cards: Array<Array<EditableImageT>>, deckId: string) => void
 }
 
 const useCards = (initialCards: Array<Array<EditableImageT>>) => {
@@ -27,19 +29,30 @@ const useCards = (initialCards: Array<Array<EditableImageT>>) => {
   return {cards, updateImage};
 };
 
-const EditCards: React.FC<Props> = ({cards: initialCards, images, deckId}) => {
-  const [imagesById] = useState<{[key: string]: Image}>(keyBy(images, 'id'));
+const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest}) => {
   const {cards, updateImage} = useCards(initialCards);
-
   console.log(cards.flat(1).length);
 
+  const save = useCallback(() => {
+    saveCardsRequest(cards, deckId);
+  }, [deckId, cards]);
+
   return (
-    <div className={styles.wrapper}>
-      {cards.map((images, index) => (
-        <Card key={index} editableImages={images} imagesById={imagesById} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />
-      ))}
-    </div>
+    <>
+      <div className={styles.wrapper}>
+        {cards.map((images, index) => (
+          <Card key={index} editableImages={images} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />
+        ))}
+      </div>
+      <Fab color="primary" aria-label="add" className={styles.save} onClick={save}>
+        <SaveIcon />
+      </Fab>
+    </>
   )
 };
 
-export default EditCards;
+const mapDispatchToProps = {
+  saveCardsRequest
+};
+
+export default connect(null, mapDispatchToProps)(EditCards);

@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { createDeckSuccess, deckFailure, createDeckRequest, getDeckSuccess, getDeckRequest, getDecksRequest, getDecksSuccess, updateDeckRequest, getDeckCardsRequest } from './actions';
+import { createDeckSuccess, deckFailure, createDeckRequest, getDeckSuccess, getDeckRequest, getDecksRequest, getDecksSuccess, updateDeckRequest, getDeckCardsRequest, saveCardsRequest } from './actions';
 import { request } from '../utils/tools';
 
 function* createDeck({payload: {deck}}: any): Iterable<any> {
@@ -47,10 +47,20 @@ function* getDeckCards({payload: {deckId}}: any): Iterable<any> {
   }
 }
 
+function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
+  const {response: updatedDeck, error} = yield request({url: `/api/deck/saveCards/${deckId}`, method: 'POST', body: JSON.stringify({deckId, cards})});
+  if (updatedDeck) {
+    yield put(getDeckSuccess(updatedDeck));
+  } else {
+    yield put(deckFailure(error));
+  }
+}
+
 export default function* loginSaga() {
   yield takeEvery(createDeckRequest, createDeck);
   yield takeEvery(getDeckRequest, getDeck);
   yield takeEvery(getDecksRequest, getDecks);
   yield takeEvery(updateDeckRequest, updateDeck);
   yield takeEvery(getDeckCardsRequest, getDeckCards);
+  yield takeEvery(saveCardsRequest, saveCards);
 }

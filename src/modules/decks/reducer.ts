@@ -30,6 +30,7 @@ export default handleActions<State, any>(
     [saveFileSuccess.toString()]: (state, {payload: {images, deckId}}) => {
       const currentDeck = state.decksById[deckId];
       currentDeck.images = currentDeck.images.concat(images);
+      currentDeck.imagesRequired = currentDeck.imagesRequired - images.length;
       return ({
         ...state,
         decksById: {

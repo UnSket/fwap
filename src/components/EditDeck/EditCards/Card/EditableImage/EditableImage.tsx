@@ -5,7 +5,6 @@ import { getUrlFromImgKey, useClasses } from '../../../../utils/utils';
 import RotateIcon from '@material-ui/icons/Replay';
 
 interface Props {
-  image: string,
   setCardActive: (isActive: boolean) => void,
   updateImage: (image: EditableImageT) => void,
   editableImage: EditableImageT
@@ -19,7 +18,7 @@ type Point = {
 const initSize = 102;
 const degreeToRadK = Math.PI / 180;
 
-const EditableImage: React.FC<Props> = React.memo(({image, editableImage, setCardActive, updateImage}) => {
+const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive, updateImage}) => {
   const [active, setActive] = useState(false);
   const [scale, setScale] = useState(editableImage.scaleFactor / 102);
   const [angle, setAngle] = useState(editableImage.rotationAngle);
@@ -29,14 +28,6 @@ const EditableImage: React.FC<Props> = React.memo(({image, editableImage, setCar
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapperStyles = useClasses(styles.wrapper, active ? styles.active : '');
-
-  useEffect(() => {
-    console.log('recreated');
-  }, []);
-
-  useEffect(() => {
-    console.log('updated');
-  }, [editableImage]);
 
   useEffect(() => {
     setPosition({x: editableImage.positionX, y: editableImage.positionY});
@@ -66,7 +57,7 @@ const EditableImage: React.FC<Props> = React.memo(({image, editableImage, setCar
       positionX: position.x,
       positionY: position.y,
       rotationAngle: angle,
-      scaleFactor: scale
+      scaleFactor: scale * 103
     })
   };
 
@@ -150,7 +141,7 @@ const EditableImage: React.FC<Props> = React.memo(({image, editableImage, setCar
           onMouseDown={e => e.stopPropagation()}>
           <RotateIcon />
         </div>
-        <img src={getUrlFromImgKey(image)} alt='' draggable={false}/>
+        <img src={getUrlFromImgKey(editableImage.imageUrl)} alt='' draggable={false}/>
     </div>
   )
 });

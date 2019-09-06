@@ -6,28 +6,18 @@ import { Image } from '../../../../model/types/Image';
 import { EditableImageT } from '../../../../model/types/Card';
 
 interface Props {
-  imagesById: {
-    [key: string]: Image
-  },
   editableImages: Array<EditableImageT>,
   updateImage: (image: EditableImageT, imageIndex: number) => void
 }
 
-const Card: React.FC<Props> = React.memo(({editableImages, imagesById, updateImage}) => {
+const Card: React.FC<Props> = React.memo(({editableImages, updateImage}) => {
   const [isActive, setActive] = useState<boolean>(false);
-  useEffect(() => {
-    console.log('recreated card');
-  }, []);
-
-  useEffect(() => {
-    console.log('updated card');
-  }, [editableImages]);
 
   const cardClasses = useClasses(styles.card, isActive ? styles.active : '');
   return (
       <div className={cardClasses}>
         {editableImages.map((image, i) => (
-          <EditableImage editableImage={image} image={imagesById[image.imageId].url} key={i} setCardActive={setActive} updateImage={(image) => updateImage(image, i)}/>
+          <EditableImage editableImage={image} key={i} setCardActive={setActive} updateImage={(image) => updateImage(image, i)}/>
         ))}
       </div>
   )

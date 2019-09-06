@@ -1,6 +1,14 @@
+@import "../../../vars";
+
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   align-items: center;
+}
+
+.save {
+  position: fixed !important;
+  right: 20px;
+  bottom: $footerHeight + 20px;
 }

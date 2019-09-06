@@ -23,37 +23,35 @@ type Props = {
 const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, saveFileRequest, imagesLeft}) => {
   const openModal = useContext(OpenChangeFileModalContext);
 
-  const saveHandler = useCallback((images: Array<ImageWithPreview>) => {
-    saveFileRequest(images.map(image => image.file), deckId);
-  }, [deckId]);
-
-  const saveBlobHandler = useCallback((image: Blob | null) => {
-    if (image) {
-        saveFileRequest([image], deckId);
-    }
+  const saveHandler = useCallback((images: Array<File | Blob>) => {
+    saveFileRequest(images, deckId);
   }, [deckId]);
 
   const getUpdateHandler = useCallback((image: Image) => {
-   return (images: Array<ImageWithPreview>) => {
+   return (images: Array<File | Blob>) => {
       if (deckId && image && images.length > 0) {
-        updateImageRequest(image, images[0].file, deckId);
+        updateImageRequest(image, images[0], deckId);
       }
     };
   }, [deckId]);
 
   return (
     <div className={styles.wrapper} >
-      <div className={styles.add}>
-        <div>
-          <Typography variant={'h4'} gutterBottom>Upload images ({imagesLeft} left)</Typography>
-          <DropFile multiple saveHandler={saveHandler} max={imagesLeft} />
+      {!!imagesLeft &&
+      <>
+        <div className={styles.add}>
+          <div>
+            <Typography variant={'h4'} gutterBottom>Upload images ({imagesLeft} left)</Typography>
+            <DropFile multiple saveHandler={saveHandler} max={imagesLeft}/>
+          </div>
+          <div className={styles.fromText}>
+            <Typography variant={'h4'} gutterBottom>Create from text</Typography>
+            <CreateFromText className={styles.fromText} saveHandler={saveHandler}/>
+          </div>
         </div>
-        <div className={styles.fromText}>
-          <Typography variant={'h4'} gutterBottom>Create from text</Typography>
-          <CreateFromText className={styles.fromText} saveHandler={saveBlobHandler}/>
-        </div>
-      </div>
-      <Divider variant="middle" />
+        <Divider variant="middle"/>
+      </>
+      }
       {images && !!images.length && (
         <div className={styles.uploaded}>
           <Typography variant='h4' gutterBottom>Uploaded images</Typography>

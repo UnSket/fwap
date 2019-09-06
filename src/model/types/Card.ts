@@ -1,6 +1,6 @@
 export type EditableImageT = {
   id: number,
-  imageId: number,
+  imageUrl: string,
   scaleFactor: number,
   rotationAngle: number,
   positionX: number,
