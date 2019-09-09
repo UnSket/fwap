@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  .image {
+    object-fit: contain;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  .submit {
+    margin-top: 20px;
+  }
+}

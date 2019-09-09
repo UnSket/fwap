@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import { saveFileFailure, saveFileSuccess, saveFileRequest, updateImageRequest, updateImageSuccess, updateBacksideRequest } from './actions';
+import { getDeckSuccess } from '../actions';
 import { request } from '../../utils/tools';
 
 type Action = {
@@ -46,7 +47,9 @@ function* updateBackside({payload}: any): Iterable<any> {
   data.append('files', image);
   data.append('deckId', deckId);
   const {response: deck, error} = yield request({url: `/api/deck/backside/${deckId}`, body: data, headers: {}, method: 'POST' });
-  if (error) {
+  if (deck) {
+    yield put(getDeckSuccess(deck));
+  } else {
     const errorText = yield error.text();
     yield put(saveFileFailure(errorText))
   }

@@ -17,6 +17,7 @@ import { ImageWithPreview } from '../../model/types/ImageWithPreview';
 import { EditableImageT } from '../../model/types/Card';
 import EditCards from './EditCards/EditCards';
 import { updateImageRequest } from '../../modules/decks/files/actions';
+import Legend from './Legend/Legend';
 
 interface MatchParams {
   deckId: string;
@@ -63,14 +64,14 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
     switch (currentTab) {
-      case 0: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
+      case 0: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={20} />;
       case 1: {
         if (deck) {
           return <EditCards cards={deck.cards || []} deckId={deck.id}/>;
         }
         return null;
       }
-      case 2: return <span>Edit history</span>;
+      case 2: return <Legend deck={deck} />;
       default: return <Settings deck={deck} />;
     }
   };
@@ -86,9 +87,9 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth">
-              <Tab label="Image managment" />
-              <Tab disabled={!deck} label="Edit cards" />
-              <Tab disabled={!deck} label="Edit history" />
+              <Tab label="Files" />
+              <Tab disabled={!deck} label="Cards" />
+              <Tab disabled={!deck} label="Legend" />
               <Tab disabled={!deck} label="Settings" />
             </Tabs>
             <CurrentTabComponent />

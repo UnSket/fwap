@@ -3,8 +3,6 @@ import { Deck } from '../../../model/types/Deck';
 import styles from './Settings.module.scss';
 import {
   Button,
-  Container,
-  Paper,
   TextField,
   Typography
 } from '@material-ui/core';
@@ -16,7 +14,6 @@ import { getUrlFromImgKey } from '../../utils/utils';
 import SettingIcon from '@material-ui/icons/Settings';
 import { updateBacksideRequest } from '../../../modules/decks/files/actions';
 import { OpenChangeFileModalContext } from '../EditDeck';
-import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 
 type Props = {

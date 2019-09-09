@@ -12,3 +12,12 @@
   right: 20px;
   bottom: $footerHeight + 20px;
 }
+
+.actionPanel {
+  width: 100%;
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+}

@@ -3,7 +3,7 @@ import { EditableImageT } from '../../../model/types/Card';
 import Card from './Card/Card';
 import styles from './EditCards.module.scss';
 import cloneDeep from 'lodash/cloneDeep';
-import { Fab } from '@material-ui/core';
+import { Button, Fab, Paper } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { saveCardsRequest } from '../../../modules/decks/actions'
 import { connect } from 'react-redux';
@@ -44,9 +44,11 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
           <Card key={index} editableImages={images} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />
         ))}
       </div>
-      <Fab color="primary" aria-label="add" className={styles.save} onClick={save}>
-        <SaveIcon />
-      </Fab>
+      <Paper className={styles.actionPanel}>
+        <Button variant="contained" color='primary' className={styles.submit} onClick={save}>
+          Save
+        </Button>
+      </Paper>
     </>
   )
 };
