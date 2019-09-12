@@ -64,7 +64,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
     switch (currentTab) {
-      case 0: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={20} />;
+      case 0: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
       case 1: {
         if (deck) {
           return <EditCards cards={deck.cards || []} deckId={deck.id}/>;

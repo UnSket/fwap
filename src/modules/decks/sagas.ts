@@ -42,7 +42,7 @@ function* getDecks(): Iterable<any> {
 }
 
 function* updateDeck({payload: {deckId, name, description}}: any): Iterable<any> {
-  const {response: createdDeck, error} = yield request({url: `/api/deck/${deckId}`, body: JSON.stringify({name, description}), method: 'PUT'});
+  const {response: createdDeck, error} = yield request({url: `/api/deck/update`, body: JSON.stringify({id: deckId, name, description}), method: 'PUT'});
   if (createdDeck) {
     yield put(getDeckSuccess(createdDeck));
   } else {
@@ -60,7 +60,7 @@ function* getDeckCards({payload: {deckId}}: any): Iterable<any> {
 }
 
 function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
-  const {response: updatedDeck, error} = yield request({url: `/api/deck/saveCards/${deckId}`, method: 'POST', body: JSON.stringify({deckId, cards})});
+  const {response: updatedDeck, error} = yield request({url: `/api/deck/cards`, method: 'POST', body: JSON.stringify({deckId, cards})});
   if (updatedDeck) {
     yield put(getDeckSuccess(updatedDeck));
   } else {
@@ -69,9 +69,10 @@ function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
 }
 
 function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
-  const {response: updatedDeck, error} = yield request({url: `api/deck/${deckId}/image/${image.id}/text/${image.text}`, method: 'POST', body: JSON.stringify({deckId, image})});
-  if (updatedDeck) {
-    yield put(getDeckSuccess(updatedDeck));
+  console.log(image, deckId);
+  const {response: createdImage, error} = yield request({url: `/api/deck/text/legend`, method: 'POST', body: JSON.stringify({deckId, imageId: image.id, text: image.text})});
+  if (createdImage) {
+    yield put(getDeckSuccess(createdImage));
   } else {
     yield put(deckFailure(error));
   }
