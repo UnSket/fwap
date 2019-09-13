@@ -59,6 +59,9 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, getDeckCar
     if (newValue === 1) {
       getDeckCardsRequest(deck!.id);
     }
+    if (newValue === 2) {
+
+    }
   }, [deck]);
 
   const CurrentTabComponent: React.FC = () => {

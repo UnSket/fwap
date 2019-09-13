@@ -1,0 +1,11 @@
+.card {
+  border-radius: 50%;
+  width: 336px;
+  height: 336px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+  &.active {
+    overflow: visible;
+  }
+}

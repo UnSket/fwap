@@ -11,7 +11,8 @@ import {
   getDeckCardsRequest,
   saveCardsRequest,
   saveLegendRequest,
-  saveImageSuccess
+  saveImageSuccess,
+  getDeckLegendRequest
 } from './actions';
 import { request } from '../utils/tools';
 
@@ -52,9 +53,9 @@ function* updateDeck({payload: {deckId, name, description}}: any): Iterable<any>
 }
 
 function* getDeckCards({payload: {deckId}}: any): Iterable<any> {
-  const {response: createdDeck, error} = yield request({url: `/api/deck/enriched/${deckId}`});
-  if (createdDeck) {
-    yield put(getDeckSuccess(createdDeck));
+  const {response: deck, error} = yield request({url: `/api/deck/enriched/${deckId}`});
+  if (deck) {
+    yield put(getDeckSuccess(deck));
   } else {
     yield put(deckFailure(error));
   }
@@ -80,6 +81,15 @@ function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
   }
 }
 
+function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
+  const {response: deck, error} = yield request({url: `/api/deck/enriched/legend/${deckId}`});
+  if (deck) {
+    yield put(getDeckSuccess(deck));
+  } else {
+    yield put(deckFailure(error));
+  }
+}
+
 export default function* loginSaga() {
   yield takeEvery(createDeckRequest, createDeck);
   yield takeEvery(getDeckRequest, getDeck);
@@ -88,4 +98,5 @@ export default function* loginSaga() {
   yield takeEvery(getDeckCardsRequest, getDeckCards);
   yield takeEvery(saveCardsRequest, saveCards);
   yield takeEvery(saveLegendRequest, saveLegend);
+  yield takeEvery(getDeckLegendRequest, getDeckLegend);
 }

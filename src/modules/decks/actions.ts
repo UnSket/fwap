@@ -12,7 +12,8 @@ export const {
   getDeckCardsRequest,
   saveCardsRequest,
   saveLegendRequest,
-  saveImageSuccess
+  saveImageSuccess,
+  getDeckLegendRequest
 } = createActions({
   CREATE_DECK_REQUEST: (deck) => ({deck}),
   CREATE_DECK_SUCCESS: (deck) => ({deck}),
@@ -25,5 +26,7 @@ export const {
   GET_DECK_CARDS_REQUEST: (deckId) => ({deckId}),
   SAVE_CARDS_REQUEST: (cards, deckId) => ({cards, deckId}),
   SAVE_LEGEND_REQUEST: (image, deckId) => ({image, deckId}),
-  SAVE_IMAGE_SUCCESS: (deckId, image) => ({deckId, image})
+  SAVE_IMAGE_SUCCESS: (deckId, image) => ({deckId, image}),
+  GET_DECK_LEGEND_REQUEST: (deckId) => ({deckId}),
+
 });
