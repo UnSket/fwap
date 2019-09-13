@@ -9,7 +9,7 @@ interface Props {
   setCardActive: (isActive: boolean) => void,
   updateItem: (image: EditableLegendItemT) => void,
   editableItem: EditableLegendItemT,
-  tagSize: number;
+  textSize: number;
 }
 
 type Point = {
@@ -17,30 +17,31 @@ type Point = {
   y: number
 };
 
-const initSize = 102;
+const imageC = 3;
 
-const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, updateItem, tagSize}) => {
+const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, updateItem, textSize}) => {
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<Point>({x: editableItem.positionX, y: editableItem.positionY});
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const wrapperStyles = useClasses(styles.wrapper, active ? styles.active : '');
   const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
 
-  const Content:React.FC = () => {
-    if (editableItem.type === TYPES.image) {
+  const getComponent = () => {
+    if (editableItem.legendSourceType === TYPES.image) {
       return <img src={getUrlFromImgKey(editableItem.source)} alt='' draggable={false}/>;
     }
-    return <span>{editableItem.source}</span>
+    return <span style={{fontSize: textSize}}>{editableItem.source}</span>
   };
 
 
-    useEffect(() => {
+  useEffect(() => {
     setPosition({x: editableItem.positionX, y: editableItem.positionY});
   }, [editableItem]);
 
-  const height = initSize * tagSize;
+  const width = imageC * textSize;
 
   const focus = (e: React.FocusEvent) => {
+    console.log('activate');
     setActive(true);
     setCardActive(true);
   };
@@ -74,7 +75,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
 
   return (
     <div
-      style={{top: position.y, left: position.x, height}}
+      style={{top: position.y, left: position.x, width}}
       className={wrapperStyles}
       tabIndex={1}
       onFocus={focus}
@@ -83,17 +84,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
       onMouseMove={move}
       onMouseUp={stopMoving}
       onMouseLeave={stopMoving}>
-        <div
-          className={styles.scale}
-          onMouseDown={e => e.stopPropagation()}
-          draggable={true} />
-        <div
-          className={styles.rotate}
-          draggable={true}
-          onMouseDown={e => e.stopPropagation()}>
-          <RotateIcon />
-        </div>
-        <Content />
+      {getComponent()}
     </div>
   )
 });

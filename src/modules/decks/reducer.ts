@@ -57,7 +57,6 @@ export default handleActions<State, any>(
       const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
       currentDeck.images.splice(currentImageIndex, 1);
       currentDeck.images.unshift(newImage);
-      console.log(deckId, newImage, currentDeck);
       return ({
         ...state,
         decksById: {

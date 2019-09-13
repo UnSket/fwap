@@ -56,7 +56,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveCardsRequest, getDeckLe
     <>
       <div className={styles.wrapper}>
         {cards.map((images, index) => (
-          <Card key={index} editableImages={images} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} tagSize={legend.tagSize}/>
+          <Card key={index} editableImages={images} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} textSize={legend.textSize}/>
         ))}
       </div>
       <Paper className={styles.actionPanel}>

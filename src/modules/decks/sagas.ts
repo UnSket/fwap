@@ -71,18 +71,22 @@ function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
 }
 
 function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
-  console.log(image, deckId);
-  const {response: createdImage, error} = yield request({url: `/api/deck/text/legend`, method: 'POST', body: JSON.stringify({deckId, imageId: image.id, text: image.text})});
-  if (createdImage) {
-    console.log(deckId, createdImage);
-    yield put(saveImageSuccess(deckId, createdImage));
-  } else {
-    yield put(deckFailure(error));
+  for (let i = 1; i < 22; i++ ) {
+    const { response: createdImage, error } = yield request({
+      url: `/api/deck/text/legend`,
+      method: 'POST',
+      body: JSON.stringify({ deckId, imageId: i, text: image.text })
+    });
+    if (createdImage) {
+      yield put(saveImageSuccess(deckId, createdImage));
+    } else {
+      yield put(deckFailure(error));
+    }
   }
 }
 
 function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
-  const {response: deck, error} = yield request({url: `/api/deck/enriched/legend/${deckId}`});
+  const {response: deck, error} = yield request({url: `/api/legend/${deckId}`});
   if (deck) {
     yield put(getDeckSuccess(deck));
   } else {

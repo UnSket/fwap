@@ -1,6 +1,6 @@
 export type Legend = {
   deckId: string;
-  tagSize: number;
+  textSize: number;
   cards: EditableLegendItemT[][];
 }
 
@@ -14,5 +14,5 @@ export type EditableLegendItemT = {
   source: string,
   positionX: number,
   positionY: number,
-  type: typeof TYPES.image | typeof TYPES.text
+  legendSourceType: typeof TYPES.image | typeof TYPES.text
 }

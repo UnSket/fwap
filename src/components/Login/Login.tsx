@@ -31,7 +31,6 @@ const Login: React.FC<Props> = ({loginRequest, history, userState}) => {
     loginRequest(username, password);
   };
 
-  console.log(userState);
 
   useEffect(() => {
     if (userState.user) {

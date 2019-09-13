@@ -7,17 +7,18 @@ import EditableItem from './EditableItem/EditableItem';
 interface Props {
   editableImages: Array<EditableLegendItemT>,
   updateItem: (item: EditableLegendItemT, imageIndex: number) => void,
-  tagSize: number
+  textSize: number
 }
 
-const Card: React.FC<Props> = React.memo(({editableImages, updateItem, tagSize}) => {
+const Card: React.FC<Props> = React.memo(({editableImages, updateItem, textSize}) => {
   const [isActive, setActive] = useState<boolean>(false);
 
+  console.log(isActive);
   const cardClasses = useClasses(styles.card, isActive ? styles.active : '');
   return (
       <div className={cardClasses}>
         {editableImages.map((item, i) => (
-          <EditableItem setCardActive={setActive} updateItem={(image) => updateItem(image, i)} editableItem={item} tagSize={tagSize}/>
+          <EditableItem key={i} setCardActive={setActive} updateItem={(image) => updateItem(image, i)} editableItem={item} textSize={textSize}/>
         ))}
       </div>
   )

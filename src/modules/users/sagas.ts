@@ -14,7 +14,6 @@ function* getUsers() {
 function* updateUser({payload: {user}}: any) {
   const {response: updatedUser, error} = yield request({url: '/api/user/uppdate', body: JSON.stringify(user),method: 'POST'});
   if (updatedUser) {
-    console.log(updatedUser);
     yield put(updateUserSuccess(updatedUser));
   } else {
     yield put(usersFailed(error));

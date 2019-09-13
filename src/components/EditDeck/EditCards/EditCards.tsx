@@ -31,7 +31,6 @@ const useCards = (initialCards: Array<Array<EditableImageT>>) => {
 
 const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest}) => {
   const {cards, updateImage} = useCards(initialCards);
-  console.log(cards.flat(1).length);
 
   const save = useCallback(() => {
     saveCardsRequest(cards, deckId);

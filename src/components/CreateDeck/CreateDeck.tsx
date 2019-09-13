@@ -30,7 +30,6 @@ const CreateDeck: React.FC<State> = ({createDeckRequest, error, createdDeck, his
   const [imagesOnCard, changeImagePerCard] = useState(5);
 
   useEffect(() => {
-    console.log(createdDeck);
     if (createdDeck) {
       history.push(ROUTE_PATHS.editDeck.withID(createdDeck.id));
     }
