@@ -25,5 +25,5 @@ export const {
   GET_DECK_CARDS_REQUEST: (deckId) => ({deckId}),
   SAVE_CARDS_REQUEST: (cards, deckId) => ({cards, deckId}),
   SAVE_LEGEND_REQUEST: (image, deckId) => ({image, deckId}),
-  SAVE_IMAGE_SUCCESS: () => ({})
+  SAVE_IMAGE_SUCCESS: (deckId, image) => ({deckId, image})
 });

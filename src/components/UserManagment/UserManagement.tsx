@@ -1,15 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { User, usersMock } from '../../model/types/User';
 import { Container, Paper, TextField, Typography } from '@material-ui/core';
 import styles from './UserManagement.module.scss';
 import SettingIcon from '@material-ui/icons/Settings';
 import UserDetails from './UserDetails/UserDetails';
+import {users, isLoading} from '../../modules/users/selectors';
+import {getUsersRequest} from '../../modules/users/actions';
+import { StoreState } from '../../modules/types';
+import { connect } from 'react-redux';
 
 type Props = {
-  users: Array<User>
+  users: Array<User>,
+  loading: boolean,
+  getUsersRequest: () => void
 };
 
-const UserManagement: React.FC<Props> = ({users = usersMock }) => {
+const UserManagement: React.FC<Props> = ({users, getUsersRequest, loading }) => {
   const [search, setSearch] = useState<string>('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const openModal = useCallback((user: User) => {
@@ -19,9 +25,17 @@ const UserManagement: React.FC<Props> = ({users = usersMock }) => {
     setSelectedUser(null);
   }, []);
 
+  useEffect(() => {
+    if (!users.length) {
+      getUsersRequest();
+    }
+  }, []);
+
   const searchInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
+
+  if (!users) return null;
 
   return (
     <Container className={styles.container}>
@@ -54,4 +68,13 @@ const UserManagement: React.FC<Props> = ({users = usersMock }) => {
   )
 };
 
-export default UserManagement;
+const mapStateToProps = (state: StoreState) => ({
+  users: users(state),
+  loading: isLoading(state)
+});
+
+const mapDispatchToProps = {
+  getUsersRequest
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);

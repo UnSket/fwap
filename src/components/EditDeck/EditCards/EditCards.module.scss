@@ -3,14 +3,14 @@
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-row-gap: 30px;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 }
 
 .save {
   position: fixed !important;
-  right: 20px;
-  bottom: $footerHeight + 20px;
 }
 
 .actionPanel {
@@ -20,4 +20,6 @@
   justify-content: center;
   position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
 }

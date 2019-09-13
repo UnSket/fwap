@@ -8,13 +8,16 @@ import { User } from '../../../model/types/User';
 import { MenuItem, Select, Checkbox } from '@material-ui/core';
 import styles from './UserDetails.module.scss';
 import { AUTHORITIES } from '../../../model/constans/userAuthorities';
+import { updateUserRequest } from '../../../modules/users/actions';
+import { connect } from 'react-redux';
 
 type Props = {
   close: () => void,
-  user: User | null
+  user: User | null,
+  updateUserRequest: (user: User) => void
 }
 
-const UserDetails: React.FC<Props> = ({close, user}) => {
+const UserDetails: React.FC<Props> = ({close, user, updateUserRequest}) => {
   const [authority, setAuthority] = useState<string>(AUTHORITIES.USER);
   const [isActive, setIsActive] = useState<boolean>(true);
   useEffect(() => {
@@ -29,6 +32,10 @@ const UserDetails: React.FC<Props> = ({close, user}) => {
   };
   const authorityChanges = (e: React.ChangeEvent<{name?: string, value: any}>) => {
     setAuthority(e.target.value);
+  };
+
+  const updateUser = () => {
+    updateUserRequest({...user!, active: isActive, authorities: [{authority}]})
   };
 
   return (
@@ -61,7 +68,7 @@ const UserDetails: React.FC<Props> = ({close, user}) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button color='primary'>Save</Button>
+        <Button color='primary' onClick={updateUser}>Save</Button>
         <Button onClick={close}>
           Cancel
         </Button>
@@ -70,4 +77,8 @@ const UserDetails: React.FC<Props> = ({close, user}) => {
   );
 };
 
-export default UserDetails;
+const mapDispatchToProps = {
+  updateUserRequest
+};
+
+export default connect(null, mapDispatchToProps)(UserDetails);

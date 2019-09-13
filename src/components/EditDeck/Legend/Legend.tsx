@@ -9,10 +9,11 @@ type Props = {
 };
 
 const Legend: React.FC<Props> = ({deck}) => {
+  const left = deck.images.filter(image => !image.text).length;
   return (
     <div className={styles.container}>
-      <Typography variant='h4' gutterBottom>Add legend to every image</Typography>
-      <AddLegend image={deck.images[0]} deckId={deck.id} />
+      <Typography variant='h4' gutterBottom>Add legend to every image(left {left})</Typography>
+      <AddLegend image={deck.images.find(images => !images.text)!} deckId={deck.id} />
     </div>
   );
 };

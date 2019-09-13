@@ -1,9 +1,10 @@
 import { combineActions, handleActions } from 'redux-actions';
-import { deckFailure, createDeckRequest, createDeckSuccess, getDeckRequest, getDeckSuccess, getDecksRequest, getDecksSuccess, updateDeckRequest, getDeckCardsRequest } from './actions';
+import { deckFailure, createDeckRequest, createDeckSuccess, getDeckRequest, getDeckSuccess, getDecksRequest, getDecksSuccess, updateDeckRequest, getDeckCardsRequest, saveImageSuccess } from './actions';
 import { saveFileRequest, saveFileSuccess, saveFileFailure, updateImageRequest, updateImageSuccess } from './files/actions';
 import { State } from './types';
 import keyBy from 'lodash/keyBy';
 import { Image } from '../../model/types/Image';
+import { combineReducers } from 'redux';
 
 const defaultState: State = {
   loading: false,
@@ -39,10 +40,12 @@ export default handleActions<State, any>(
         }
       })
     },
-    [updateImageSuccess.toString()]: (state, {payload: {newImage, deckId}}) => {
+    [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {image: newImage, deckId}}) => {
       const currentDeck = state.decksById[deckId];
-      const currentImageIndex = currentDeck.images.findIndex((image: Image) => image.id === newImage.id);
-      currentDeck.images[currentImageIndex] = newImage;
+      const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
+      currentDeck.images.splice(currentImageIndex, 1);
+      currentDeck.images.unshift(newImage);
+      console.log(deckId, newImage, currentDeck);
       return ({
         ...state,
         decksById: {

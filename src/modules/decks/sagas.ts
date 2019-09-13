@@ -10,7 +10,8 @@ import {
   updateDeckRequest,
   getDeckCardsRequest,
   saveCardsRequest,
-  saveLegendRequest
+  saveLegendRequest,
+  saveImageSuccess
 } from './actions';
 import { request } from '../utils/tools';
 
@@ -72,7 +73,8 @@ function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
   console.log(image, deckId);
   const {response: createdImage, error} = yield request({url: `/api/deck/text/legend`, method: 'POST', body: JSON.stringify({deckId, imageId: image.id, text: image.text})});
   if (createdImage) {
-    yield put(getDeckSuccess(createdImage));
+    console.log(deckId, createdImage);
+    yield put(saveImageSuccess(deckId, createdImage));
   } else {
     yield put(deckFailure(error));
   }

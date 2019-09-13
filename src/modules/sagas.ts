@@ -4,7 +4,7 @@ import { fork } from 'redux-saga/effects';
 
 import appSaga from './app/sagas';
 import userSaga from './user/sagas';
-import usersSaga from './user/sagas';
+import usersSaga from './users/sagas';
 import decksSaga from './decks/sagas';
 import filesSaga from './decks/files/sagas';
 
