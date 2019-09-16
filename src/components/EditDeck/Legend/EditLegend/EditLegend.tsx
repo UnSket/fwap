@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './EditLegend.module.scss';
 import { Button, Paper, CircularProgress } from '@material-ui/core';
-import { saveCardsRequest, getDeckLegendRequest } from '../../../../modules/decks/actions'
+import { saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest } from '../../../../modules/decks/actions'
 import { connect } from 'react-redux';
 import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
 import Card from './Card/Card';
 import cloneDeep from 'lodash/cloneDeep';
+import TextField from '@material-ui/core/TextField';
 
 type Props = {
   legend?: Legend,
   deckId: string,
   getDeckLegendRequest: (deckId: string) => void
-  saveCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string) => void
+  saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string) => void,
+  changeLegendTextSizeRequest: (textSize: number, deckId: string) => void
 }
 
 const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
@@ -29,10 +31,24 @@ const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
   return {cards, updateItem};
 };
 
-const EditCards: React.FC<Props> = ({legend, deckId, saveCardsRequest, getDeckLegendRequest}) => {
-  const {cards,  updateItem} = useCards(legend && legend.cards);
+const useTextSize = (legend?: Legend) => {
+  const [textSize, setTextSize] = useState<number>(legend ? legend.textSize : 0);
+  useEffect(() => {
+    if (legend && !textSize) {
+      setTextSize(legend.textSize);
+    }
+  }, [legend]);
 
-  console.log(legend);
+  return {textSize, setTextSize};
+};
+
+const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest}) => {
+  const {cards,  updateItem} = useCards(legend && legend.cards);
+  const {textSize, setTextSize} = useTextSize(legend);
+  const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextSize(+e.target.value);
+    changeLegendTextSizeRequest(+e.target.value, deckId);
+  };
 
   useEffect(() => {
     if (!legend) {
@@ -41,7 +57,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveCardsRequest, getDeckLe
   }, [legend]);
 
   const save = useCallback(() => {
-    saveCardsRequest(cards, deckId);
+    saveLegendCardsRequest(cards, deckId);
   }, [deckId, cards]);
 
   if (!legend) {
@@ -59,18 +75,30 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveCardsRequest, getDeckLe
           <Card key={index} editableImages={images} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} textSize={legend.textSize}/>
         ))}
       </div>
-      <Paper className={styles.actionPanel}>
+      <div className={styles.actionPanel}>
+        <TextField
+          margin="dense"
+          id="name"
+          label="Size"
+          type="number"
+          variant='outlined'
+          value={textSize}
+          onChange={textSizeInputHandler}
+          fullWidth
+          className={styles.size}
+        />
         <Button variant="contained" color='primary' className={styles.submit} onClick={save}>
           Save
         </Button>
-      </Paper>
+      </div>
     </>
   )
 };
 
 const mapDispatchToProps = {
-  saveCardsRequest,
-  getDeckLegendRequest
+  saveLegendCardsRequest,
+  getDeckLegendRequest,
+  changeLegendTextSizeRequest
 };
 
 export default connect(null, mapDispatchToProps)(EditCards);

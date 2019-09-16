@@ -33,6 +33,7 @@ function* updateFile({payload}: any): Iterable<any> {
   data.append('imageId', image.id);
   const {response: newImage, error} = yield request({url: '/api/files/change', body: data, headers: {}, method: 'POST' });
   if (newImage) {
+    console.log(newImage, deckId);
     yield put(updateImageSuccess(newImage, deckId));
   } else {
     const errorText = yield error.text();

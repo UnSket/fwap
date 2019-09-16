@@ -28,9 +28,9 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
 
   const getComponent = () => {
     if (editableItem.legendSourceType === TYPES.image) {
-      return <img src={getUrlFromImgKey(editableItem.source)} alt='' draggable={false}/>;
+      return <div style={{backgroundImage: `url(${getUrlFromImgKey(editableItem.source)})`}} className={styles.image} draggable={false}/>;
     }
-    return <span style={{fontSize: textSize}}>{editableItem.source}</span>
+    return <span style={{fontSize: textSize, whiteSpace: 'nowrap'}}>{editableItem.source}</span>
   };
 
 
@@ -75,7 +75,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
 
   return (
     <div
-      style={{top: position.y, left: position.x, width}}
+      style={{top: position.y, left: position.x, width, height: width}}
       className={wrapperStyles}
       tabIndex={1}
       onFocus={focus}

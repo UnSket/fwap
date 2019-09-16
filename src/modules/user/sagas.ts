@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { loginRequest, gotUser, getUserFailed, getCurrentUserRequest } from './actions';
+import { loginRequest, gotUser, getUserFailed, getCurrentUserRequest, signOutRequest } from './actions';
 import { request } from '../utils/tools';
 
 function* login({payload}: any) {
@@ -32,7 +32,12 @@ function* getCurrentUser() {
   }
 }
 
+function* signOut() {
+  yield request({url: '/api/logout', method: 'GET'});
+}
+
 export default function* loginSaga() {
   yield takeEvery(loginRequest, login);
   yield takeEvery(getCurrentUserRequest, getCurrentUser);
+  yield takeEvery(signOutRequest, signOut);
 }

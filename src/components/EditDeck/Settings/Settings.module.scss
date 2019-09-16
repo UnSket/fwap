@@ -7,12 +7,15 @@
   margin-top: 40px;
   .backsideWrapper {
     border: 1px solid $disabledColor;
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .4);
     img {
       object-fit: contain;
       width: 100%;

@@ -4,6 +4,9 @@
   cursor: move;
   display: inline-flex;
   user-select: none;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
     img {
       height: 100%;
     }
@@ -14,5 +17,26 @@
       display: inline-flex;
       outline: 1px solid black;
       z-index: 1;
+      .scale {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 5px;
+        height: 5px;
+        background-color: #fff;
+        border: 1px solid black;
+        cursor: nesw-resize;
+        transform: translate(50%, -50%);
+      }
+      .rotate {
+        display: inline-block;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: alias;
+        background: white;
+        border-radius: 50%;
+      }
     }
 }

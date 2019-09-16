@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery, throttle } from 'redux-saga/effects';
 import {
   createDeckSuccess,
   deckFailure,
@@ -12,7 +12,9 @@ import {
   saveCardsRequest,
   saveLegendRequest,
   saveImageSuccess,
-  getDeckLegendRequest
+  getDeckLegendRequest,
+  saveLegendCardsRequest,
+  changeLegendTextSizeRequest
 } from './actions';
 import { request } from '../utils/tools';
 
@@ -71,17 +73,15 @@ function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
 }
 
 function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
-  for (let i = 1; i < 22; i++ ) {
-    const { response: createdImage, error } = yield request({
-      url: `/api/deck/text/legend`,
-      method: 'POST',
-      body: JSON.stringify({ deckId, imageId: i, text: image.text })
-    });
-    if (createdImage) {
-      yield put(saveImageSuccess(deckId, createdImage));
-    } else {
-      yield put(deckFailure(error));
-    }
+  const { response: createdImage, error } = yield request({
+    url: `/api/deck/text/legend`,
+    method: 'POST',
+    body: JSON.stringify({ deckId, imageId: image.id, text: image.text })
+  });
+  if (createdImage) {
+    yield put(saveImageSuccess(deckId, createdImage));
+  } else {
+    yield put(deckFailure(error));
   }
 }
 
@@ -89,6 +89,24 @@ function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
   const {response: deck, error} = yield request({url: `/api/legend/${deckId}`});
   if (deck) {
     yield put(getDeckSuccess(deck));
+  } else {
+    yield put(deckFailure(error));
+  }
+}
+
+function* saveLegendCards({payload: {deckId, cards}}: any): Iterable<any> {
+  const {response: updatedDeck, error} = yield request({url: `/api/legend/update`, method: 'POST', body: JSON.stringify({deckId, cards: cards.flat()})});
+  if (updatedDeck) {
+    yield put(getDeckSuccess(updatedDeck));
+  } else {
+    yield put(deckFailure(error));
+  }
+}
+
+function* changeTextSize({payload: {deckId, textSize}}: any): Iterable<any> {
+  const {response: updatedDeck, error} = yield request({url: `/api/legend/text/config`, method: 'POST', body: JSON.stringify({id: deckId, size: textSize})});
+  if (updatedDeck) {
+    yield put(getDeckSuccess(updatedDeck));
   } else {
     yield put(deckFailure(error));
   }
@@ -103,4 +121,6 @@ export default function* loginSaga() {
   yield takeEvery(saveCardsRequest, saveCards);
   yield takeEvery(saveLegendRequest, saveLegend);
   yield takeEvery(getDeckLegendRequest, getDeckLegend);
+  yield takeEvery(saveLegendCardsRequest, saveLegendCards);
+  yield throttle(1000, changeLegendTextSizeRequest, changeTextSize);
 }

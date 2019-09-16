@@ -117,7 +117,7 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
 
   return (
     <div
-      style={{top: position.y, left: position.x, transform: `rotate(${angle}deg)`, height}}
+      style={{top: position.y, left: position.x, transform: `rotate(${angle}deg)`, height, width: height, backgroundImage: `url(${getUrlFromImgKey(editableImage.imageUrl)})`}}
       className={wrapperStyles}
       tabIndex={1}
       onFocus={focus}
@@ -141,7 +141,6 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
           onMouseDown={e => e.stopPropagation()}>
           <RotateIcon />
         </div>
-        <img src={getUrlFromImgKey(editableImage.imageUrl)} alt='' draggable={false}/>
     </div>
   )
 });

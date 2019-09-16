@@ -7,17 +7,20 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import { OpenModalContext } from '../App/App';
 import { connect } from 'react-redux';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import { user } from '../../modules/user/selectors';
+import { signOutRequest } from '../../modules/user/actions';
 import { User } from '../../model/types/User';
 import { StoreState } from '../../modules/types';
 import { AUTHORITIES } from '../../model/constans/userAuthorities';
+import { ConnectedRouter } from 'connected-react-router';
 
-type Props = {
-    user: User | null
+interface Props extends RouteComponentProps {
+    user: User | null,
+    signOutRequest: () => void
 };
 
 type LinkData = {
@@ -59,11 +62,16 @@ const CustomLink: React.FC<{link: LinkData}> = ({link}) => {
     }
 };
 
-const Header: React.FC<Props> = ({user}) => {
+const Header: React.FC<Props> = ({user, signOutRequest, history}) => {
     const [anchorForMenu, toggleMenu] = useState(null);
     const closeMenu = () => toggleMenu(null);
     const openMenu = (e: any) => toggleMenu(e.currentTarget);
     const links: Array<LinkData> = getLinks(user);
+
+    const signOut = () => {
+        signOutRequest();
+        history.push(ROUTE_PATHS.login);
+    };
 
     const openModal = useContext(OpenModalContext);
     return (
@@ -91,7 +99,7 @@ const Header: React.FC<Props> = ({user}) => {
                         </Hidden>
                     </div>
                     <div className={styles.rightPart}>
-                        <Button color="inherit" onClick={openModal}>Sign in</Button>
+                        <Button color="inherit" onClick={signOut}>Sign out</Button>
                     </div>
                     </Container>
                     <Menu
@@ -117,5 +125,8 @@ const Header: React.FC<Props> = ({user}) => {
 const mapStateToProps = (store: StoreState) => ({
     user: user(store)
 });
+const mapDispatchToProps = {
+    signOutRequest
+};
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

@@ -10,7 +10,8 @@ import {
   updateDeckRequest,
   getDeckCardsRequest,
   saveImageSuccess,
-  getDeckLegendRequest
+  getDeckLegendRequest,
+  saveLegendCardsRequest
 } from './actions';
 import { saveFileRequest, saveFileSuccess, saveFileFailure, updateImageRequest, updateImageSuccess } from './files/actions';
 import { State } from './types';
@@ -30,7 +31,15 @@ const defaultState: State = {
 
 export default handleActions<State, any>(
   {
-    [combineActions(createDeckRequest, getDeckRequest, getDecksRequest, updateDeckRequest, getDeckCardsRequest, getDeckLegendRequest).toString()]: state => ({...state, loading: true, createdDeckId: null, error: null}),
+    [combineActions(
+      createDeckRequest,
+      getDeckRequest,
+      getDecksRequest,
+      updateDeckRequest,
+      getDeckCardsRequest,
+      getDeckLegendRequest,
+      saveLegendCardsRequest
+    ).toString()]: state => ({...state, loading: true, createdDeckId: null, error: null}),
     [deckFailure.toString()]: (state, {payload: {error}}) => ({...state, loading: false, createdDeckId: null, error}),
     [createDeckSuccess.toString()]: (state, {payload: {deck} }) => ({...state, decksById: {...state.decksById, [deck.id]: deck}, loading: false, createdDeckId: deck.id}),
     [getDeckSuccess.toString()]: (state, {payload: {deck} }) => ({...state, decksById: {...state.decksById, [deck.id]: deck}, loading: false}),
@@ -52,11 +61,11 @@ export default handleActions<State, any>(
         }
       })
     },
-    [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {image: newImage, deckId}}) => {
+    [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
       const currentDeck = state.decksById[deckId];
+      console.log(newImage, currentDeck);
       const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
-      currentDeck.images.splice(currentImageIndex, 1);
-      currentDeck.images.unshift(newImage);
+      currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
       return ({
         ...state,
         decksById: {
