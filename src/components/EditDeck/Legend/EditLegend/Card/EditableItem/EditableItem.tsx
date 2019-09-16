@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { EditableImageT } from '../../../../../../model/types/Card';
+import React, { useEffect, useState } from 'react';
 import styles from './EditableItem.module.scss';
 import { getUrlFromImgKey, useClasses } from '../../../../../utils/utils';
-import RotateIcon from '@material-ui/icons/Replay';
 import { EditableLegendItemT, TYPES } from '../../../../../../model/types/Legend';
+import EditIcon from '@material-ui/icons/Edit';
 
 interface Props {
   setCardActive: (isActive: boolean) => void,
@@ -28,17 +27,23 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
 
   const getComponent = () => {
     if (editableItem.legendSourceType === TYPES.image) {
-      return <div style={{backgroundImage: `url(${getUrlFromImgKey(editableItem.source)})`}} className={styles.image} draggable={false}/>;
+      const size = imageC * textSize;
+      return <div style={{backgroundImage: `url(${getUrlFromImgKey(editableItem.source)})`, width: size, height: size}} className={styles.image} draggable={false}/>;
     }
-    return <span style={{fontSize: textSize, whiteSpace: 'nowrap'}}>{editableItem.source}</span>
+    return (
+      <>
+        <div className={styles.edit}>
+          <EditIcon />
+        </div>
+        <span style={{fontSize: textSize, whiteSpace: 'nowrap'}}>{editableItem.source}</span>
+      </>
+    );
   };
 
 
   useEffect(() => {
     setPosition({x: editableItem.positionX, y: editableItem.positionY});
   }, [editableItem]);
-
-  const width = imageC * textSize;
 
   const focus = (e: React.FocusEvent) => {
     console.log('activate');
@@ -75,7 +80,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
 
   return (
     <div
-      style={{top: position.y, left: position.x, width, height: width}}
+      style={{top: position.y, left: position.x}}
       className={wrapperStyles}
       tabIndex={1}
       onFocus={focus}
@@ -83,7 +88,9 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
       onMouseDown={startMoving}
       onMouseMove={move}
       onMouseUp={stopMoving}
-      onMouseLeave={stopMoving}>
+      onMouseLeave={stopMoving}
+      onClick={() => console.log(editableItem)}>
+
       {getComponent()}
     </div>
   )

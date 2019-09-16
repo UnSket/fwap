@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import styles from './App.module.scss';
 import Header from '../Header/Header';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -34,16 +34,19 @@ const App: React.FC = () => {
       <ThemeProvider theme={theme}>
         <div className={styles.mainBackground}>
           <Switch>
-          <Route path={ROUTE_PATHS.login} exact component={Login} />
-          <Route render={() =>
-            <Auth>
-              <Header />
-              <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
-              <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
-              <Route path={ROUTE_PATHS.editDeck.route} exact component={EditDeck} />
-              <Route path={ROUTE_PATHS.userManagement} exact component={UserManagement} />
-              <Footer />
-            </Auth>} />
+            <Route path={ROUTE_PATHS.login} exact component={Login} />
+            <Route render={() =>
+              <Auth>
+                <Header />
+                <Switch>
+                  <Route path={ROUTE_PATHS.myDecks} exact component={MyDecks} />
+                  <Route path={ROUTE_PATHS.createDeck} exact component={CreateDeck} />
+                  <Route path={ROUTE_PATHS.editDeck.route} component={EditDeck} />
+                  <Route path={ROUTE_PATHS.userManagement} exact component={UserManagement} />
+                  <Redirect to={ROUTE_PATHS.myDecks} />
+                </Switch>
+                <Footer />
+              </Auth>} />
           </Switch>
         </div>
       </ThemeProvider>

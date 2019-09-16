@@ -7,10 +7,27 @@
     img {
       width: 100%;
     }
+    .edit {
+      display: none;
+    }
     &.active {
       display: inline-flex;
       outline: 1px solid black;
       z-index: 1;
+      .edit {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        background: #b6ffc7;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 }
 

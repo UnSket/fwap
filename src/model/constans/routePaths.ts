@@ -3,9 +3,15 @@ export const ROUTE_PATHS = {
   myDecks: '/myDecks',
   createDeck: '/createDeck',
   editDeck: {
-    base: '/editDeck',
-    withID: (id: string | number) => `/editDeck/${id}`,
-    route: '/editDeck/:deckId'
+    withID: (id: string | number, page?: string) => `/editDeck/${id}/${page || EDIT_DECK_PAGES.files}`,
+    route: '/editDeck/:deckId/:page',
   },
   userManagement: '/userManagement'
+};
+
+export const EDIT_DECK_PAGES = {
+  files: 'files',
+  cards: 'cards',
+  legend: 'legend',
+  settings: 'settings'
 };

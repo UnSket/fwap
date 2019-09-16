@@ -7,6 +7,7 @@ import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
 import Card from './Card/Card';
 import cloneDeep from 'lodash/cloneDeep';
 import TextField from '@material-ui/core/TextField';
+import SettingIcon from '@material-ui/icons/Settings';
 
 type Props = {
   legend?: Legend,

@@ -81,6 +81,16 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
     setStartPoint({x, y});
 
   };
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const delta = e.deltaY;
+    e.preventDefault();
+
+    if (delta > 0) {
+      setScale(scale * 0.9);
+      return;
+    }
+    setScale(scale * 1.1);
+  };
 
   const startRotate = (e: React.DragEvent) => {
     if (wrapperRef && wrapperRef.current) {
@@ -123,6 +133,7 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
       onFocus={focus}
       onBlur={blur}
       ref={wrapperRef}
+      onWheel={onWheel}
       onMouseDown={startMoving}
       onMouseMove={move}
       onMouseUp={stopMoving}
