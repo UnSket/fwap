@@ -46,7 +46,6 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
   }, [editableItem]);
 
   const focus = (e: React.FocusEvent) => {
-    console.log('activate');
     setActive(true);
     setCardActive(true);
   };
@@ -88,8 +87,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
       onMouseDown={startMoving}
       onMouseMove={move}
       onMouseUp={stopMoving}
-      onMouseLeave={stopMoving}
-      onClick={() => console.log(editableItem)}>
+      onMouseLeave={stopMoving}>
 
       {getComponent()}
     </div>

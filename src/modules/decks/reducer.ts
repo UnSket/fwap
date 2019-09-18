@@ -63,7 +63,6 @@ export default handleActions<State, any>(
     },
     [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
       const currentDeck = state.decksById[deckId];
-      console.log(newImage, currentDeck);
       const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
       currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
       return ({

@@ -3,22 +3,24 @@ import { EditableImageT } from '../../../model/types/Card';
 import Card from './Card/Card';
 import styles from './EditCards.module.scss';
 import cloneDeep from 'lodash/cloneDeep';
-import { Button, Fab, Paper } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
-import { saveCardsRequest } from '../../../modules/decks/actions'
+import { Button, Paper } from '@material-ui/core';
+import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/decks/actions'
 import { connect } from 'react-redux';
 
 type Props = {
-  cards: Array<Array<EditableImageT>>,
+  cards?: Array<Array<EditableImageT>>,
   deckId: string,
-  saveCardsRequest: (cards: Array<Array<EditableImageT>>, deckId: string) => void
+  loading: boolean,
+  saveCardsRequest: (cards: Array<Array<EditableImageT>>, deckId: string) => void,
+  left: number,
+  getDeckCardsRequest: (deckId: string) => void
 }
 
-const useCards = (initialCards: Array<Array<EditableImageT>>) => {
-  const [cards, setCards] = useState<Array<Array<EditableImageT>>>(initialCards);
+const useCards = (initialCards?: Array<Array<EditableImageT>>) => {
+  const [cards, setCards] = useState<Array<Array<EditableImageT>>>(initialCards || []);
 
   useEffect(() => {
-    setCards(initialCards);
+    setCards(initialCards || []);
   }, [initialCards]);
 
   const updateImage = useCallback((updateImage: EditableImageT, cardIndex: number, imageIndex: number) => {
@@ -29,12 +31,22 @@ const useCards = (initialCards: Array<Array<EditableImageT>>) => {
   return {cards, updateImage};
 };
 
-const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest}) => {
+const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest, left, loading, getDeckCardsRequest}) => {
   const {cards, updateImage} = useCards(initialCards);
+
+  useEffect(() => {
+    if (!left && !loading && !initialCards) {
+      getDeckCardsRequest(deckId);
+    }
+  }, [loading]);
 
   const save = useCallback(() => {
     saveCardsRequest(cards, deckId);
   }, [deckId, cards]);
+
+  if (left) {
+    return <p className={styles.notification}>You should upload {left} more files to see cards!</p>
+  }
 
   return (
     <>
@@ -53,7 +65,8 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
 };
 
 const mapDispatchToProps = {
-  saveCardsRequest
+  saveCardsRequest,
+  getDeckCardsRequest
 };
 
 export default connect(null, mapDispatchToProps)(EditCards);

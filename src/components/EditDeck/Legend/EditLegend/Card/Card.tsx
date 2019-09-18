@@ -13,7 +13,6 @@ interface Props {
 const Card: React.FC<Props> = React.memo(({editableImages, updateItem, textSize}) => {
   const [isActive, setActive] = useState<boolean>(false);
 
-  console.log(isActive);
   const cardClasses = useClasses(styles.card, isActive ? styles.active : '');
   return (
       <div className={cardClasses}>

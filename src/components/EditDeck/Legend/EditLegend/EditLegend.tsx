@@ -14,7 +14,8 @@ type Props = {
   deckId: string,
   getDeckLegendRequest: (deckId: string) => void
   saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string) => void,
-  changeLegendTextSizeRequest: (textSize: number, deckId: string) => void
+  changeLegendTextSizeRequest: (textSize: number, deckId: string) => void,
+  loading: boolean
 }
 
 const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
@@ -43,7 +44,7 @@ const useTextSize = (legend?: Legend) => {
   return {textSize, setTextSize};
 };
 
-const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest}) => {
+const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest, loading}) => {
   const {cards,  updateItem} = useCards(legend && legend.cards);
   const {textSize, setTextSize} = useTextSize(legend);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +53,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
   };
 
   useEffect(() => {
-    if (!legend) {
+    if (!legend && !loading) {
       getDeckLegendRequest(deckId);
     }
   }, [legend]);
@@ -62,11 +63,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
   }, [deckId, cards]);
 
   if (!legend) {
-    return (
-      <div className={styles.progress}>
-        <CircularProgress />
-      </div>
-    )
+    return null;
   }
 
   return (

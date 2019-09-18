@@ -8,3 +8,4 @@ export const createdDeck = (state: StoreState) => {
 };
 export const decksError = (state: StoreState) => state.decks.error;
 export const decksById = (state: StoreState) => state.decks.decksById;
+export const loading = (state: StoreState) => state.decks.loading;
