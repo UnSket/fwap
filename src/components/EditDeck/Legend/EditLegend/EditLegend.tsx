@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './EditLegend.module.scss';
 import { Button, Paper, CircularProgress } from '@material-ui/core';
-import { saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest } from '../../../../modules/decks/actions'
+import { saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest } from '../../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
 import Card from './Card/Card';

@@ -7,7 +7,7 @@ import { OpenChangeFileModalContext } from '../EditDeck';
 import CreateFromText from '../CreateFromText/CreateFromText';
 import { Image } from '../../../model/types/Image';
 import { getUrlFromImgKey } from '../../utils/utils';
-import { saveFileRequest, updateImageRequest } from '../../../modules/decks/files/actions';
+import { saveFileRequest, updateImageRequest } from '../../../modules/userDecks/files/actions';
 import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 import { connect } from 'react-redux';
 

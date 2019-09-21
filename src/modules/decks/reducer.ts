@@ -1,77 +1,37 @@
-import { combineActions, handleActions } from 'redux-actions';
-import {
-  deckFailure,
-  createDeckRequest,
-  createDeckSuccess,
-  getDeckRequest,
-  getDeckSuccess,
-  getDecksRequest,
-  getDecksSuccess,
-  updateDeckRequest,
-  getDeckCardsRequest,
-  saveImageSuccess,
-  getDeckLegendRequest,
-  saveLegendCardsRequest
-} from './actions';
-import { saveFileRequest, saveFileSuccess, saveFileFailure, updateImageRequest, updateImageSuccess } from './files/actions';
+import { handleActions } from 'redux-actions';
 import { State } from './types';
-import keyBy from 'lodash/keyBy';
-import { Image } from '../../model/types/Image';
-import { combineReducers } from 'redux';
-
+import { getDecksFailed, getDecksSuccess, getDecksRequest } from './actions';
+import { Pageable } from '../../model/types/Pageable';
+import { Deck } from '../../model/types/Deck';
 const defaultState: State = {
   loading: false,
-  decksById: {},
-  createdDeckId: null,
-  files: {
-    loading: false,
-    error: null
-  }
+  page: -1,
+  decks: [],
+  last: false
 };
 
 export default handleActions<State, any>(
   {
-    [combineActions(
-      createDeckRequest,
-      getDeckRequest,
-      getDecksRequest,
-      updateDeckRequest,
-      getDeckCardsRequest,
-      getDeckLegendRequest,
-      saveLegendCardsRequest
-    ).toString()]: state => ({...state, loading: true, createdDeckId: null, error: null}),
-    [deckFailure.toString()]: (state, {payload: {error}}) => ({...state, loading: false, createdDeckId: null, error}),
-    [createDeckSuccess.toString()]: (state, {payload: {deck} }) => ({...state, decksById: {...state.decksById, [deck.id]: deck}, loading: false, createdDeckId: deck.id}),
-    [getDeckSuccess.toString()]: (state, {payload: {deck} }) => ({...state, decksById: {...state.decksById, [deck.id]: deck}, loading: false}),
-    [getDecksSuccess.toString()]: (state, {payload: {decks} }) => {
-      const decksById = keyBy(decks, 'id');
-      return ({...state, decksById: {...state.decksById, ...decksById}, loading: false})
-    },
-    [combineActions(saveFileRequest, updateImageRequest).toString()]: (state) => ({...state, files: {loading: true, error: null}}),
-    [saveFileFailure.toString()]: (state, {payload: {error}}) => ({...state, files: {loading: false, error}}),
-    [saveFileSuccess.toString()]: (state, {payload: {images, deckId}}) => {
-      const currentDeck = state.decksById[deckId];
-      currentDeck.images = currentDeck.images.concat(images);
-      currentDeck.imagesRequired = currentDeck.imagesRequired - images.length;
-      return ({
-        ...state,
-        decksById: {
-          ...state.decksById,
-          [deckId]: currentDeck
+    [getDecksRequest.toString()]: (state) => ({...state, loading: true, error: null}),
+    [getDecksFailed.toString()]: (state, {payload: {error}}) => ({...state, loading: false, error}),
+    [getDecksSuccess.toString()]: (state, {payload: {page, reset}}: {payload: {page: Pageable<Deck>, reset?: boolean}}) => {
+      if (reset) {
+        return {
+          decks: [...page.content],
+          page: page.number,
+          loading: false,
+          last: page.last
+        };
+      }
+      if (page.number > state.page) {
+        return {
+          decks: [...state.decks, ...page.content],
+          page: page.number,
+          loading: false,
+          last: page.last
         }
-      })
-    },
-    [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
-      const currentDeck = state.decksById[deckId];
-      const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
-      currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
-      return ({
-        ...state,
-        decksById: {
-          ...state.decksById,
-          [deckId]: currentDeck
-        }
-      })
+      }
+      return state;
     }
   },
   defaultState

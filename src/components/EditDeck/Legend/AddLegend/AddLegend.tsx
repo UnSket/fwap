@@ -3,7 +3,7 @@ import styles from './AddLegend.module.scss';
 import { Image } from '../../../../model/types/Image';
 import { getUrlFromImgKey } from '../../../utils/utils';
 import { Button, TextField } from '@material-ui/core';
-import { saveLegendRequest } from '../../../../modules/decks/actions';
+import { saveLegendRequest } from '../../../../modules/userDecks/actions';
 import { connect } from 'react-redux';
 
 type Props = {

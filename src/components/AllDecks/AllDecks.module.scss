@@ -1,0 +1,37 @@
+@import "../../vars";
+
+.wrapper {
+  @extend %wrapper;
+
+  .paper {
+    @extend %paper;
+
+    h3 {
+      text-align: center;
+    }
+
+    .searchContainer {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      .search {
+        max-width: 300px;
+      }
+    }
+
+    .decks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 15px;
+      @include mdDown {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .loader {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -8,5 +8,8 @@
 .notification {
   font-size: 20px;
   text-align: center;
-  margin-top: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -2,19 +2,10 @@ import { Deck } from '../../model/types/Deck';
 
 export type State = {
   loading: boolean,
-  decksById: {
-    [key: string]: Deck
-  },
-  createdDeckId: number | null,
+  decks: Deck[],
   error?: string | null,
-  files: {
-    loading: boolean,
-    error: string | null
-  }
+  page: number,
+  last: boolean
 };
 
-export type Action = {
-  deck?: Deck;
-  error?: string;
-  decks?: Deck[]
-}
+export type Action = {}

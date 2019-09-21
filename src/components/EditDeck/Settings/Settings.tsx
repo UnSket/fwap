@@ -6,13 +6,13 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import {decksError} from '../../../modules/decks/selectors';
+import {decksError} from '../../../modules/userDecks/selectors';
 import { connect } from 'react-redux';
 import { StoreState } from '../../../modules/types';
-import { updateDeckRequest } from '../../../modules/decks/actions';
+import { updateDeckRequest } from '../../../modules/userDecks/actions';
 import { getUrlFromImgKey } from '../../utils/utils';
 import SettingIcon from '@material-ui/icons/Settings';
-import { updateBacksideRequest } from '../../../modules/decks/files/actions';
+import { updateBacksideRequest } from '../../../modules/userDecks/files/actions';
 import { OpenChangeFileModalContext } from '../EditDeck';
 
 

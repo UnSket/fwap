@@ -4,7 +4,7 @@ import Card from './Card/Card';
 import styles from './EditCards.module.scss';
 import cloneDeep from 'lodash/cloneDeep';
 import { Button, Paper } from '@material-ui/core';
-import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/decks/actions'
+import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 
 type Props = {

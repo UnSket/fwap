@@ -31,7 +31,7 @@ type LinkData = {
 
 const USER_LINKS: Array<LinkData> = [
     {to: ROUTE_PATHS.myDecks, text: 'My decks'},
-    {to: '/#decks', text: 'All decks'},
+    {to: ROUTE_PATHS.allDecks, text: 'All decks'},
     {to: ROUTE_PATHS.createDeck, text: 'Create new'}
 ];
 

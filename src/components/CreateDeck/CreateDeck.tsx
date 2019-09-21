@@ -11,9 +11,9 @@ import {
   Typography
 } from '@material-ui/core';
 import styles from './CreateDeck.module.scss';
-import { createDeckRequest } from '../../modules/decks/actions';
+import { createDeckRequest } from '../../modules/userDecks/actions';
 import { connect } from 'react-redux';
-import { decksError, createdDeck } from '../../modules/decks/selectors';
+import { decksError, createdDeck } from '../../modules/userDecks/selectors';
 import { StoreState } from '../../modules/types';
 import { RouteComponentProps } from 'react-router';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';

@@ -6,20 +6,20 @@ import Container from '@material-ui/core/Container';
 import { Deck } from '../../model/types/Deck';
 import DeckPreview from '../DeckPreview/DeckPreview';
 import { StoreState } from '../../modules/types';
-import { decksById } from '../../modules/decks/selectors'
-import { getDecksRequest } from '../../modules/decks/actions'
+import { decksById } from '../../modules/userDecks/selectors'
+import { getUserDecksRequest } from '../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 
 type Props = {
   decksById: {
     [key: string]: Deck
   };
-  getDecksRequest: () => void
+  getUserDecksRequest: () => void
 };
 
-const MyDecks: React.FC<Props> = ({ decksById, getDecksRequest }) => {
+const MyDecks: React.FC<Props> = ({ decksById, getUserDecksRequest }) => {
   useEffect(() => {
-    getDecksRequest();
+    getUserDecksRequest();
   }, []);
 
   const decks = Object.values(decksById);
@@ -46,7 +46,7 @@ const mapStateToProps = (state: StoreState) => ({
 });
 
 const mapDispatchToProps = {
-  getDecksRequest
+  getUserDecksRequest
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyDecks);
