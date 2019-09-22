@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './AllDecks.module.scss';
 import { CircularProgress, Container, Paper, Typography } from '@material-ui/core';
 import { Deck } from '../../model/types/Deck';
@@ -9,8 +9,8 @@ import { page, loading, decks, last } from '../../modules/decks/selectors';
 import { getDecksRequest } from '../../modules/decks/actions';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
+import throttle from 'lodash/throttle';
 import { Simulate } from 'react-dom/test-utils';
-
 
 type Props = {
   decks: Deck[];
@@ -28,7 +28,9 @@ const AllDecks: React.FC<Props> = ({decks, getDecksRequest, last, page, loading}
   }, []);
 
   const [search, setSearch] = useState<string>('');
+  const throttledSearch = useCallback(throttle(search => getDecksRequest(0, search, true), 1000, {trailing: true, leading: false}), []);
   const searchInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    throttledSearch(e.target.value);
     setSearch(e.target.value);
   };
   const enterPressed = (e: React.KeyboardEvent) =>{
@@ -36,7 +38,6 @@ const AllDecks: React.FC<Props> = ({decks, getDecksRequest, last, page, loading}
       getDecksRequest(0, search, true);
     }
   };
-
 
   const getNextPage = () => {
     if (!loading) {
@@ -57,7 +58,6 @@ const AllDecks: React.FC<Props> = ({decks, getDecksRequest, last, page, loading}
             variant='outlined'
             value={search}
             onChange={searchInputChanged}
-            fullWidth
             onKeyDown={enterPressed}
             className={styles.search}
           />
@@ -76,6 +76,11 @@ const AllDecks: React.FC<Props> = ({decks, getDecksRequest, last, page, loading}
             {decks.map((deck) => <DeckPreview key={deck.id} {...deck} />)}
           </div>
         </InfiniteScroll>
+        {!decks.length && !loading && (
+          <div className={styles.empty}>
+            No data
+          </div>
+        )}
       </Paper>
     </Container>
   );

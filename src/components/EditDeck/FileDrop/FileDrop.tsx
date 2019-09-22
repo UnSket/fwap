@@ -116,7 +116,9 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
               </div>
             ))}
           </div>
-          <Button variant='contained' color='primary' className={styles.submit} onClick={loadPressed}>Upload</Button>
+          <div className={styles.submitWrapper}>
+            <Button variant='contained' color='primary' className={styles.submit} onClick={loadPressed}>Upload</Button>
+          </div>
         </div>}
     </div>
   );

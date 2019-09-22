@@ -14,5 +14,6 @@ export type EditableLegendItemT = {
   source: string,
   positionX: number,
   positionY: number,
-  legendSourceType: typeof TYPES.image | typeof TYPES.text
+  legendSourceType: typeof TYPES.image | typeof TYPES.text,
+  cardNumber: number
 }

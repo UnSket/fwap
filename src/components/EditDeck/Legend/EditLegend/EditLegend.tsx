@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './EditLegend.module.scss';
-import { Button, Paper, CircularProgress } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest } from '../../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
 import Card from './Card/Card';
 import cloneDeep from 'lodash/cloneDeep';
 import TextField from '@material-ui/core/TextField';
-import SettingIcon from '@material-ui/icons/Settings';
+import recalculate from '../../../utils/legendRecalculate';
 
 type Props = {
   legend?: Legend,
@@ -30,7 +30,7 @@ const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
     cardsCopy[cardIndex][imageIndex] = updatedItem;
     setCards(cardsCopy);
   }, [cards]);
-  return {cards, updateItem};
+  return {cards, updateItem, setCards};
 };
 
 const useTextSize = (legend?: Legend) => {
@@ -45,11 +45,13 @@ const useTextSize = (legend?: Legend) => {
 };
 
 const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest, loading}) => {
-  const {cards,  updateItem} = useCards(legend && legend.cards);
+  const {cards,  updateItem, setCards} = useCards(legend && legend.cards);
   const {textSize, setTextSize} = useTextSize(legend);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextSize(+e.target.value);
-    changeLegendTextSizeRequest(+e.target.value, deckId);
+    const recalculatedCards = recalculate(+e.target.value, cards.flat());
+    setCards(recalculatedCards);
+    //changeLegendTextSizeRequest(+e.target.value, deckId);
   };
 
   useEffect(() => {
@@ -66,11 +68,12 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
     return null;
   }
 
+  console.log(cards);
   return (
     <>
       <div className={styles.wrapper}>
-        {cards.map((images, index) => (
-          <Card key={index} editableImages={images} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} textSize={legend.textSize}/>
+        {cards.map((items, index) => (
+          <Card key={index} editableItems={items} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} textSize={textSize}/>
         ))}
       </div>
       <div className={styles.actionPanel}>

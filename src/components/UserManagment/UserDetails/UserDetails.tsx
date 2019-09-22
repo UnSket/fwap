@@ -22,7 +22,7 @@ const UserDetails: React.FC<Props> = ({close, user, updateUserRequest}) => {
   const [isActive, setIsActive] = useState<boolean>(true);
   useEffect(() => {
     if (!user) return;
-    const isAdmin = user.authorities.some(authority => authority.authority === AUTHORITIES.ADMIN);
+    const isAdmin = user.authorities && user.authorities.some(authority => authority.authority === AUTHORITIES.ADMIN);
     setAuthority(isAdmin ? AUTHORITIES.ADMIN : AUTHORITIES.USER);
     setIsActive(user.active);
   }, [user]);
@@ -45,7 +45,7 @@ const UserDetails: React.FC<Props> = ({close, user, updateUserRequest}) => {
         {user && (
           <>
             <div>Username: {user.username}</div>
-            <div>
+            <div className={styles.selectWrapper}>
               <span>Role:</span>
               <Select
                 value={authority}

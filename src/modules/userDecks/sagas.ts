@@ -19,17 +19,15 @@ import {
 import { request } from '../utils/tools';
 
 function* createDeck({payload: {deck}}: any): Iterable<any> {
-  for (let i = 0; i < 50; i++) {
-    const { response: createdDeck, error } = yield request({
-      url: '/api/deck',
-      body: JSON.stringify({...deck, name: deck.name + i}),
-      method: 'POST'
-    });
-    if (createdDeck) {
-      yield put(createDeckSuccess(createdDeck));
-    } else {
-      yield put(deckFailure(error));
-    }
+  const { response: createdDeck, error } = yield request({
+    url: '/api/deck',
+    body: JSON.stringify(deck),
+    method: 'POST'
+  });
+  if (createdDeck) {
+    yield put(createDeckSuccess(createdDeck));
+  } else {
+    yield put(deckFailure(error));
   }
 }
 

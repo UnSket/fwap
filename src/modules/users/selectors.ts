@@ -1,6 +1,6 @@
 import { StoreState } from '../types';
 
-export const userState = (state: StoreState) => state.users;
-
 export const users = (state: StoreState) => state.users.users;
-export const isLoading = (state: StoreState) => state.users.loading;
+export const loading = (state: StoreState) => state.users.loading;
+export const page = (state: StoreState) => state.users.page;
+export const last = (state: StoreState) => state.users.last;

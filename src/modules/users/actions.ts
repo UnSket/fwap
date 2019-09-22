@@ -5,11 +5,10 @@ export const {
   getUsersSuccess,
   usersFailed,
   updateUserRequest,
-  updateUserSuccess,
-  updateUserFailed
+  updateUserSuccess
 } = createActions({
-  GET_USERS_REQUEST: () => {},
-  GET_USERS_SUCCESS: (users) => ({ users }),
+  GET_USERS_REQUEST: (pageNumber, search, reset) => ({pageNumber, search, reset}),
+  GET_USERS_SUCCESS: (page, reset) => ({ page, reset }),
   USERS_FAILED: (error) => ({ error }),
   UPDATE_USER_REQUEST: (user) => ({ user }),
   UPDATE_USER_SUCCESS: (user) => ({ user }),

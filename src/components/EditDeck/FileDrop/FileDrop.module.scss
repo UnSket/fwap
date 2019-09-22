@@ -31,8 +31,11 @@
   }
   .imagePreviewWrapper {
     .imagePreview {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-rows: repeat(auto-fill, 150px);
+      grid-template-columns: repeat(auto-fill, 150px);
+      grid-gap: 15px;
+      justify-content: center;
 
       .item {
         display: flex;
@@ -60,8 +63,12 @@
       }
     }
 
-    .submit {
-      margin-top: 20px;
+    .submitWrapper {
+      display: flex;
+      justify-content: center;
+      .submit {
+        margin-top: 20px;
+      }
     }
 
     &.single {

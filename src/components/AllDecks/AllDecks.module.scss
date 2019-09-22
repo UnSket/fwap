@@ -33,5 +33,11 @@
       display: flex;
       justify-content: center;
     }
+
+    .empty {
+      text-align: center;
+      color: $disabledColor;
+      margin: 20px 0;
+    }
   }
 }

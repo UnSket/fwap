@@ -7,6 +7,10 @@
     h3 {
       text-align: center;
     }
+    .search {
+      display: flex;
+      justify-content: center;
+    }
     .users {
       display: flex;
       flex-direction: column;
@@ -20,6 +24,19 @@
         align-items: center;
         justify-content: space-between;
       }
+    }
+
+    .empty {
+      text-align: center;
+      color: $disabledColor;
+      margin: 20px 0;
+    }
+
+    .add {
+      position: fixed;
+      bottom: $footerHeight + 20px;
+      right: 20px;
+      z-index: 10;
     }
   }
 }
