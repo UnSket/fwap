@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .textField {
+    width: 150px;
+  }
+  .checkbox {
+    margin-top: 8px;
+  }
+  .submit {
+    margin-top: 20px;
+  }
+}
