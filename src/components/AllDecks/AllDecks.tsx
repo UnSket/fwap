@@ -67,7 +67,7 @@ const AllDecks: React.FC<Props> = ({decks, getDecksRequest, last, page, loading}
           loadMore={getNextPage}
           hasMore={!last}
           loader={
-            <div className={styles.loader}>
+            <div className={styles.loader} key='loader'>
               <CircularProgress size={30} />
             </div>
           }

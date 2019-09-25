@@ -129,6 +129,7 @@ const UserManagement: React.FC<Props> = ({users, getUsersRequest, loading, page,
                   <span>{user.username}</span>
                 </div>
                 <div>
+                  <span className={styles.deckCount}>Deck count: {user.deckCount}</span>
                   {user.active && <Button variant='contained' color='secondary' onClick={() => openConfirmDialog(user)}>Block</Button>}
                   {!user.active && <Button variant='contained' color='primary' onClick={() => unblockUser(user.id)}>Unblock</Button>}
                 </div>

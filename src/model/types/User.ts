@@ -2,14 +2,16 @@ export type User = {
   firstName: string,
   lastName: string,
   username: string,
-  authorities: Array<Authority>,
+  authority: AUTHORITIES,
   id: string,
-  active: boolean
+  active: boolean,
+  deckCount: number
 }
 
-type Authority = {
-  authority: string
-}
+export enum AUTHORITIES {
+  ADMIN = 'ROLE_ADMIN',
+  USER = 'ROLE_USER'
+};
 
 export type CreateUserForm = {
   username: string,

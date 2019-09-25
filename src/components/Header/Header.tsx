@@ -1,22 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import styles from './Header.module.scss';
 import logo from './logo_white.svg';
 import { HashLink } from 'react-router-hash-link';
-import { AppBar, IconButton, Toolbar, Button, Container } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Button, Container, Toolbar } from '@material-ui/core';
 import Hidden from '@material-ui/core/Hidden';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { Link, NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
-import { OpenModalContext } from '../App/App';
 import { connect } from 'react-redux';
 import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import { user } from '../../modules/user/selectors';
 import { signOutRequest } from '../../modules/user/actions';
-import { User } from '../../model/types/User';
+import { AUTHORITIES, User } from '../../model/types/User';
 import { StoreState } from '../../modules/types';
-import { AUTHORITIES } from '../../model/constans/userAuthorities';
-import { ConnectedRouter } from 'connected-react-router';
 
 interface Props extends RouteComponentProps {
     user: User | null,
@@ -40,8 +34,8 @@ const ADMIN_LINKS: Array<LinkData> = [
 ];
 
 const getLinks:(user: User | null) => Array<LinkData> = (user) => {
-    if (user && user.authorities) {
-        const isAdmin = user.authorities.some(authority => authority.authority === AUTHORITIES.ADMIN);
+    if (user && user.authority) {
+        const isAdmin = user.authority === AUTHORITIES.ADMIN;
         if (isAdmin) {
             return USER_LINKS.concat(ADMIN_LINKS);
         }
@@ -63,9 +57,6 @@ const CustomLink: React.FC<{link: LinkData}> = ({link}) => {
 };
 
 const Header: React.FC<Props> = ({user, signOutRequest, history}) => {
-    const [anchorForMenu, toggleMenu] = useState(null);
-    const closeMenu = () => toggleMenu(null);
-    const openMenu = (e: any) => toggleMenu(e.currentTarget);
     const links: Array<LinkData> = getLinks(user);
 
     const signOut = () => {
@@ -73,20 +64,12 @@ const Header: React.FC<Props> = ({user, signOutRequest, history}) => {
         history.push(ROUTE_PATHS.login);
     };
 
-    const openModal = useContext(OpenModalContext);
     return (
         <>
             <AppBar position="static" color={'default'}>
                 <Toolbar className={styles.header}>
                     <Container className={styles.container}>
                     <div className={styles.leftPart}>
-                        <Hidden smUp>
-                        <div className={styles.toggleMenu}>
-                            <IconButton onClick={openMenu}>
-                              <MenuIcon className={styles.toggleMenu} />
-                            </IconButton>
-                        </div>
-                        </Hidden>
                         <div className={styles.logo}>
                             <Link to='/' >
                                 <img src={logo} alt='logo'/>
@@ -102,19 +85,6 @@ const Header: React.FC<Props> = ({user, signOutRequest, history}) => {
                         <Button color="inherit" onClick={signOut}>Sign out</Button>
                     </div>
                     </Container>
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorForMenu}
-                        keepMounted
-                        open={Boolean(anchorForMenu)}
-                        onClose={closeMenu}
-                        className={styles.dropDownMenu}>
-                        {links.map((data, index) =>
-                          <MenuItem  key={index} onClick={closeMenu}>
-                            <CustomLink link={data} />
-                          </MenuItem>
-                        )}
-                    </Menu>
                 </Toolbar>
             </AppBar>
         </>

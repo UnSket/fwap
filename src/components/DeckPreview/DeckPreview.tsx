@@ -31,7 +31,7 @@ const DeckPreview: React.FC<Props> = ({images, name, description, own, id}) => {
           </Typography>
         </CardContent>
       <CardActions>
-        <Button color="primary">
+        <Button color="primary" disabled>
           {own ? 'Print' : 'Buy'}
         </Button>
         <Button color="primary">
