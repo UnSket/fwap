@@ -14,7 +14,11 @@ import {
   saveImageSuccess,
   getDeckLegendRequest,
   saveLegendCardsRequest,
-  changeLegendTextSizeRequest
+  changeLegendTextSizeRequest,
+  getDeckLegendSuccess,
+  legendFailure,
+  getDeckCardsFailure,
+  getDeckCardsSuccess
 } from './actions';
 import { request } from '../utils/tools';
 
@@ -61,18 +65,18 @@ function* updateDeck({payload: {deckId, name, description}}: any): Iterable<any>
 function* getDeckCards({payload: {deckId}}: any): Iterable<any> {
   const {response: deck, error} = yield request({url: `/api/deck/enriched/${deckId}`});
   if (deck) {
-    yield put(getDeckSuccess(deck));
+    yield put(getDeckCardsSuccess(deck));
   } else {
-    yield put(deckFailure(error));
+    yield put(getDeckCardsFailure(error));
   }
 }
 
 function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
   const {response: updatedDeck, error} = yield request({url: `/api/deck/cards`, method: 'POST', body: JSON.stringify({deckId, cards})});
   if (updatedDeck) {
-    yield put(getDeckSuccess(updatedDeck));
+    yield put(getDeckCardsSuccess(updatedDeck));
   } else {
-    yield put(deckFailure(error));
+    yield put(getDeckCardsFailure(error));
   }
 }
 
@@ -86,7 +90,7 @@ function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
     if (createdImage) {
       yield put(saveImageSuccess(deckId, createdImage));
     } else {
-      yield put(deckFailure(error));
+      yield put(legendFailure(error));
     }
   }
 }
@@ -94,18 +98,18 @@ function* saveLegend({payload: {image, deckId}}: any): Iterable<any> {
 function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
   const {response: deck, error} = yield request({url: `/api/legend/${deckId}`});
   if (deck) {
-    yield put(getDeckSuccess(deck));
+    yield put(getDeckLegendSuccess(deck));
   } else {
-    yield put(deckFailure(error));
+    yield put(legendFailure(error));
   }
 }
 
 function* saveLegendCards({payload: {deckId, cards}}: any): Iterable<any> {
   const {response: updatedDeck, error} = yield request({url: `/api/legend/update`, method: 'POST', body: JSON.stringify({deckId, cards: cards.flat()})});
   if (updatedDeck) {
-    yield put(getDeckSuccess(updatedDeck));
+    yield put(getDeckLegendSuccess(updatedDeck));
   } else {
-    yield put(deckFailure(error));
+    yield put(legendFailure(error));
   }
 }
 

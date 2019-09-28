@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { Button, CircularProgress, Fab, Typography } from '@material-ui/core';
 import styles from './FileDrop.module.scss';
-import { useClasses } from '../../utils/utils';
+import { classes } from '../../utils/utils';
 import AddImageIcon from '@material-ui/icons/AddPhotoAlternate'
 import RemoveIcon from '@material-ui/icons/Close';
 import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
@@ -89,11 +89,11 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
     drop: onDrop,
     collect
   });
-  const containerClasses = useClasses(styles.wrapper, collectedProps.isOver ? '' : styles.hovered);
+  const containerClasses = classes(styles.wrapper, collectedProps.isOver ? '' : styles.hovered);
   const inputId = `file-input-${Math.round(Math.random() * 100000)}`;
 
   const isLoadable = (multiple && !max) || (max && (images.length < max!)) || (images.length === 0);
-  const imagePreviewWrapperClasses = useClasses(styles.imagePreviewWrapper, multiple ? '' : styles.single);
+  const imagePreviewWrapperClasses = classes(styles.imagePreviewWrapper, multiple ? '' : styles.single);
   return (
     <div className={styles.container}>
       {isLoading && <Progress />}

@@ -6,14 +6,20 @@ import cloneDeep from 'lodash/cloneDeep';
 import { Button, Paper } from '@material-ui/core';
 import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import Cards from '../PDFGenerator/Cards';
+import {cardsState} from '../../../modules/userDecks/selectors';
+import { StoreState } from '../../../modules/types';
+import { classes } from '../../utils/utils';
 
 type Props = {
   cards?: Array<Array<EditableImageT>>,
   deckId: string,
-  loading: boolean,
   saveCardsRequest: (cards: Array<Array<EditableImageT>>, deckId: string) => void,
   left: number,
-  getDeckCardsRequest: (deckId: string) => void
+  getDeckCardsRequest: (deckId: string) => void,
+  loading: boolean,
+  error?: string | null
 }
 
 const useCards = (initialCards?: Array<Array<EditableImageT>>) => {
@@ -31,11 +37,11 @@ const useCards = (initialCards?: Array<Array<EditableImageT>>) => {
   return {cards, updateImage};
 };
 
-const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest, left, loading, getDeckCardsRequest}) => {
+const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest, left, loading, getDeckCardsRequest, error}) => {
   const {cards, updateImage} = useCards(initialCards);
 
   useEffect(() => {
-    if (!left && !loading && !initialCards) {
+    if (!left && !loading && !initialCards && !error) {
       getDeckCardsRequest(deckId);
     }
   }, [loading]);
@@ -46,6 +52,10 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
 
   if (left) {
     return <p className={styles.notification}>You should upload {left} more files to see cards!</p>
+  }
+
+  if (error) {
+    return <p className={classes(styles.error, styles.notification)}>{error}</p>
   }
 
   return (
@@ -59,14 +69,24 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
         <Button variant="contained" color='primary' className={styles.submit} onClick={save}>
           Save
         </Button>
+        {cards.length && <PDFDownloadLink document={<Cards items={cards} />}>Скачать</PDFDownloadLink>}
       </Paper>
+      {cards.length && (
+        <PDFViewer>
+          <Cards items={cards}/>
+        </PDFViewer>
+      )}
     </>
   )
 };
+
+const mapStateToProps = (state: StoreState) => ({
+  ...cardsState(state)
+});
 
 const mapDispatchToProps = {
   saveCardsRequest,
   getDeckCardsRequest
 };
 
-export default connect(null, mapDispatchToProps)(EditCards);
+export default connect(mapStateToProps, mapDispatchToProps)(EditCards);

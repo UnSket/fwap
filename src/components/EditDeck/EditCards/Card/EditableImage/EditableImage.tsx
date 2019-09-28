@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { EditableImageT } from '../../../../../model/types/Card';
 import styles from './EditableImage.module.scss';
-import { getUrlFromImgKey, useClasses } from '../../../../utils/utils';
+import { getUrlFromImgKey, classes } from '../../../../utils/utils';
 import RotateIcon from '@material-ui/icons/Replay';
 
 interface Props {
@@ -27,7 +27,7 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
   const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const wrapperStyles = useClasses(styles.wrapper, active ? styles.active : '');
+  const wrapperStyles = classes(styles.wrapper, active ? styles.active : '');
 
   useEffect(() => {
     setPosition({x: editableImage.positionX, y: editableImage.positionY});

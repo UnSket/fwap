@@ -3,7 +3,7 @@ import styles from './CreateFromText.module.scss';
 import TextField from '@material-ui/core/TextField';
 import { ColorResult, GithubPicker } from 'react-color';
 import { Button, Typography } from '@material-ui/core';
-import { useClasses } from '../../utils/utils';
+import { classes } from '../../utils/utils';
 
 // TODO: 12 - 150
 
@@ -55,7 +55,7 @@ const CreateFromText: React.FC<Props> = ({className = '', saveHandler}) => {
   }, [word, color, fontSize]);
 
   return (
-    <div className={useClasses(styles.wrapper, className)}>
+    <div className={classes(styles.wrapper, className)}>
       <div className={styles.inputWrapper} >
         <div className={styles.input}>
           <TextField

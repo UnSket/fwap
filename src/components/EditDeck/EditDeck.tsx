@@ -12,7 +12,7 @@ import { Deck, DeckByID } from '../../model/types/Deck';
 import Settings from './Settings/Settings';
 import EditCards from './EditCards/EditCards';
 import Legend from './Legend/Legend';
-import { EDIT_DECK_PAGES, ROUTE_PATHS } from '../../model/constans/routePaths';
+import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
 
 interface MatchParams {
   deckId: string;
@@ -51,9 +51,9 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
     switch (match.params.page) {
-      case EDIT_DECK_PAGES.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
-      case EDIT_DECK_PAGES.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} loading={loading}/>;
-      case EDIT_DECK_PAGES.legend: return <Legend deck={deck} left={deck.imagesRequired} loading={loading} />;
+      case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
+      case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
+      case EditDeckPages.legend: return <Legend deck={deck} left={deck.imagesRequired} />;
       default: return <Settings deck={deck} />;
     }
   };
@@ -69,10 +69,11 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth">
-              <Tab value={EDIT_DECK_PAGES.files} label="Files" />
-              <Tab value={EDIT_DECK_PAGES.cards} disabled={!deck} label="Cards" />
-              <Tab value={EDIT_DECK_PAGES.legend} disabled={!deck} label="Legend" />
-              <Tab value={EDIT_DECK_PAGES.settings} disabled={!deck} label="Settings" />
+              <Tab value={EditDeckPages.files} label="Files" />
+              <Tab value={EditDeckPages.cards} label="Cards" />
+              <Tab value={EditDeckPages.legend} label="Legend" />
+              <Tab value={EditDeckPages.export} label="Export" />
+              <Tab value={EditDeckPages.settings} label="Settings" />
           </Tabs>
           <div className={styles.content}>
             {loading && (

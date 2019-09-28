@@ -1,5 +1,6 @@
 import { createActions } from 'redux-actions';
 
+// deck actions
 export const {
   createDeckRequest,
   createDeckSuccess,
@@ -9,11 +10,7 @@ export const {
   getUserDecksRequest,
   getUserDecksSuccess,
   updateDeckRequest,
-  getDeckCardsRequest,
-  saveCardsRequest,
-  saveLegendRequest,
   saveImageSuccess,
-  getDeckLegendRequest,
   saveLegendCardsRequest,
   changeLegendTextSizeRequest
 } = createActions({
@@ -25,11 +22,33 @@ export const {
   GET_USER_DECKS_REQUEST: () => null,
   GET_USER_DECKS_SUCCESS: (decks) => ({decks}),
   UPDATE_DECK_REQUEST: (deckId, name, description) => ({deckId, name, description}),
-  GET_DECK_CARDS_REQUEST: (deckId) => ({deckId}),
-  SAVE_CARDS_REQUEST: (cards, deckId) => ({cards, deckId}),
-  SAVE_LEGEND_REQUEST: (image, deckId) => ({image, deckId}),
   SAVE_IMAGE_SUCCESS: (deckId, image) => ({deckId, newImage: image}),
-  GET_DECK_LEGEND_REQUEST: (deckId) => ({deckId}),
   SAVE_LEGEND_CARDS_REQUEST: (cards, deckId) => ({cards, deckId}),
   CHANGE_LEGEND_TEXT_SIZE_REQUEST: (textSize, deckId) => ({textSize, deckId})
+});
+
+// cards actions
+export const {
+  getDeckCardsRequest,
+  getDeckCardsSuccess,
+  getDeckCardsFailure,
+  saveCardsRequest,
+} = createActions({
+  GET_DECK_CARDS_REQUEST: (deckId) => ({deckId}),
+  GET_DECK_CARDS_SUCCESS: (deck) => ({deck}),
+  GET_DECK_CARDS_FAILURE: (error) => ({error}),
+  SAVE_CARDS_REQUEST: (cards, deckId) => ({cards, deckId}),
+});
+
+// legend actions
+export const {
+  saveLegendRequest,
+  getDeckLegendRequest,
+  getDeckLegendSuccess,
+  legendFailure
+} = createActions({
+  SAVE_LEGEND_REQUEST: (image, deckId) => ({image, deckId}),
+  GET_DECK_LEGEND_REQUEST: (deckId) => ({deckId}),
+  GET_DECK_LEGEND_SUCCESS: (deck) => ({deck}),
+  LEGEND_FAILURE: (error) => ({error})
 });

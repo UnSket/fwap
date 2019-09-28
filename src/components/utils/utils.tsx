@@ -7,6 +7,6 @@ export const CollisionLink = React.forwardRef<HTMLAnchorElement, any>(
   ),
 );
 
-export const useClasses = (...classes: Array<string>) => classes.join(' ');
+export const classes = (...classes: Array<string>) => classes.join(' ');
 
 export const getUrlFromImgKey = (key: string) => `/api/files/${key}.png`;

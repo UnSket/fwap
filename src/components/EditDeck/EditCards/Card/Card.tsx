@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Card.module.scss';
 import EditableImage from './EditableImage/EditableImage';
-import { useClasses } from '../../../utils/utils';
+import { classes } from '../../../utils/utils';
 import { Image } from '../../../../model/types/Image';
 import { EditableImageT } from '../../../../model/types/Card';
 
@@ -13,7 +13,7 @@ interface Props {
 const Card: React.FC<Props> = React.memo(({editableImages, updateImage}) => {
   const [isActive, setActive] = useState<boolean>(false);
 
-  const cardClasses = useClasses(styles.card, isActive ? styles.active : '');
+  const cardClasses = classes(styles.card, isActive ? styles.active : '');
   return (
       <div className={cardClasses}>
         {editableImages.map((image, i) => (

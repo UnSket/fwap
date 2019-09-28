@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Card.module.scss';
-import { useClasses } from '../../../../utils/utils';
+import { classes } from '../../../../utils/utils';
 import { EditableLegendItemT } from '../../../../../model/types/Legend';
 import EditableItem from './EditableItem/EditableItem';
 
@@ -13,7 +13,7 @@ interface Props {
 const Card: React.FC<Props> = React.memo(({editableItems, updateItem, textSize}) => {
   const [isActive, setActive] = useState<boolean>(false);
 
-  const cardClasses = useClasses(styles.card, isActive ? styles.active : '');
+  const cardClasses = classes(styles.card, isActive ? styles.active : '');
   return (
       <div className={cardClasses}>
         {editableItems.map((item, i) => (

@@ -9,3 +9,6 @@ export const createdDeck = (state: StoreState) => {
 export const decksError = (state: StoreState) => state.userDecks.error;
 export const decksById = (state: StoreState) => state.userDecks.decksById;
 export const loading = (state: StoreState) => state.userDecks.loading;
+
+export const cardsState = (state: StoreState) => state.userDecks.cards;
+export const legendState = (state: StoreState) => state.userDecks.legend;

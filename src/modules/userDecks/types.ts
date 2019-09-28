@@ -9,7 +9,15 @@ export type State = {
   error?: string | null,
   files: {
     loading: boolean,
-    error: string | null
+    error?: string | null
+  },
+  cards: {
+    loading: boolean,
+    error?: string | null
+  },
+  legend: {
+    loading: boolean,
+    error?: string | null
   }
 };
 

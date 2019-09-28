@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './EditableItem.module.scss';
-import { getUrlFromImgKey, useClasses } from '../../../../../utils/utils';
+import { getUrlFromImgKey, classes } from '../../../../../utils/utils';
 import { EditableLegendItemT, TYPES } from '../../../../../../model/types/Legend';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -22,7 +22,7 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<Point>({x: editableItem.positionX, y: editableItem.positionY});
   const [isMoving, setIsMoving] = useState<boolean>(false);
-  const wrapperStyles = useClasses(styles.wrapper, active ? styles.active : '');
+  const wrapperStyles = classes(styles.wrapper, active ? styles.active : '');
   const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
 
   const getComponent = () => {
