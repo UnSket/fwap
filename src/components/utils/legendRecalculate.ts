@@ -5,7 +5,7 @@ const DECK_DIAMETER = 336;
 const DECK_RADIUS = 336 / 2;
 const MIN_OFFSET = 15;
 const TEXT_TOP_OFFSET = 10;
-const TEXT_SIZE_FACTOR = 3;
+const TEXT_SIZE_FACTOR = 6;
 
 
 const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array<Array<EditableLegendItemT>> => {
@@ -34,33 +34,42 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
     }
 
     const totalWidth = Math.sqrt(topOffset * (DECK_DIAMETER - topOffset)) * 2 - 2 * MIN_OFFSET;
-    const itemsWidth = [];
+    const itemsParams = [];
 
     for (let textIndex = 1; sourceItems.length > itemsCount * 2; textIndex = textIndex + 2) {
       const textWidth = sourceItems[textIndex]!.source.length * TEXT_SIZE_FACTOR;
       const itemWidth = Math.max(textWidth, imageSize);
+      let textOffset = 0;
+      let imageOffset = 0;
+      if (textWidth > imageSize) {
+        imageOffset = (textWidth - imageSize) / 2;
+      } else {
+        textOffset = (imageSize - textWidth) / 2;
+        console.log(imageSize, textWidth)
+      }
       if (totalItemsWidth + itemWidth > totalWidth) {
         break;
       }
       totalItemsWidth += itemWidth;
       itemsCount++;
-      itemsWidth.push(itemWidth);
+      itemsParams.push({itemWidth, textOffset, imageOffset});
     }
 
     let horizontalOffset = itemsCount > 1 ? Math.floor((totalWidth - totalItemsWidth) / (itemsCount - 1)) : 0;
-    if (itemsCount < 3 && horizontalOffset > itemsWidth[0]) {
+    if (itemsCount < 3 && horizontalOffset > itemsParams[0].itemWidth) {
       horizontalOffset = MIN_OFFSET;
     }
     const offsetLeft = (DECK_DIAMETER - totalWidth) / 2;
     const lineItems: Array<EditableLegendItemT> = [];
     for (let itemIndex = 0; itemIndex < itemsCount * 2; itemIndex = itemIndex + 2) {
-      const prevItems = itemsWidth.slice(0, itemIndex / 2);
-      const prevItemsWidth = prevItems.length && prevItems.reduce((a, b) => (a + b));
+      const {imageOffset, textOffset} = itemsParams[itemIndex / 2];
+      const prevItems = itemsParams.slice(0, itemIndex / 2);
+      const prevItemsWidth = prevItems.length && prevItems.reduce((a, b) => (a + b.itemWidth), 0);
       const positionX = offsetLeft + (prevItemsWidth + horizontalOffset * (itemIndex / 2));
       const itemImage = sourceItems[itemIndex];
-      lineItems.push({...itemImage, positionY, positionX, cardNumber});
+      lineItems.push({...itemImage, positionY, positionX: positionX + imageOffset, cardNumber});
       const itemText = sourceItems[itemIndex + 1];
-      lineItems.push({...itemText, positionY: positionY + imageSize + TEXT_TOP_OFFSET, positionX, cardNumber});
+      lineItems.push({...itemText, positionY: positionY + imageSize + TEXT_TOP_OFFSET, positionX: positionX + textOffset, cardNumber});
     }
     return lineItems;
   };
