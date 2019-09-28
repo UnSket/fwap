@@ -68,7 +68,6 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
     return null;
   }
 
-  console.log(cards);
   return (
     <>
       <div className={styles.wrapper}>

@@ -7,7 +7,7 @@ import { Button, Paper } from '@material-ui/core';
 import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import Cards from '../PDFGenerator/Cards';
+import Cards from '../Export/PDFGenerator/Cards';
 import {cardsState} from '../../../modules/userDecks/selectors';
 import { StoreState } from '../../../modules/types';
 import { classes } from '../../utils/utils';

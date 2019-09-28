@@ -45,7 +45,6 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
         imageOffset = (textWidth - imageSize) / 2;
       } else {
         textOffset = (imageSize - textWidth) / 2;
-        console.log(imageSize, textWidth)
       }
       if (totalItemsWidth + itemWidth > totalWidth) {
         break;

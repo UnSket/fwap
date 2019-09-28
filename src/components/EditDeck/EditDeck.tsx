@@ -13,6 +13,7 @@ import Settings from './Settings/Settings';
 import EditCards from './EditCards/EditCards';
 import Legend from './Legend/Legend';
 import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
+import Export from './Export/Export';
 
 interface MatchParams {
   deckId: string;
@@ -54,6 +55,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
       case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
       case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
       case EditDeckPages.legend: return <Legend deck={deck} left={deck.imagesRequired} />;
+      case EditDeckPages.export: return <Export deck={deck} />;
       default: return <Settings deck={deck} />;
     }
   };

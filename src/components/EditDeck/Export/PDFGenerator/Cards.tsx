@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image} from '@react-pdf/renderer';
-import { EditableImageT } from '../../../model/types/Card';
-import { getUrlFromImgKey } from '../../utils/utils';
+import { EditableImageT } from '../../../../model/types/Card';
+import { getUrlFromImgKey } from '../../../utils/utils';
 
 const PT_FACTOR = 0.75;
 
@@ -51,12 +51,12 @@ type Props = {
 const Cards:React.FC<Props> = ({items}) => (
   <Document>
     <Page size="A4" style={styles.page} wrap>
-      {items.map(card => (
-      <View style={styles.card} wrap={false}>
-        {card.map(item => {
+      {items.map((card, index) => (
+      <View style={styles.card} wrap={false} key={index}>
+        {card.map((item, index) => {
           const styles = getItemStyles(item);
           return (
-            <View style={styles.item}>
+            <View style={styles.item} key={index}>
               <Image src={getUrlFromImgKey(item.imageUrl)} style={styles.image} />
             </View>
           )

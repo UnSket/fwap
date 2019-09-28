@@ -16,7 +16,7 @@ import Login from '../Login/Login';
 import Auth from '../Auth/Auth';
 import UserManagement from '../UserManagment/UserManagement';
 import AllDecks from '../AllDecks/AllDecks';
-import Cards from '../EditDeck/PDFGenerator/Cards';
+import Cards from '../EditDeck/Export/PDFGenerator/Cards';
 
 const theme = createMuiTheme({
   palette: {
