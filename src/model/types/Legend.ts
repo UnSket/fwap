@@ -4,9 +4,9 @@ export type Legend = {
   cards: EditableLegendItemT[][];
 }
 
-export const TYPES = {
-  image: 'IMAGE',
-  text: 'TEXT'
+export enum LegendSourceTypeEnum  {
+  image = 'IMAGE',
+  text = 'TEXT'
 };
 
 export type EditableLegendItemT = {
@@ -14,6 +14,6 @@ export type EditableLegendItemT = {
   source: string,
   positionX: number,
   positionY: number,
-  legendSourceType: typeof TYPES.image | typeof TYPES.text,
+  legendSourceType: LegendSourceTypeEnum,
   cardNumber: number
 }

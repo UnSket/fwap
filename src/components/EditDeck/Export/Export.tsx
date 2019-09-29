@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { classes } from '../../utils/utils';
 import Cards from './PDFGenerator/Cards';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import Legend from './PDFGenerator/Legend';
 
 
 type Props = {
@@ -79,7 +80,12 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
       )
     }
     return (
-      <span>legend link</span>
+      <>
+        <PDFDownloadLink document={<Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />}>Download pdf</PDFDownloadLink>
+        <PDFViewer className={styles.pdf}>
+          <Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />
+        </PDFViewer>
+      </>
     )
   };
 

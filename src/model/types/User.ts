@@ -17,4 +17,5 @@ export type CreateUserForm = {
   username: string,
   active: boolean,
   password: string
+  email: string
 }

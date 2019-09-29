@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { EditableImageT } from '../../../../../model/types/Card';
 import styles from './EditableImage.module.scss';
 import { getUrlFromImgKey, classes } from '../../../../utils/utils';
@@ -18,6 +18,8 @@ type Point = {
 const initSize = 102;
 const degreeToRadK = Math.PI / 180;
 
+let scaleLink = 0;
+
 const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive, updateImage}) => {
   const [active, setActive] = useState(false);
   const [scale, setScale] = useState(editableImage.scaleFactor / 102);
@@ -28,6 +30,8 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapperStyles = classes(styles.wrapper, active ? styles.active : '');
+
+  scaleLink = scale;
 
   useEffect(() => {
     setPosition({x: editableImage.positionX, y: editableImage.positionY});
@@ -81,16 +85,30 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
     setStartPoint({x, y});
 
   };
-  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+  const onWheel = useCallback((e: WheelEvent) => {
     const delta = e.deltaY;
+    e.stopImmediatePropagation();
+    e.stopPropagation();
     e.preventDefault();
 
     if (delta > 0) {
-      setScale(scale * 0.9);
+      setScale(scaleLink * 0.98);
       return;
     }
-    setScale(scale * 1.1);
-  };
+    setScale(scaleLink * 1.02);
+    return;
+  }, []);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.addEventListener('wheel', onWheel);
+    }
+    return () => {
+      if (wrapperRef.current) {
+        wrapperRef.current.removeEventListener('wheel', onWheel);
+      }
+    }
+  }, []);
 
   const startRotate = (e: React.DragEvent) => {
     if (wrapperRef && wrapperRef.current) {
@@ -133,7 +151,6 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
       onFocus={focus}
       onBlur={blur}
       ref={wrapperRef}
-      onWheel={onWheel}
       onMouseDown={startMoving}
       onMouseMove={move}
       onMouseUp={stopMoving}

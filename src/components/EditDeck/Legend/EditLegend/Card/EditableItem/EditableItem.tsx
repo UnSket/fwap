@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './EditableItem.module.scss';
 import { getUrlFromImgKey, classes } from '../../../../../utils/utils';
-import { EditableLegendItemT, TYPES } from '../../../../../../model/types/Legend';
+import { EditableLegendItemT, LegendSourceTypeEnum } from '../../../../../../model/types/Legend';
 import EditIcon from '@material-ui/icons/Edit';
 
 interface Props {
@@ -16,7 +16,7 @@ type Point = {
   y: number
 };
 
-const imageC = 3;
+const imageFactor = 3;
 
 const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, updateItem, textSize}) => {
   const [active, setActive] = useState(false);
@@ -26,8 +26,8 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
   const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
 
   const getComponent = () => {
-    if (editableItem.legendSourceType === TYPES.image) {
-      const size = imageC * textSize;
+    if (editableItem.legendSourceType === LegendSourceTypeEnum.image) {
+      const size = imageFactor * textSize;
       return <div style={{backgroundImage: `url(${getUrlFromImgKey(editableItem.source)})`, width: size, height: size}} className={styles.image} draggable={false}/>;
     }
     return (

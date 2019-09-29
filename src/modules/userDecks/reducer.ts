@@ -83,14 +83,14 @@ export default handleActions<State, any>(
     },
     [combineActions(getDeckCardsRequest, saveCardsRequest).toString()]: (state) => ({...state, cards: {loading: true, error: null}}),
     [getDeckCardsFailure.toString()]: (state, {payload: {error}}) => ({...state, cards: {loading: false, error: error.toString()}}),
-    [getDeckCardsSuccess.toString()]: (state, {payload: {deck}}) => {
-      const currentDeck = cloneDeep(state.decksById[deck.id]!);
-      currentDeck.cards = deck.cards;
+    [getDeckCardsSuccess.toString()]: (state, {payload: {deckId, cards}}) => {
+      const currentDeck = cloneDeep(state.decksById[deckId]!);
+      currentDeck.cards = cards;
       return {
         ...state,
         decksById: {
           ...state.decksById,
-          [deck.id]: currentDeck
+          [deckId]: currentDeck
         },
         cards:  {
           loading: false,
@@ -100,14 +100,14 @@ export default handleActions<State, any>(
     },
     [combineActions(saveLegendCardsRequest, getDeckLegendRequest, saveLegendRequest).toString()]: (state) => ({...state, legend: {loading: true, error: null}}),
     [legendFailure.toString()]: (state, {payload: {error}}) => ({...state, legend: {loading: false, error: error.toString()}}),
-    [getDeckLegendSuccess.toString()]: (state, {payload: {deck}}) => {
-      const currentDeck = cloneDeep(state.decksById[deck.id]!);
-      currentDeck.legend = deck.legend;
+    [getDeckLegendSuccess.toString()]: (state, {payload: {deckId, legend}}) => {
+      const currentDeck = cloneDeep(state.decksById[deckId]!);
+      currentDeck.legend = legend;
       return {
         ...state,
         decksById: {
           ...state.decksById,
-          [deck.id]: currentDeck
+          [deckId]: currentDeck
         },
         legend:  {
           loading: false,

@@ -16,6 +16,7 @@ type Props = {
 
 const CreateUser: React.FC<Props> = ({isOpen, close, createUserRequest}) => {
   const [username, changeName] = useState<any>({value: ''});
+  const [email, changeEmail] = useState<any>({value: ''});
   const [password, changePassword] = useState<any>({value: ''});
   const [active, changeActive] = useState<boolean>(true);
 
@@ -23,7 +24,11 @@ const CreateUser: React.FC<Props> = ({isOpen, close, createUserRequest}) => {
     changeName({value: e.target.value});
   };
 
-  const descriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const emailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changeEmail({value: e.target.value});
+  };
+
+  const passwordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changePassword({value: e.target.value});
   };
 
@@ -34,9 +39,11 @@ const CreateUser: React.FC<Props> = ({isOpen, close, createUserRequest}) => {
   const createUser = () => {
     if (!username.value) changeName({value: username.value, error: 'Field is required'});
     if (!password.value) changePassword({value: password.value, error: 'Field is required'});
+    if (!email.value) changeEmail({value: email.value, error: 'Field is required'});
 
     if (username.value && password.value) {
-      createUserRequest({username: username.value, active, password: password.value});
+      createUserRequest({username: username.value, active, password: password.value, email: email.value});
+      close();
     }
   };
   return (
@@ -53,6 +60,16 @@ const CreateUser: React.FC<Props> = ({isOpen, close, createUserRequest}) => {
             error={!!username.error}
           />
           <TextField
+            label={email.error || "Email"}
+            className={styles.textField}
+            margin="dense"
+            multiline
+            rowsMax="4"
+            value={email.name}
+            error={!!email.error}
+            onChange={emailInputChange}
+          />
+          <TextField
             label={password.error || "Password"}
             className={styles.textField}
             margin="dense"
@@ -60,7 +77,7 @@ const CreateUser: React.FC<Props> = ({isOpen, close, createUserRequest}) => {
             rowsMax="4"
             value={password.name}
             error={!!password.error}
-            onChange={descriptionInputChange}
+            onChange={passwordInputChange}
           />
           <FormControlLabel
             control={

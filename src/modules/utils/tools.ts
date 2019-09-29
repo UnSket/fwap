@@ -22,8 +22,12 @@ export const request: (request: Request) => Promise<Response> = async ({url, hea
     headers
   });
   if (response.status === 200) {
-    const data = await response.json();
-    return {response: data};
+    try {
+      const data = await response.json();
+      return { response: data };
+    } catch (error) {
+      return {error};
+    }
   } else {
     return {error: response};
   }

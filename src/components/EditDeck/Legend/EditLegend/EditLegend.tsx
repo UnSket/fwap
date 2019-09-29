@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './EditLegend.module.scss';
 import { Button } from '@material-ui/core';
-import { saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest } from '../../../../modules/userDecks/actions'
+import { saveLegendCardsRequest, getDeckLegendRequest } from '../../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
 import Card from './Card/Card';
@@ -13,8 +13,7 @@ type Props = {
   legend?: Legend,
   deckId: string,
   getDeckLegendRequest: (deckId: string) => void
-  saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string) => void,
-  changeLegendTextSizeRequest: (textSize: number, deckId: string) => void,
+  saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
   loading: boolean
 }
 
@@ -44,14 +43,13 @@ const useTextSize = (legend?: Legend) => {
   return {textSize, setTextSize};
 };
 
-const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, changeLegendTextSizeRequest, loading}) => {
+const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading}) => {
   const {cards,  updateItem, setCards} = useCards(legend && legend.cards);
   const {textSize, setTextSize} = useTextSize(legend);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextSize(+e.target.value);
     const recalculatedCards = recalculate(+e.target.value, cards.flat());
     setCards(recalculatedCards);
-    //changeLegendTextSizeRequest(+e.target.value, deckId);
   };
 
   useEffect(() => {
@@ -61,7 +59,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
   }, [legend]);
 
   const save = useCallback(() => {
-    saveLegendCardsRequest(cards, deckId);
+    saveLegendCardsRequest(cards, deckId, textSize);
   }, [deckId, cards]);
 
   if (!legend) {
@@ -98,7 +96,6 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
 const mapDispatchToProps = {
   saveLegendCardsRequest,
   getDeckLegendRequest,
-  changeLegendTextSizeRequest
 };
 
 export default connect(null, mapDispatchToProps)(EditCards);

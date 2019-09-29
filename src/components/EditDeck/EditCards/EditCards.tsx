@@ -69,13 +69,7 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
         <Button variant="contained" color='primary' className={styles.submit} onClick={save}>
           Save
         </Button>
-        {cards.length && <PDFDownloadLink document={<Cards items={cards} />}>Скачать</PDFDownloadLink>}
       </Paper>
-      {cards.length && (
-        <PDFViewer>
-          <Cards items={cards}/>
-        </PDFViewer>
-      )}
     </>
   )
 };

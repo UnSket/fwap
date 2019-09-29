@@ -5,7 +5,7 @@ const DECK_DIAMETER = 336;
 const DECK_RADIUS = 336 / 2;
 const MIN_OFFSET = 15;
 const TEXT_TOP_OFFSET = 10;
-const TEXT_SIZE_FACTOR = 6;
+const TEXT_SIZE_FACTOR = 7;
 
 
 const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array<Array<EditableLegendItemT>> => {
@@ -38,7 +38,7 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
 
     for (let textIndex = 1; sourceItems.length > itemsCount * 2; textIndex = textIndex + 2) {
       const textWidth = sourceItems[textIndex]!.source.length * TEXT_SIZE_FACTOR;
-      const itemWidth = Math.max(textWidth, imageSize);
+      const itemWidth = Math.max(textWidth, imageSize) + MIN_OFFSET;
       let textOffset = 0;
       let imageOffset = 0;
       if (textWidth > imageSize) {
