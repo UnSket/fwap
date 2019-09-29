@@ -37,6 +37,8 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
+  const imagesLeft = max ? (max - images.length) : 999;
+
   const onDrop = (item: any) => {
     if (item.files) {
       loadFiles(item.files);
@@ -53,8 +55,8 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
     if (!multiple) {
       return imageFiles.slice(-1);
     }
-    if (max && imageFiles.length > max) {
-      return imageFiles.slice(0, max);
+    if (imageFiles.length > imagesLeft) {
+      return imageFiles.slice(0, imagesLeft);
     }
     return imageFiles;
   };
@@ -92,7 +94,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const containerClasses = classes(styles.wrapper, collectedProps.isOver ? '' : styles.hovered);
   const inputId = `file-input-${Math.round(Math.random() * 100000)}`;
 
-  const isLoadable = (multiple && !max) || (max && (images.length < max!)) || (images.length === 0);
+  const isLoadable = (multiple && !max) || (images.length < imagesLeft!) || (images.length === 0);
   const imagePreviewWrapperClasses = classes(styles.imagePreviewWrapper, multiple ? '' : styles.single);
   return (
     <div className={styles.container}>
@@ -100,7 +102,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
       {isLoadable && <label ref={drop} className={containerClasses} htmlFor={inputId}>
         <AddImageIcon className={styles.icon}/>
         <span className={styles.dropLabel}>Drop images here or press to choose</span>
-        <input type='file' hidden accept='image/*' id={inputId} onChange={onInputChange} multiple={multiple} max={max} />
+        <input type='file' hidden accept='image/*' id={inputId} onChange={onInputChange} multiple={multiple} max={imagesLeft} />
       </label>}
       {images.length > 0 &&
         <div className={imagePreviewWrapperClasses}>

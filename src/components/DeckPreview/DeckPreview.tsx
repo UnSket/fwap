@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import {Deck} from '../../model/types/Deck';
 import Carousel from './Carousel/Carousel';
 import styles from './DeckPreview.module.scss';
-import { ROUTE_PATHS } from '../../model/constans/routePaths';
+import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
 import { getUrlFromImgKey } from '../utils/utils';
 import { Link } from 'react-router-dom';
 
@@ -31,9 +31,8 @@ const DeckPreview: React.FC<Props> = ({images, name, description, own, id}) => {
           </Typography>
         </CardContent>
       <CardActions>
-        <Button color="primary" disabled>
-          {own ? 'Print' : 'Buy'}
-        </Button>
+        {own && <Button color="primary" href={ROUTE_PATHS.editDeck.withID(id, EditDeckPages.export)}>Print</Button>}
+        {!own && <Button color="primary" disabled>Buy</Button>}
         <Button color="primary">
           <Link to={ROUTE_PATHS.editDeck.withID(id)} className={styles.link}>
             Edit

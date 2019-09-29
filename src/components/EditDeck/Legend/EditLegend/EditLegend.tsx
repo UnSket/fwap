@@ -8,13 +8,16 @@ import Card from './Card/Card';
 import cloneDeep from 'lodash/cloneDeep';
 import TextField from '@material-ui/core/TextField';
 import recalculate from '../../../utils/legendRecalculate';
+import { Image } from '../../../../model/types/Image';
+import ChangeTextDialog from '../ChangeTextDialog/ChangeText';
 
 type Props = {
   legend?: Legend,
   deckId: string,
   getDeckLegendRequest: (deckId: string) => void
   saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
-  loading: boolean
+  loading: boolean,
+  images: Array<Image>
 }
 
 const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
@@ -43,7 +46,7 @@ const useTextSize = (legend?: Legend) => {
   return {textSize, setTextSize};
 };
 
-const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading}) => {
+const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading, images}) => {
   const {cards,  updateItem, setCards} = useCards(legend && legend.cards);
   const {textSize, setTextSize} = useTextSize(legend);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +54,14 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
     const recalculatedCards = recalculate(+e.target.value, cards.flat());
     setCards(recalculatedCards);
   };
+  const [editingImage, setEditingImage] = useState<Image | null>(null);
+
+  const editImage = useCallback((imageId: number) => {
+    const image = images.find(image => image.id === imageId)!;
+    setEditingImage(image);
+  }, [images]);
+
+  const closeModal = () => setEditingImage(null);
 
   useEffect(() => {
     if (!legend && !loading) {
@@ -70,7 +81,13 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
     <>
       <div className={styles.wrapper}>
         {cards.map((items, index) => (
-          <Card key={index} editableItems={items} updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)} textSize={textSize}/>
+          <Card
+            key={index}
+            editableItems={items}
+            updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)}
+            textSize={textSize}
+            editImage={editImage}
+          />
         ))}
       </div>
       <div className={styles.actionPanel}>
@@ -89,6 +106,7 @@ const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, get
           Save
         </Button>
       </div>
+      <ChangeTextDialog image={editingImage} close={closeModal} deckId={deckId} />
     </>
   )
 };

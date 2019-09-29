@@ -15,12 +15,12 @@ import { connect } from 'react-redux';
 type Props = {
   images: Array<Image> | null,
   deckId: string,
-  imagesLeft: number,
+  imagesRequired: number,
   saveFileRequest: (images: Array<File | Blob>, deckId: string) => void
   updateImageRequest: (image: Image, file: File | Blob, deckId: string) => void
 };
 
-const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, saveFileRequest, imagesLeft}) => {
+const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, saveFileRequest, imagesRequired}) => {
   const openModal = useContext(OpenChangeFileModalContext);
 
   const saveHandler = useCallback((images: Array<File | Blob>) => {
@@ -37,12 +37,12 @@ const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, sav
 
   return (
     <div className={styles.wrapper} >
-      {!!imagesLeft &&
+      {!!imagesRequired &&
       <>
         <div className={styles.add}>
           <div>
-            <Typography variant={'h4'} gutterBottom>Upload images ({imagesLeft} left)</Typography>
-            <DropFile multiple saveHandler={saveHandler} max={imagesLeft}/>
+            <Typography variant={'h4'} gutterBottom>Upload images ({imagesRequired} left)</Typography>
+            <DropFile multiple saveHandler={saveHandler} max={imagesRequired}/>
           </div>
           <div className={styles.fromText}>
             <Typography variant={'h4'} gutterBottom>Create from text</Typography>

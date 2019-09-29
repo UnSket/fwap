@@ -52,7 +52,7 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
     }
     return (
       <>
-        <PDFDownloadLink document={<Cards items={deck.cards} />}>Download pdf</PDFDownloadLink>
+        <PDFDownloadLink document={<Cards items={deck.cards} />}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
           <Cards items={deck.cards}/>
         </PDFViewer>
@@ -81,7 +81,7 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
     }
     return (
       <>
-        <PDFDownloadLink document={<Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />}>Download pdf</PDFDownloadLink>
+        <PDFDownloadLink document={<Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
           <Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />
         </PDFViewer>

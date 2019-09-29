@@ -9,14 +9,14 @@ import {
   getUserDecksSuccess,
   updateDeckRequest,
   getDeckCardsRequest,
-  saveImageSuccess,
+  saveImageTextSuccess,
   getDeckLegendRequest,
   saveLegendCardsRequest,
   getDeckCardsSuccess,
   getDeckCardsFailure,
   legendFailure,
   getDeckLegendSuccess,
-  saveLegendRequest,
+  saveImageTextRequest,
   saveCardsRequest
 } from './actions';
 import { saveFileRequest, saveFileSuccess, saveFileFailure, updateImageRequest, updateImageSuccess } from './files/actions';
@@ -69,7 +69,7 @@ export default handleActions<State, any>(
         }
       })
     },
-    [combineActions(saveImageSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
+    [combineActions(saveImageTextSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
       const currentDeck = state.decksById[deckId];
       const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
       currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
@@ -98,7 +98,8 @@ export default handleActions<State, any>(
         }
       }
     },
-    [combineActions(saveLegendCardsRequest, getDeckLegendRequest, saveLegendRequest).toString()]: (state) => ({...state, legend: {loading: true, error: null}}),
+    [combineActions(saveLegendCardsRequest, getDeckLegendRequest, saveImageTextRequest).toString()]: (state) => ({...state, legend: {loading: true, error: null}}),
+    [saveImageTextSuccess.toString()]: (state) => ({...state, legend: {loading: false}}),
     [legendFailure.toString()]: (state, {payload: {error}}) => ({...state, legend: {loading: false, error: error.toString()}}),
     [getDeckLegendSuccess.toString()]: (state, {payload: {deckId, legend}}) => {
       const currentDeck = cloneDeep(state.decksById[deckId]!);

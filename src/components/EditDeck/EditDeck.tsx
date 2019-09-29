@@ -52,7 +52,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
     switch (match.params.page) {
-      case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesLeft={deck.imagesRequired} />;
+      case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesRequired={deck.imagesRequired} />;
       case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
       case EditDeckPages.legend: return <Legend deck={deck} left={deck.imagesRequired} />;
       case EditDeckPages.export: return <Export deck={deck} />;

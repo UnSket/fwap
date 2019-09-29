@@ -20,13 +20,16 @@
         left: 50%;
         transform: translate(-50%, -50%);
         cursor: pointer;
-        background: #b6ffc7;
+        background: #00c853;
         border-radius: 50%;
         width: 30px;
         height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
+        .icon {
+          color: white;
+        }
       }
     }
 }

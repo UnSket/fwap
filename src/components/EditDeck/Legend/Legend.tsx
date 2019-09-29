@@ -27,19 +27,19 @@ const Legend: React.FC<Props> = ({deck, left, loading, error}) => {
     return <p className={classes(styles.notification, styles.error)}>{error}</p>
   }
 
-  if (!leftTexts) {
+  if (leftTexts) {
     return (
       <div className={styles.container}>
-        <Typography variant='h4' gutterBottom>Edit legend</Typography>
-        <EditLegend deckId={deck.id} legend={deck.legend} loading={loading} />
+        <Typography variant='h4' gutterBottom>Add legend to every image(left {leftTexts})</Typography>
+        <AddLegend image={deck.images.find(images => !images.text)!} deckId={deck.id} />
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <Typography variant='h4' gutterBottom>Add legend to every image(left {leftTexts})</Typography>
-      <AddLegend image={deck.images.find(images => !images.text)!} deckId={deck.id} />
+      <Typography variant='h4' gutterBottom>Edit legend</Typography>
+      <EditLegend deckId={deck.id} legend={deck.legend} loading={loading} images={deck.images} />
     </div>
   );
 };

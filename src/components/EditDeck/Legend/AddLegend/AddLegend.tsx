@@ -3,17 +3,17 @@ import styles from './AddLegend.module.scss';
 import { Image } from '../../../../model/types/Image';
 import { getUrlFromImgKey } from '../../../utils/utils';
 import { Button, TextField } from '@material-ui/core';
-import { saveLegendRequest } from '../../../../modules/userDecks/actions';
+import { saveImageTextRequest } from '../../../../modules/userDecks/actions';
 import { connect } from 'react-redux';
 
 type Props = {
   image: Image,
   deckId: string,
-  saveLegendRequest: (image: Image, deckId: string) => void
+  saveImageTextRequest: (image: Image, deckId: string) => void
 };
 
-const AddLegend: React.FC<Props> = ({deckId, image: {id, url}, saveLegendRequest}) => {
-  const [legend, changeLegend] = useState<any>({value: ''});
+const AddLegend: React.FC<Props> = ({deckId, image: {id, url, text}, saveImageTextRequest}) => {
+  const [legend, changeLegend] = useState<any>({value: text || ''});
 
   const legendInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeLegend({value: e.target.value});
@@ -21,7 +21,7 @@ const AddLegend: React.FC<Props> = ({deckId, image: {id, url}, saveLegendRequest
 
   const saveLegend = () => {
     if (legend.value) {
-      saveLegendRequest({id, url, text: legend.value}, deckId);
+      saveImageTextRequest({id, url, text: legend.value}, deckId);
     } else {
       changeLegend({...legend, error: 'Field is required'})
     }
@@ -44,7 +44,7 @@ const AddLegend: React.FC<Props> = ({deckId, image: {id, url}, saveLegendRequest
 };
 
 const mapDispatchToProps = {
-  saveLegendRequest
+  saveImageTextRequest
 };
 
 export default connect(null, mapDispatchToProps)(AddLegend);

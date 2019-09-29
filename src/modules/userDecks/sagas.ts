@@ -10,8 +10,8 @@ import {
   updateDeckRequest,
   getDeckCardsRequest,
   saveCardsRequest,
-  saveLegendRequest,
-  saveImageSuccess,
+  saveImageTextRequest,
+  saveImageTextSuccess,
   getDeckLegendRequest,
   saveLegendCardsRequest,
   getDeckLegendSuccess,
@@ -80,18 +80,18 @@ function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
 }
 
 function* saveImageText({payload: {image, deckId}}: any): Iterable<any> {
-  for (let i = 1; i < 22; i++) {
+  //for (let i = 1; i < 22; i++) {
     const { response: createdImage, error } = yield request({
       url: `/api/deck/text/legend`,
       method: 'POST',
-      body: JSON.stringify({ deckId, imageId: i, text: image.text })
+      body: JSON.stringify({ deckId, imageId: image.id, text: image.text })
     });
     if (createdImage) {
-      yield put(saveImageSuccess(deckId, createdImage));
+      yield put(saveImageTextSuccess(deckId, createdImage));
     } else {
       yield put(legendFailure(error));
     }
-  }
+  //}
 }
 
 function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
@@ -119,7 +119,7 @@ export default function* loginSaga() {
   yield takeEvery(updateDeckRequest, updateDeck);
   yield takeEvery(getDeckCardsRequest, getDeckCards);
   yield takeEvery(saveCardsRequest, saveCards);
-  yield takeEvery(saveLegendRequest, saveImageText);
+  yield takeEvery(saveImageTextRequest, saveImageText);
   yield takeEvery(getDeckLegendRequest, getDeckLegend);
   yield takeEvery(saveLegendCardsRequest, saveLegendCards);
 }

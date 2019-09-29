@@ -15,5 +15,6 @@ export type EditableLegendItemT = {
   positionX: number,
   positionY: number,
   legendSourceType: LegendSourceTypeEnum,
-  cardNumber: number
+  cardNumber: number,
+  imageId: number
 }

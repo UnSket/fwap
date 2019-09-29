@@ -3,12 +3,14 @@ import styles from './EditableItem.module.scss';
 import { getUrlFromImgKey, classes } from '../../../../../utils/utils';
 import { EditableLegendItemT, LegendSourceTypeEnum } from '../../../../../../model/types/Legend';
 import EditIcon from '@material-ui/icons/Edit';
+import { Image } from '../../../../../../model/types/Image';
 
 interface Props {
   setCardActive: (isActive: boolean) => void,
   updateItem: (image: EditableLegendItemT) => void,
   editableItem: EditableLegendItemT,
   textSize: number;
+  editImage: (imageId: number) => void
 }
 
 type Point = {
@@ -18,7 +20,7 @@ type Point = {
 
 const imageFactor = 3;
 
-const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, updateItem, textSize}) => {
+const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, updateItem, textSize, editImage}) => {
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<Point>({x: editableItem.positionX, y: editableItem.positionY});
   const [isMoving, setIsMoving] = useState<boolean>(false);
@@ -32,8 +34,8 @@ const EditableItem: React.FC<Props> = React.memo(({editableItem, setCardActive, 
     }
     return (
       <>
-        <div className={styles.edit}>
-          <EditIcon />
+        <div className={styles.edit} onClick={() => editImage(editableItem.imageId)}>
+          <EditIcon className={styles.icon} />
         </div>
         <span style={{fontSize: textSize, whiteSpace: 'nowrap'}}>{editableItem.source}</span>
       </>
