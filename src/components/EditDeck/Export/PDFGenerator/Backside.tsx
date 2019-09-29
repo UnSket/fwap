@@ -1,7 +1,8 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Image} from '@react-pdf/renderer';
+import { Page, Document, StyleSheet, Image} from '@react-pdf/renderer';
 import { EditableImageT } from '../../../../model/types/Card';
 import { getUrlFromImgKey } from '../../../utils/utils';
+import times from 'lodash/times';
 
 const PT_FACTOR = 0.75;
 
@@ -19,13 +20,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: 336 * PT_FACTOR,
     height: 336 * PT_FACTOR,
-    border: 1,
     borderBottomLeftRadius: 999,
     borderBottomRightRadius: 999,
     borderTopLeftRadius: 999,
     borderTopRightRadius: 999,
+    border: 1,
     position: 'relative',
-    textOverflow: 'hidden'
   }
 });
 
@@ -46,25 +46,18 @@ const getItemStyles = (item: EditableImageT) => StyleSheet.create({
 });
 
 type Props = {
-  items: Array<Array<EditableImageT>>
+  backside: string
 };
 
-const Cards:React.FC<Props> = ({items}) => (
-  <Document>
-    <Page size="A4" style={styles.page} wrap>
-      {items.map((card, index) => (
-      <View style={styles.card} wrap={false} key={index}>
-        {card.map((item, index) => {
-          const styles = getItemStyles(item);
-          return (
-            <View style={styles.item} key={index}>
-              <Image src={getUrlFromImgKey(item.imageUrl)} style={styles.image} />
-            </View>
-          )
-        })}
-      </View>))}
-    </Page>
-  </Document>
-);
+const Backside:React.FC<Props> = ({backside}) => {
 
-export default Cards;
+  return (
+    <Document>
+      <Page size="A4" style={styles.page} wrap>
+        {times(6, () => <Image src={getUrlFromImgKey(backside)} style={styles.card} />)}
+      </Page>
+    </Document>
+  )
+};
+
+export default Backside;

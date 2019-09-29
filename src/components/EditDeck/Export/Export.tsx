@@ -10,6 +10,9 @@ import { classes } from '../../utils/utils';
 import Cards from './PDFGenerator/Cards';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import Legend from './PDFGenerator/Legend';
+import { Link } from 'react-router-dom';
+import { EditDeckPages, ROUTE_PATHS } from '../../../model/constans/routePaths';
+import Backside from './PDFGenerator/Backside';
 
 
 type Props = {
@@ -67,7 +70,9 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
 
     const needToMakeLegend = deck.images.some(image => !image.text);
     if (needToMakeLegend) {
-      return <p className={styles.notification}>You need to make legend in tab "LEGEND"</p>
+      return <p className={styles.notification}>You need to make legend in tab
+        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.legend)}>"LEGEND"</Link>
+      </p>
     }
     if (legendState.error) {
       return <p className={classes(styles.notification, styles.error)}>{legendState.error}</p>;
@@ -89,6 +94,23 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
     )
   };
 
+  const BacksideLink:React.FC = () => {
+    if (!deck.backsideKey) {
+      return <p className={styles.notification}>You should choose backside in tab
+        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.settings)}>"SETTINGS"</Link>
+        to export backside!</p>
+    }
+
+    return (
+      <>
+        <PDFDownloadLink document={<Backside backside={deck.backsideKey} />}>Download PDF</PDFDownloadLink>
+        <PDFViewer className={styles.pdf}>
+          <Backside backside={deck.backsideKey} />
+        </PDFViewer>
+      </>
+    )
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.block}>
@@ -98,6 +120,10 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
       <div className={styles.block}>
         <Typography variant='h5' gutterBottom>Legend</Typography>
         <LegendLink />
+      </div>
+      <div className={styles.block}>
+        <Typography variant='h5' gutterBottom>Backside</Typography>
+        <BacksideLink />
       </div>
     </div>
   );
