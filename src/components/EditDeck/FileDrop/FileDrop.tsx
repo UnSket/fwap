@@ -37,7 +37,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const imagesLeft = max ? (max - images.length) : 999;
+  const imagesLeft = max ? (max - images.length) : 0;
 
   const onDrop = (item: any) => {
     if (item.files) {
@@ -51,7 +51,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   };
 
   const getImagesToLoad = (files: Array<File>) => {
-    const imageFiles = files.filter((file: File) => file.type.startsWith('image'));
+    const imageFiles = files.filter((file: File) => file.type.startsWith('newImage'));
     if (!multiple) {
       return imageFiles.slice(-1);
     }
@@ -94,7 +94,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const containerClasses = classes(styles.wrapper, collectedProps.isOver ? '' : styles.hovered);
   const inputId = `file-input-${Math.round(Math.random() * 100000)}`;
 
-  const isLoadable = (multiple && !max) || (images.length < imagesLeft!) || (images.length === 0);
+  const isLoadable = (multiple && !max) || (imagesLeft > 0) || (images.length === 0);
   const imagePreviewWrapperClasses = classes(styles.imagePreviewWrapper, multiple ? '' : styles.single);
   return (
     <div className={styles.container}>

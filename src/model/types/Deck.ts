@@ -10,7 +10,8 @@ export type Deck = {
   backsideKey?: string
   cards?: EditableImageT[][]
   imagesRequired: number,
-  legend?: Legend
+  legend?: Legend,
+  legendTuned: boolean
 }
 
 export type DeckByID = {

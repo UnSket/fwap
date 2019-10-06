@@ -17,14 +17,27 @@ type Props = {
   getDeckLegendRequest: (deckId: string) => void
   saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
   loading: boolean,
-  images: Array<Image>
+  images: Array<Image>,
+  isTuned: boolean
 }
 
-const useCards = (initialCards?: Array<Array<EditableLegendItemT>>) => {
-  const [cards, setCards] = useState<Array<Array<EditableLegendItemT>>>(initialCards || []);
+const useCards = (
+  fontSize: number,
+  isTuned: boolean,
+  saveLegendCardsRequest:  (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
+  deckId: string,
+  initialCards?: Array<Array<EditableLegendItemT>>
+) => {
+  const [cards, setCards] = useState<Array<Array<EditableLegendItemT>>>([]);
 
   useEffect(() => {
-    setCards(initialCards || []);
+    let cardsToShow = initialCards || [];
+    // is user do not save legend yet calculate positions manual
+    if (!isTuned && initialCards) {
+      cardsToShow = recalculate(fontSize, initialCards.flat());
+      saveLegendCardsRequest(cardsToShow, deckId, fontSize);
+    }
+    setCards(cardsToShow);
   }, [initialCards]);
 
   const updateItem = useCallback((updatedItem: EditableLegendItemT, cardIndex: number, imageIndex: number) => {
@@ -46,9 +59,9 @@ const useTextSize = (legend?: Legend) => {
   return {textSize, setTextSize};
 };
 
-const EditCards: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading, images}) => {
-  const {cards,  updateItem, setCards} = useCards(legend && legend.cards);
+const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading, images, isTuned}) => {
   const {textSize, setTextSize} = useTextSize(legend);
+  const {cards,  updateItem, setCards} = useCards(textSize, isTuned, saveLegendCardsRequest, deckId, legend && legend.cards);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextSize(+e.target.value);
     const recalculatedCards = recalculate(+e.target.value, cards.flat());
@@ -116,4 +129,4 @@ const mapDispatchToProps = {
   getDeckLegendRequest,
 };
 
-export default connect(null, mapDispatchToProps)(EditCards);
+export default connect(null, mapDispatchToProps)(EditLegend);

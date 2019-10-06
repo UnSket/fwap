@@ -31,7 +31,12 @@ const DeckPreview: React.FC<Props> = ({images, name, description, own, id}) => {
           </Typography>
         </CardContent>
       <CardActions>
-        {own && <Button color="primary" href={ROUTE_PATHS.editDeck.withID(id, EditDeckPages.export)}>Print</Button>}
+        {own && (
+          <Button color="primary">
+            <Link to={ROUTE_PATHS.editDeck.withID(id, EditDeckPages.export)} className={styles.link}>
+              Print
+            </Link>
+          </Button>)}
         {!own && <Button color="primary" disabled>Buy</Button>}
         <Button color="primary">
           <Link to={ROUTE_PATHS.editDeck.withID(id)} className={styles.link}>

@@ -39,7 +39,7 @@ const Legend: React.FC<Props> = ({deck, left, loading, error}) => {
   return (
     <div className={styles.container}>
       <Typography variant='h4' gutterBottom>Edit legend</Typography>
-      <EditLegend deckId={deck.id} legend={deck.legend} loading={loading} images={deck.images} />
+      <EditLegend deckId={deck.id} legend={deck.legend} loading={loading} images={deck.images} isTuned={deck.legendTuned} />
     </div>
   );
 };
