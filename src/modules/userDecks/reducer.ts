@@ -68,6 +68,9 @@ export default handleActions<State, any>(
         decksById: {
           ...state.decksById,
           [deckId]: currentDeck
+        },
+        files: {
+          loading: false
         }
       })
     },
@@ -80,6 +83,7 @@ export default handleActions<State, any>(
         const legendItems = legendCopy.cards.flat();
         const itemTextIndex = legendItems.findIndex(item => item.imageId === newImage.id && item.legendSourceType === LegendSourceTypeEnum.text);
         legendItems[itemTextIndex].source = newImage.text || '';
+        legendItems[itemTextIndex].source = newImage.text || '';
         const itemImageIndex = legendItems.findIndex(item => item.imageId === newImage.id && item.legendSourceType === LegendSourceTypeEnum.image);
         legendItems[itemImageIndex].source = newImage.url;
         const itemsByCardsNumber = groupBy(legendItems, 'cardNumber');
@@ -91,12 +95,18 @@ export default handleActions<State, any>(
         decksById: {
           ...state.decksById,
           [deckId]: currentDeck
+        },
+        files: {
+          loading: false
         }
       })
     },
     [combineActions(getDeckCardsRequest, saveCardsRequest).toString()]: (state) => ({...state, cards: {loading: true, error: null}}),
     [getDeckCardsFailure.toString()]: (state, {payload: {error}}) => ({...state, cards: {loading: false, error: error.toString()}}),
     [getDeckCardsSuccess.toString()]: (state, {payload: {deckId, cards}}) => {
+      if (!cards.length) {
+        return state;
+      }
       const currentDeck = cloneDeep(state.decksById[deckId]!);
       currentDeck.cards = cards;
       return {

@@ -49,10 +49,11 @@ const useCards = (
 };
 
 const useTextSize = (legend?: Legend) => {
-  const [textSize, setTextSize] = useState<number>(legend ? legend.textSize : 0);
+  const defaultTextSize = legend ? legend.textSize : 8;
+  const [textSize, setTextSize] = useState<{value: number, error?: string, tempValue: number}>({value: defaultTextSize, tempValue: defaultTextSize});
   useEffect(() => {
     if (legend && !textSize) {
-      setTextSize(legend.textSize);
+      setTextSize({value: legend.textSize, tempValue: legend.textSize});
     }
   }, [legend]);
 
@@ -61,10 +62,15 @@ const useTextSize = (legend?: Legend) => {
 
 const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading, images, isTuned}) => {
   const {textSize, setTextSize} = useTextSize(legend);
-  const {cards,  updateItem, setCards} = useCards(textSize, isTuned, saveLegendCardsRequest, deckId, legend && legend.cards);
+  const {cards,  updateItem, setCards} = useCards(textSize.value, isTuned, saveLegendCardsRequest, deckId, legend && legend.cards);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTextSize(+e.target.value);
-    const recalculatedCards = recalculate(+e.target.value, cards.flat());
+    const value = +e.target.value;
+    if (value < 8 || value > 26) {
+      setTextSize({value: textSize.value, error: 'Bad value', tempValue: value});
+      return;
+    }
+    setTextSize({value, tempValue: value});
+    const recalculatedCards = recalculate(value, cards.flat());
     setCards(recalculatedCards);
   };
   const [editingImage, setEditingImage] = useState<Image | null>(null);
@@ -83,7 +89,9 @@ const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, ge
   }, [legend]);
 
   const save = useCallback(() => {
-    saveLegendCardsRequest(cards, deckId, textSize);
+    if (!textSize.error) {
+      saveLegendCardsRequest(cards, deckId, textSize.value);
+    }
   }, [deckId, cards]);
 
   if (!legend) {
@@ -98,7 +106,7 @@ const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, ge
             key={index}
             editableItems={items}
             updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)}
-            textSize={textSize}
+            textSize={textSize.value}
             editImage={editImage}
           />
         ))}
@@ -108,9 +116,10 @@ const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, ge
           margin="dense"
           id="name"
           label="Size"
+          error={!!textSize.error}
           type="number"
           variant='outlined'
-          value={textSize}
+          value={textSize.tempValue}
           onChange={textSizeInputHandler}
           fullWidth
           className={styles.size}

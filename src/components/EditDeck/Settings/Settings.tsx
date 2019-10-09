@@ -20,7 +20,7 @@ type Props = {
   deck: Deck,
   error?: string | null,
   updateDeckRequest: (deckId: string, name: string, description: string) => void
-  updateBacksideRequest: (image: File | Blob, deckId: string) => void
+  updateBacksideRequest: (image: File | Blob, deckId: string, bgCleanUpFlags?: boolean) => void
 }
 
 const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksideRequest}) => {
@@ -28,9 +28,9 @@ const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksi
   const [description, changeDescription] = useState<any>({value: deck.description});
   const openModal = useContext(OpenChangeFileModalContext);
 
-  const updateBacksideHandler = useCallback((images: Array<File | Blob>) => {
+  const updateBacksideHandler = useCallback((images: Array<File | Blob>, bgCleanUpFlags?: boolean) => {
     if (images.length > 0) {
-      updateBacksideRequest(images[0], deck.id);
+      updateBacksideRequest(images[0], deck.id, bgCleanUpFlags);
     }
   }, []);
 

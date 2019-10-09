@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Deck } from '../../../model/types/Deck';
 import styles from './Export.module.scss';
 import { CircularProgress, Typography } from '@material-ui/core';
@@ -29,12 +29,55 @@ type Props = {
   getDeckLegendRequest: (deckId: string) => void
 }
 
+const useFlag = (): [boolean, () => void, () => void] => {
+  const [flag, setFlag] = useState<boolean>(false);
+
+  const setTrue = () => setFlag(true);
+  const setFalse = () => {
+    setTimeout(() => setFlag(false), 1000);
+  };
+  return [flag, setFalse, setTrue];
+};
+
 const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsRequest, getDeckLegendRequest}) => {
+  // hack to show loader
+  const [cardsDocument, setCardsDocument] = useState<any>(null);
+  const [legendDocument, setLegendDocument] = useState<any>(null);
+  const [backsideDocument, setBacksideDocument] = useState<any>(null);
+  const [cardsRendering, cardsRendered, startCardsRendering] = useFlag();
+  const [legendRendering, legendRendered, startLegendRendering] = useFlag();
+  const [backsideRendering, backsideRendered, startBacksideRendering] = useFlag();
+
   useEffect(() => {
-    if (!deck.cards && !cardsState.loading && !cardsState.error) {
+    if (!cardsRendering && !cardsDocument && deck.cards) {
+      startCardsRendering();
+      const document = <Cards items={deck.cards} rendered={cardsRendered}/>;
+      setCardsDocument(document);
+    }
+  }, [deck.cards]);
+
+  useEffect(() => {
+    if (!legendRendering && !legendDocument && deck.legend) {
+      startLegendRendering();
+      const document = <Legend items={deck.legend.cards} fontSize={deck.legend.textSize} rendered={legendRendered} />;
+      setLegendDocument(document);
+    }
+  }, [deck.legend]);
+
+  useEffect(() => {
+    if (!backsideRendering && !backsideDocument && deck.backsideKey) {
+      startBacksideRendering();
+      const document = <Backside backside={deck.backsideKey} rendered={backsideRendered}/>;
+      setBacksideDocument(document);
+    }
+  }, [deck.backsideKey]);
+
+  useEffect(() => {
+    if (!deck.cards && !cardsState.loading && !cardsState.error && !deck.imagesRequired) {
       getDeckCardsRequest(deck.id);
     }
-    if (!deck.legend && !legendState.error && !legendState.loading) {
+    const needToMakeLegend = deck.images.some(image => !image.text);
+    if (!deck.legend && !legendState.error && !legendState.loading && !needToMakeLegend && !deck.imagesRequired) {
       getDeckLegendRequest(deck.id);
     }
   });
@@ -53,11 +96,15 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
         </div>
       )
     }
+    if (!cardsDocument) {
+      return null;
+    }
+
     return (
       <>
-        <PDFDownloadLink document={<Cards items={deck.cards} />}>Download PDF</PDFDownloadLink>
+        <PDFDownloadLink document={cardsDocument}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
-          <Cards items={deck.cards}/>
+          {cardsDocument}
         </PDFViewer>
       </>
     )
@@ -70,8 +117,8 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
 
     const needToMakeLegend = deck.images.some(image => !image.text);
     if (needToMakeLegend) {
-      return <p className={styles.notification}>You need to make legend in tab
-        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.legend)}>"LEGEND"</Link>
+      return <p className={styles.notification}>Make legend in tab
+        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.legend)}> "LEGEND" </Link>
       </p>
     }
     if (legendState.error) {
@@ -84,11 +131,14 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
         </div>
       )
     }
+    if (!legendDocument) {
+      return null;
+    }
     return (
       <>
-        <PDFDownloadLink document={<Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />}>Download PDF</PDFDownloadLink>
+        <PDFDownloadLink document={legendDocument}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
-          <Legend items={deck.legend.cards} fontSize={deck.legend.textSize} />
+          {legendDocument}
         </PDFViewer>
       </>
     )
@@ -97,22 +147,28 @@ const Export: React.FC<Props> = ({deck, cardsState, legendState, getDeckCardsReq
   const BacksideLink:React.FC = () => {
     if (!deck.backsideKey) {
       return <p className={styles.notification}>You should choose backside in tab
-        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.settings)}>"SETTINGS"</Link>
+        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.settings)}> "SETTINGS" </Link>
         to export backside!</p>
     }
 
+    if (!backsideDocument) {
+      return null;
+    }
     return (
       <>
-        <PDFDownloadLink document={<Backside backside={deck.backsideKey} />}>Download PDF</PDFDownloadLink>
+        <PDFDownloadLink document={backsideDocument}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
-          <Backside backside={deck.backsideKey} />
+          {backsideDocument}
         </PDFViewer>
       </>
     )
   };
 
+  const isLoading = cardsRendering || legendRendering || backsideRendering;
+
   return (
     <div className={styles.container}>
+      {isLoading && <div className={styles.spinner}><CircularProgress size={50} /></div>}
       <div className={styles.block}>
         <Typography variant='h5' gutterBottom>Cards</Typography>
         <CardsLink />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
-import { Button, CircularProgress, Fab, Typography } from '@material-ui/core';
+import { Button, Checkbox, CircularProgress, Fab, FormControlLabel, Typography } from '@material-ui/core';
 import styles from './FileDrop.module.scss';
 import { classes } from '../../utils/utils';
 import AddImageIcon from '@material-ui/icons/AddPhotoAlternate'
@@ -9,7 +9,7 @@ import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   multiple?: boolean,
-  saveHandler: (images: Array<File | Blob>) => void,
+  saveHandler: (images: Array<File | Blob>, bgCleanUpFlags: boolean) => void,
   max?: number
 }
 
@@ -36,6 +36,11 @@ const Progress:React.FC = () => (
 const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   const [images, setImages] = useState<Array<ImageWithPreview>>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [cutBackground, setCutBackgroud] = useState<boolean>(true);
+
+  const cutBackgroundCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCutBackgroud(e.target.checked);
+  };
 
   const imagesLeft = max ? (max - images.length) : 0;
 
@@ -51,7 +56,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   };
 
   const getImagesToLoad = (files: Array<File>) => {
-    const imageFiles = files.filter((file: File) => file.type.startsWith('newImage'));
+    const imageFiles = files.filter((file: File) => file.type.startsWith('image'));
     if (!multiple) {
       return imageFiles.slice(-1);
     }
@@ -77,7 +82,7 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
   };
 
   const loadPressed = () => {
-    saveHandler(images.map(image => image.file));
+    saveHandler(images.map(image => image.file), cutBackground);
   };
 
   const removeImage = (imageIndex: number) => {
@@ -119,6 +124,13 @@ const DropFile:React.FC<Props> = ({multiple, saveHandler, max}) => {
             ))}
           </div>
           <div className={styles.submitWrapper}>
+            <FormControlLabel
+              control={
+                <Checkbox checked={cutBackground} onChange={cutBackgroundCheckboxChange} color='primary' />
+              }
+              label="Cut background"
+              className={styles.checkbox}
+            />
             <Button variant='contained' color='primary' className={styles.submit} onClick={loadPressed}>Upload</Button>
           </div>
         </div>}

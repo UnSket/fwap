@@ -33,7 +33,7 @@ export const OpenChangeFileModalContext = React.createContext<(saveHandler: (ima
 const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, loading}) => {
   const deck: Deck | null = decksById[match.params.deckId];
   const [dialogData, setDialogData] = useState<DialogData>({isOpen: false, saveHandler: () => null});
-  const _openModal = (saveHandler: (images: Array<File | Blob>) => void) => {
+  const _openModal = (saveHandler: (images: Array<File | Blob>, bgCleanUpFlags?: boolean) => void) => {
     setDialogData({isOpen: true, saveHandler: saveHandler});
   };
   const closeModal = () => setDialogData({isOpen: false, saveHandler: () => null});

@@ -46,13 +46,14 @@ const getItemStyles = (item: EditableImageT) => StyleSheet.create({
 });
 
 type Props = {
-  backside: string
+  backside: string,
+  rendered: () => void
 };
 
-const Backside:React.FC<Props> = ({backside}) => {
+const Backside:React.FC<Props> = ({backside, rendered}) => {
 
   return (
-    <Document>
+    <Document onRender={rendered}>
       <Page size="A4" style={styles.page} wrap>
         {times(6, () => <Image src={getUrlFromImgKey(backside)} style={styles.card} />)}
       </Page>

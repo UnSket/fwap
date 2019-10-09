@@ -76,12 +76,12 @@ const Login: React.FC<Props> = ({loginRequest, history, userState}) => {
           fullWidth
           onKeyDown={enterPressed}
         />
-        <div className={styles.text}>
+        {/*<div className={styles.text}>
           Don't have account? Visit{' '}
           <Link component={CollisionLink} to='/#buy'>
             owr site
           </Link>
-        </div>
+        </div>*/}
         <div className={styles.submit}>
           <Button color="primary" variant='contained' onClick={login}>
             Sign in

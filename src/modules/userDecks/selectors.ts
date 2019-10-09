@@ -12,3 +12,4 @@ export const loading = (state: StoreState) => state.userDecks.loading;
 
 export const cardsState = (state: StoreState) => state.userDecks.cards;
 export const legendState = (state: StoreState) => state.userDecks.legend;
+export const filesState = (state: StoreState) => state.userDecks.files;

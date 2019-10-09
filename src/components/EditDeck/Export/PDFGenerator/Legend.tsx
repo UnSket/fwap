@@ -57,11 +57,12 @@ const getItemTextStyles = (item: EditableLegendItemT, fontSize: number) => Style
 
 type Props = {
   items: Array<Array<EditableLegendItemT>>,
-  fontSize: number
+  fontSize: number,
+  rendered: () => void
 };
 
-const Cards:React.FC<Props> = ({items, fontSize}) => (
-  <Document>
+const Cards:React.FC<Props> = ({items, fontSize, rendered}) => (
+  <Document onRender={rendered}>
     <Page size="A4" style={styles.page} wrap>
       {items.map((card, index) => (
       <View style={styles.card} wrap={false} key={index}>

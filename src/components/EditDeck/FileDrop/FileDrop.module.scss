@@ -10,6 +10,7 @@
     border: 2px dashed #2a78f5;
     background-color: #2a78f533;
     cursor: pointer;
+    box-sizing: border-box;
 
     &.hovered {
       border: 2px dashed #2a78f533;
@@ -66,8 +67,11 @@
     .submitWrapper {
       display: flex;
       justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
       .submit {
-        margin-top: 20px;
+        margin-top: 5px;
       }
     }
 

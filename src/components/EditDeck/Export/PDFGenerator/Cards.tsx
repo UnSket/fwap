@@ -47,10 +47,11 @@ const getItemStyles = (item: EditableImageT) => StyleSheet.create({
 
 type Props = {
   items: Array<Array<EditableImageT>>
+  rendered: () => void
 };
 
-const Cards:React.FC<Props> = ({items}) => (
-  <Document>
+const Cards:React.FC<Props> = ({items, rendered}) => (
+  <Document onRender={rendered}>
     <Page size="A4" style={styles.page} wrap>
       {items.map((card, index) => (
       <View style={styles.card} wrap={false} key={index}>
