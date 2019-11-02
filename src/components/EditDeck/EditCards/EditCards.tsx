@@ -66,11 +66,11 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
           <Card key={index} editableImages={images} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />
         ))}
       </div>
-      <Paper className={styles.actionPanel}>
+      <div className={styles.actionPanel}>
         <Button variant="contained" color='primary' className={styles.submit} onClick={save}>
           Save
         </Button>
-      </Paper>
+      </div>
     </>
   )
 };
