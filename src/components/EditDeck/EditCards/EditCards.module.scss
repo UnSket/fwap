@@ -1,12 +1,17 @@
 @import "../../../vars";
 
+h4 {
+  text-align: center;
+}
+
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   grid-row-gap: 30px;
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  justify-items: center;
 }
 
 .actionPanel {
@@ -14,10 +19,9 @@
   padding: 15px 0;
   display: flex;
   justify-content: center;
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
+  margin-top: 30px;
 }
 
 .notification {

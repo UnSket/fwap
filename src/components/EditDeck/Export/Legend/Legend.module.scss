@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    z-index: 10;
+  }
+  .block {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex: 1 1 1px;
+    margin: 0 15px;
+    h4 {
+      text-align: center;
+    }
+
+    .notification {
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+    }
+
+    .pdf {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 820px;
+      height: 800px;
+    }
+  }
+}

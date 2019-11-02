@@ -3,7 +3,9 @@ export enum EditDeckPages {
   cards = 'cards',
   legend = 'legend',
   settings ='settings',
-  export = 'export'
+  exportCards = 'export-cards',
+  exportLegend = 'export-legend',
+  exportBackside = 'export-backside'
 };
 
 export const ROUTE_PATHS = {

@@ -6,11 +6,12 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   grid-row-gap: 30px;
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  justify-items: center;
 }
 
 .actionPanel {

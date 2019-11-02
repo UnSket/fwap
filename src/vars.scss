@@ -24,8 +24,8 @@ $disabledColor: #909090;
 
 %wrapper {
   min-height: 100vh;
-  margin: (-$headerHeight) 0 (-$footerHeight);
-  padding: ($headerHeight + 30px) 0 ($footerHeight + 30px);
+  margin: (-$headerHeight) 0 0;
+  padding: ($headerHeight + 30px) 0 0;
   box-sizing: border-box;
 }
 

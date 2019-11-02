@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Container, Paper, Tabs, Typography, Tab, CircularProgress } from '@material-ui/core';
+import { Container, Paper, Tabs, Typography, Tab, CircularProgress, Divider } from '@material-ui/core';
 import styles from './EditDeck.module.scss';
 import { RouteComponentProps } from 'react-router';
 import FileManagment from './FileManagment/FileManagment';
@@ -13,7 +13,10 @@ import Settings from './Settings/Settings';
 import EditCards from './EditCards/EditCards';
 import Legend from './Legend/Legend';
 import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
-import Export from './Export/Export';
+import { NavLink } from 'react-router-dom';
+import ExportCards from './Export/Cards/Cards';
+import ExportLegend from './Export/Legend/Legend';
+import ExportBackside from './Export/Backside/Backside';
 
 interface MatchParams {
   deckId: string;
@@ -31,6 +34,7 @@ type DialogData = {
 export const OpenChangeFileModalContext = React.createContext<(saveHandler: (images: Array<File | Blob>) => void) => void>(() => {});
 
 const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, loading}) => {
+  const {params: {deckId}} = match;
   const deck: Deck | null = decksById[match.params.deckId];
   const [dialogData, setDialogData] = useState<DialogData>({isOpen: false, saveHandler: () => null});
   const _openModal = (saveHandler: (images: Array<File | Blob>, bgCleanUpFlags?: boolean) => void) => {
@@ -51,43 +55,82 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
 
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
+    console.log(match.params.page);
     switch (match.params.page) {
-      case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deck.id} imagesRequired={deck.imagesRequired} />;
+      case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deckId} imagesRequired={deck.imagesRequired} />;
       case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
       case EditDeckPages.legend: return <Legend deck={deck} left={deck.imagesRequired} />;
-      case EditDeckPages.export: return <Export deck={deck} />;
+      case EditDeckPages.exportCards: return <ExportCards deck={deck} />;
+      case EditDeckPages.exportLegend: return <ExportLegend deck={deck} />;
+      case EditDeckPages.exportBackside: return <ExportBackside deck={deck} />;
       default: return <Settings deck={deck} />;
     }
   };
 
   return (
     <OpenChangeFileModalContext.Provider value={_openModal}>
-      <Container className={styles.wrapper}>
+      <div className={styles.container}>
+        <Paper className={styles.menu}>
+          <Typography variant={'h5'} gutterBottom className={styles.deckName}>Deck: {deck && deck.name}</Typography>
+          <Divider component='p' light />
+          <ul className={styles.menuList}>
+            <li>Editing</li>
+            <ul>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.files)} className={styles.link}>
+                  Files
+                </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.cards)} className={styles.link}>
+                  Cards
+                </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.legend)} className={styles.link}>
+                  Legend
+                </NavLink>
+              </li>
+            </ul>
+            <li>Export</li>
+            <ul>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.exportCards)} className={styles.link}>
+                  Cards
+                </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.exportLegend)} className={styles.link}>
+                  Legend
+                </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.exportBackside)} className={styles.link}>
+                  Backside
+                </NavLink>
+              </li>
+            </ul>
+            <li>
+              <NavLink activeClassName={styles.active} to={ROUTE_PATHS.editDeck.withID(deckId, EditDeckPages.settings)} className={styles.link}>
+                Settings
+              </NavLink>
+            </li>
+          </ul>
+        </Paper>
         <Paper className={styles.paper}>
-          <Typography variant={'h3'} gutterBottom>Edit deck {deck && deck.name}</Typography>
-          <Tabs
-            value={match.params.page}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth">
-              <Tab value={EditDeckPages.files} label="Files" />
-              <Tab value={EditDeckPages.cards} label="Cards" />
-              <Tab value={EditDeckPages.legend} label="Legend" />
-              <Tab value={EditDeckPages.export} label="Export" />
-              <Tab value={EditDeckPages.settings} label="Settings" />
-          </Tabs>
-          <div className={styles.content}>
-            {loading && (
-              <div className={styles.loading}>
-                <CircularProgress size={50} />
-              </div>
-            )}
-            <CurrentTabComponent />
+          <div className={styles.contentWrapper}>
+            <div className={styles.content}>
+              {loading && (
+                <div className={styles.loading}>
+                  <CircularProgress size={50} />
+                </div>
+              )}
+              <CurrentTabComponent />
+            </div>
           </div>
         </Paper>
         <ChangeFileDialog {...dialogData} close={closeModal}/>
-      </Container>
+      </div>
     </OpenChangeFileModalContext.Provider>
   )
 };

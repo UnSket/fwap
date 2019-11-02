@@ -54,7 +54,7 @@ const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, sav
             <CreateFromText className={styles.fromText} saveHandler={saveHandler}/>
           </div>
         </div>
-        <Divider variant="middle"/>
+        <Divider variant="middle" className={styles.divider}/>
       </>
       }
       {images && !!images.length && (

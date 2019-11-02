@@ -3,7 +3,7 @@ import { EditableImageT } from '../../../model/types/Card';
 import Card from './Card/Card';
 import styles from './EditCards.module.scss';
 import cloneDeep from 'lodash/cloneDeep';
-import { Button, Paper } from '@material-ui/core';
+import { Button, Paper, Typography } from '@material-ui/core';
 import { saveCardsRequest, getDeckCardsRequest } from '../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
@@ -60,6 +60,7 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
 
   return (
     <>
+      <Typography variant='h4' gutterBottom>Edit cards</Typography>
       <div className={styles.wrapper}>
         {cards.map((images, index) => (
           <Card key={index} editableImages={images} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />

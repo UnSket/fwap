@@ -1,27 +1,82 @@
 @import "../../vars";
 
-.wrapper {
-  @extend %wrapper;
-  .paper {
-    @extend %paper;
-    h3 {
-      text-align: center;
-    }
-    .content {
-      min-height: 200px;
-      position: relative;
-      .loading {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        opacity: .7;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: white;
+.container {
+  display: flex;
+  margin-top: 30px;
+  align-items: flex-start;
+
+  .menu {
+    margin-right: 30px;
+    padding: 30px;
+    width: 170px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+
+    .menuList {
+      &, ul {
+        list-style: none;
+        padding-inline-start: 0;
+        font-size: 16px;
+      }
+      > li {
+        color: $disabledColor;
+        margin: 13px 0;
+      }
+      > ul {
+        padding-inline-start: 1em;
+        > li {
+          margin: 10px 0;
+        }
+      }
+      .link {
+        text-decoration: none;
+        color: black;
+        display: block;
+        padding: 10px;
+        border-radius: 4px;
+        &:hover:not(.active) {
+          background-color: rgba(0, 0, 0, .05);
+        }
+        &.active {
+          cursor: unset;
+          font-weight: bold;
+        }
       }
     }
+    .deckName {
+      margin-bottom: 10px;
+    }
   }
+    .paper {
+      @extend %paper;
+      width: 100%;
+
+      h3 {
+        text-align: center;
+      }
+
+      .contentWrapper {
+        display: flex;
+
+        .content {
+          min-height: 200px;
+          position: relative;
+          width: 100%;
+
+          .loading {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: .7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+          }
+        }
+      }
+    }
 }

@@ -48,7 +48,7 @@ const App: React.FC = () => {
                   <Route path={ROUTE_PATHS.userManagement} exact component={UserManagement} />
                   <Redirect to={ROUTE_PATHS.myDecks} />
                 </Switch>
-                <Footer />
+                {/*<Footer />*/}
               </Auth>} />
           </Switch>
         </div>

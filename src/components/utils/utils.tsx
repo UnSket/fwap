@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
 export const CollisionLink = React.forwardRef<HTMLAnchorElement, any>(
@@ -10,3 +10,13 @@ export const CollisionLink = React.forwardRef<HTMLAnchorElement, any>(
 export const classes = (...classes: Array<string>) => classes.join(' ');
 
 export const getUrlFromImgKey = (key: string) => `/api/files/${key}.png`;
+
+export const useFlag = (): [boolean, () => void, () => void] => {
+  const [flag, setFlag] = useState<boolean>(false);
+
+  const setTrue = () => setFlag(true);
+  const setFalse = () => {
+    setTimeout(() => setFlag(false), 1000);
+  };
+  return [flag, setFalse, setTrue];
+};

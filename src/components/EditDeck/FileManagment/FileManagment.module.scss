@@ -1,5 +1,4 @@
 .wrapper {
-  margin-top: 30px;
   position: relative;
   .spinner {
     display: flex;
@@ -26,8 +25,10 @@
       text-align: center;
     }
   }
+  .divider {
+    margin-bottom: 30px;
+  }
   .uploaded {
-    margin-top: 30px;
     h4 {
       text-align: center;
     }
