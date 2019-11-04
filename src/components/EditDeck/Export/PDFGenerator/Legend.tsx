@@ -51,7 +51,8 @@ const getItemTextStyles = (item: EditableLegendItemT, fontSize: number) => Style
     top: item.positionY * PT_FACTOR,
   },
   text: {
-    fontSize
+    fontSize: fontSize - 4,
+    fontWeight: 'normal'
   },
 });
 

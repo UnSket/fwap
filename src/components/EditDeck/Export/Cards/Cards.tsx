@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Deck } from '../../../../model/types/Deck';
-import styles from './Cards.module.scss';
+import styles from '../Export.module.scss';
 import { CircularProgress, Typography } from '@material-ui/core';
 import {cardsState} from '../../../../modules/userDecks/selectors';
 import {getDeckCardsRequest} from '../../../../modules/userDecks/actions';
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { classes, useFlag } from '../../../utils/utils';
 import CardsPDF from '../PDFGenerator/Cards';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import downloadCardImages from '../generateImages/cards';
 
 
 type Props = {
@@ -40,6 +41,10 @@ const Cards: React.FC<Props> = ({deck, cardsState, getDeckCardsRequest}) => {
     }
   });
 
+  async function downloadImages() {
+    await downloadCardImages(deck.cards!, deck.name);
+  }
+
   const CardsLink:React.FC = () => {
     if (deck.imagesRequired) {
       return <p className={styles.notification}>You should upload {deck.imagesRequired} more files to see upload cards!</p>
@@ -60,21 +65,22 @@ const Cards: React.FC<Props> = ({deck, cardsState, getDeckCardsRequest}) => {
 
     return (
       <>
-        <PDFDownloadLink document={cardsDocument}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
           {cardsDocument}
         </PDFViewer>
-      </>
+        <div className={styles.links}>
+          <PDFDownloadLink document={cardsDocument}>Download PDF</PDFDownloadLink>
+          <a onClick={downloadImages}>Download images</a>
+        </div>
+        </>
     )
   };
 
   return (
     <div className={styles.container}>
       {cardsRendering && <div className={styles.spinner}><CircularProgress size={50} /></div>}
-      <div className={styles.block}>
-        <Typography variant='h4' gutterBottom>Cards</Typography>
-        <CardsLink />
-      </div>
+      <Typography variant='h4' gutterBottom>Cards</Typography>
+      <CardsLink />
     </div>
   );
 };

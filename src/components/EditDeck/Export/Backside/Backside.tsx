@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Deck } from '../../../../model/types/Deck';
-import styles from './Backside.module.scss';
+import styles from '../Export.module.scss';
 import { Link as MatLink, CircularProgress, Typography } from '@material-ui/core';
 import { getUrlFromImgKey, useFlag } from '../../../utils/utils';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { Link } from 'react-router-dom';
 import { EditDeckPages, ROUTE_PATHS } from '../../../../model/constans/routePaths';
 import BacksidePDF from '../PDFGenerator/Backside';
-import { generateBacksideCardImage } from '../generateCardImage';
+import generateBacksideCardImage from '../generateImages/backside';
 
 
 type Props = {
