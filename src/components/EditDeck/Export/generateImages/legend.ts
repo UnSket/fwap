@@ -2,17 +2,17 @@ import { EditableLegendItemT, LegendSourceTypeEnum } from '../../../../model/typ
 import { getUrlFromImgKey } from '../../../utils/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { canvasToBlobAsync, containImageInBox, imageLoadAsync } from './utils';
+import { canvasToBlobAsync, containImageInBox, imageLoadAsync, QUALITY_FACTOR } from './utils';
 
 
 async function generateLegendCardImage(items: Array<EditableLegendItemT>, fontSize: number) {
-  const imageBoxSize = fontSize * 3;
+  const imageBoxSize = fontSize * 3 * QUALITY_FACTOR;
   const canvas = document.createElement('canvas');
-  canvas.width  = 336;
-  canvas.height = 336;
+  canvas.width  = 336 * QUALITY_FACTOR;
+  canvas.height = 336 * QUALITY_FACTOR;
 
   const ctx = canvas.getContext('2d')!;
-  ctx.arc(168, 168, 168, 0, Math.PI * 2);
+  ctx.arc(336, 336, 336, 0, Math.PI * 2);
   ctx.fillStyle = '#fff';
   ctx.fill();
   ctx.clip();
@@ -20,14 +20,14 @@ async function generateLegendCardImage(items: Array<EditableLegendItemT>, fontSi
 
   ctx.fillStyle = "#000";
   ctx.strokeStyle = "#000";
-  ctx.font = `${fontSize}px BlinkMacSystemFont`;
+  ctx.font = `${fontSize * QUALITY_FACTOR}px BlinkMacSystemFont`;
   for (const item of items) {
     if (item.legendSourceType === LegendSourceTypeEnum.text) {
-      ctx.fillText(item.source, item.positionX, item.positionY + fontSize);
+      ctx.fillText(item.source, item.positionX * QUALITY_FACTOR, item.positionY * QUALITY_FACTOR + fontSize * QUALITY_FACTOR);
     } else {
       const image  = await imageLoadAsync(getUrlFromImgKey(item.source));
       const {dWidth, dHeight, verticalMargins = 0, horizontalMargins = 0} = containImageInBox(image, imageBoxSize);
-      ctx.drawImage(image, item.positionX + horizontalMargins, item.positionY + verticalMargins, dWidth, dHeight);
+      ctx.drawImage(image, item.positionX * QUALITY_FACTOR + horizontalMargins, item.positionY * QUALITY_FACTOR + verticalMargins, dWidth, dHeight);
     }
   }
 

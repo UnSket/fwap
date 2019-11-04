@@ -1,5 +1,5 @@
 import { EditableImageT } from '../../../../model/types/Card';
-import { canvasToBlobAsync, containImageInBox, imageLoadAsync } from './utils';
+import { canvasToBlobAsync, containImageInBox, imageLoadAsync, QUALITY_FACTOR } from './utils';
 import { getUrlFromImgKey } from '../../../utils/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -7,11 +7,11 @@ import { saveAs } from 'file-saver';
 async function generateCardImage(items: Array<EditableImageT>) {
   const images = await Promise.all(items.map(i => imageLoadAsync(getUrlFromImgKey(i.imageUrl))));
   const canvas = document.createElement('canvas');
-  canvas.width  = 336;
-  canvas.height = 336;
+  canvas.width  = 336 * QUALITY_FACTOR;
+  canvas.height = 336 * QUALITY_FACTOR;
 
   const ctx = canvas.getContext('2d')!;
-  ctx.arc(168, 168, 168, 0, Math.PI * 2);
+  ctx.arc(168 * QUALITY_FACTOR, 168 * QUALITY_FACTOR, 168 * QUALITY_FACTOR, 0, Math.PI * 2);
   ctx.fillStyle = '#fff';
   ctx.fill();
   ctx.clip();
@@ -19,15 +19,16 @@ async function generateCardImage(items: Array<EditableImageT>) {
 
   ctx.fillStyle = "#000";
   ctx.strokeStyle = "#000";
-
   items.forEach((item, index) => {
-    const boxSize = item.scaleFactor;
+    const boxSize = item.scaleFactor * QUALITY_FACTOR;
     const image  = images[index];
     const {dWidth, dHeight} = containImageInBox(image, boxSize);
     const radFactor = Math.PI/180;
     const angleRad = item.rotationAngle * radFactor;
-    const imageCenterX = item.positionX + item.scaleFactor / 2;
-    const imageCenterY = item.positionY + item.scaleFactor / 2;
+    const imageCenterX = item.positionX * QUALITY_FACTOR + boxSize / 2;
+    const imageCenterY = item.positionY * QUALITY_FACTOR + boxSize / 2;
+
+    ctx.save();
 
     ctx.translate(imageCenterX, imageCenterY);
     ctx.rotate(angleRad);

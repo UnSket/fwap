@@ -1,4 +1,7 @@
 
+// increase sizes to better quality
+export const QUALITY_FACTOR = 4;
+
 export const imageLoadAsync = (imageUrl: string): Promise<HTMLImageElement> => {
   return new Promise<HTMLImageElement>(resolve => {
     const image = new Image();
