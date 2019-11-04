@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
     alignItems: 'center',
     height: '100%',
   },
@@ -25,7 +24,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 999,
     borderTopLeftRadius: 999,
     borderTopRightRadius: 999,
-    position: 'relative'
+    position: 'relative',
+    marginLeft: 30,
+    marginRight: 15
+  },
+  secondCardInRow: {
+    marginLeft: 15,
+    marginRight: 30
   }
 });
 
@@ -65,25 +70,28 @@ type Props = {
 const Cards:React.FC<Props> = ({items, fontSize, rendered}) => (
   <Document onRender={rendered}>
     <Page size="A4" style={styles.page} wrap>
-      {items.map((card, index) => (
-      <View style={styles.card} wrap={false} key={index}>
-        {card.map((item, index) => {
-          if (item.legendSourceType === LegendSourceTypeEnum.image) {
-            const styles = getItemImageStyles(item, fontSize);
-            return (
-              <View style={styles.item} key={index}>
-                <Image src={getUrlFromImgKey(item.source)} style={styles.image}/>
-              </View>
-            )
-          }
-          const styles = getItemTextStyles(item, fontSize);
-          return (
-            <View style={styles.item} key={index}>
-              <Text style={styles.text}>{item.source}</Text>
-            </View>
-          )
-        })}
-      </View>))}
+      {items.map((card, index) => {
+        const cardStyle = index % 2 > 0 ? [styles.card, styles.secondCardInRow] : styles.card;
+        return (
+          <View style={cardStyle} wrap={false} key={index}>
+            {card.map((item, index) => {
+              if (item.legendSourceType === LegendSourceTypeEnum.image) {
+                const styles = getItemImageStyles(item, fontSize);
+                return (
+                  <View style={styles.item} key={index}>
+                    <Image src={getUrlFromImgKey(item.source)} style={styles.image}/>
+                  </View>
+                )
+              }
+              const styles = getItemTextStyles(item, fontSize);
+              return (
+                <View style={styles.item} key={index}>
+                  <Text style={styles.text}>{item.source}</Text>
+                </View>
+              )
+            })}
+          </View>
+        )})}
     </Page>
   </Document>
 );

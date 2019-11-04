@@ -21,7 +21,6 @@ async function generateCardImage(items: Array<EditableImageT>) {
   ctx.strokeStyle = "#000";
 
   items.forEach((item, index) => {
-    //debugger
     const boxSize = item.scaleFactor;
     const image  = images[index];
     const {dWidth, dHeight} = containImageInBox(image, boxSize);

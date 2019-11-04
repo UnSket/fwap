@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
     alignItems: 'center',
     height: '100%',
   },
@@ -25,7 +24,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 999,
     borderTopRightRadius: 999,
     position: 'relative',
-    textOverflow: 'hidden'
+    textOverflow: 'hidden',
+    marginLeft: 30,
+    marginRight: 15
+  },
+  secondCardInRow: {
+    marginLeft: 15,
+    marginRight: 30
   }
 });
 
@@ -53,17 +58,20 @@ type Props = {
 const Cards:React.FC<Props> = ({items, rendered}) => (
   <Document onRender={rendered}>
     <Page size="A4" style={styles.page} wrap>
-      {items.map((card, index) => (
-      <View style={styles.card} wrap={false} key={index}>
-        {card.map((item, index) => {
-          const styles = getItemStyles(item);
-          return (
-            <View style={styles.item} key={index}>
-              <Image src={getUrlFromImgKey(item.imageUrl)} style={styles.image} />
-            </View>
-          )
-        })}
-      </View>))}
+      {items.map((card, index) => {
+        const cardStyle = index % 2 > 0 ? [styles.card, styles.secondCardInRow] : styles.card;
+        return (
+          <View style={cardStyle} wrap={false} key={index}>
+            {card.map((item, index) => {
+              const styles = getItemStyles(item);
+              return (
+                <View style={styles.item} key={index}>
+                  <Image src={getUrlFromImgKey(item.imageUrl)} style={styles.image} />
+                </View>
+              )
+            })}
+          </View>
+      )})}
     </Page>
   </Document>
 );
