@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Container, Paper, Tabs, Typography, Tab, CircularProgress, Divider } from '@material-ui/core';
+import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core';
 import styles from './EditDeck.module.scss';
 import { RouteComponentProps } from 'react-router';
 import FileManagment from './FileManagment/FileManagment';
 import ChangeFileDialog from './ChangeFileDialog/ChangeFileDialog';
-import { getDeckRequest, getDeckCardsRequest } from '../../modules/userDecks/actions';
+import { getDeckRequest } from '../../modules/userDecks/actions';
 import { connect } from 'react-redux';
 import { decksById, loading } from '../../modules/userDecks/selectors';
 import { StoreState } from '../../modules/types';
@@ -55,7 +55,6 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
 
   const CurrentTabComponent: React.FC = () => {
     if (!deck) return null;
-    console.log(match.params.page);
     switch (match.params.page) {
       case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deckId} imagesRequired={deck.imagesRequired} />;
       case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;

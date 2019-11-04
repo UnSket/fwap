@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Document, StyleSheet, Image} from '@react-pdf/renderer';
+import { Page, Document, StyleSheet, Image, View } from '@react-pdf/renderer';
 import { EditableImageT } from '../../../../model/types/Card';
 import { getUrlFromImgKey } from '../../../utils/utils';
 import times from 'lodash/times';
@@ -26,17 +26,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 999,
     border: 1,
     position: 'relative',
-  }
-});
-
-const getItemStyles = (item: EditableImageT) => StyleSheet.create({
-  item: {
-    position: 'absolute',
-    left: item.positionX * PT_FACTOR,
-    top: item.positionY * PT_FACTOR,
-    transform: `rotate(${item.rotationAngle}deg)`,
-    width: item.scaleFactor * PT_FACTOR,
-    height: item.scaleFactor * PT_FACTOR,
   },
   image: {
     objectFit: 'contain',
@@ -55,7 +44,11 @@ const Backside:React.FC<Props> = ({backside, rendered}) => {
   return (
     <Document onRender={rendered}>
       <Page size="A4" style={styles.page} wrap>
-        {times(6, () => <Image src={getUrlFromImgKey(backside)} style={styles.card} />)}
+        {times(6, () => (
+          <View style={styles.card}>
+            <Image src={getUrlFromImgKey(backside)} style={styles.image} />
+          </View>
+        ))}
       </Page>
     </Document>
   )

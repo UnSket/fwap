@@ -41,6 +41,8 @@
         &.active {
           cursor: unset;
           font-weight: bold;
+          border-radius: 0;
+          border-right: 2px solid $mainColor;
         }
       }
     }

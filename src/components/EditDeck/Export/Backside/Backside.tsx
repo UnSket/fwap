@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Deck } from '../../../../model/types/Deck';
 import styles from './Backside.module.scss';
-import { CircularProgress, Typography } from '@material-ui/core';
-import { useFlag } from '../../../utils/utils';
+import { Link as MatLink, CircularProgress, Typography } from '@material-ui/core';
+import { getUrlFromImgKey, useFlag } from '../../../utils/utils';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { Link } from 'react-router-dom';
 import { EditDeckPages, ROUTE_PATHS } from '../../../../model/constans/routePaths';
 import BacksidePDF from '../PDFGenerator/Backside';
+import { generateBacksideCardImage } from '../generateCardImage';
 
 
 type Props = {
@@ -26,6 +27,16 @@ const Backside: React.FC<Props> = ({deck}) => {
     }
   }, [deck.backsideKey]);
 
+  const getImage = async function() {
+    const image = await generateBacksideCardImage(getUrlFromImgKey(deck.backsideKey!));
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = image;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const BacksideLink:React.FC = () => {
     if (!deck.backsideKey) {
       return <p className={styles.notification}>You should choose backside in tab
@@ -38,10 +49,13 @@ const Backside: React.FC<Props> = ({deck}) => {
     }
     return (
       <>
-        <PDFDownloadLink document={backsideDocument}>Download PDF</PDFDownloadLink>
         <PDFViewer className={styles.pdf}>
           {backsideDocument}
         </PDFViewer>
+        <div className={styles.links}>
+          <PDFDownloadLink document={backsideDocument}>Download PDF</PDFDownloadLink>
+          <a onClick={getImage}>Download image</a>
+        </div>
       </>
     )
   };
@@ -49,10 +63,8 @@ const Backside: React.FC<Props> = ({deck}) => {
   return (
     <div className={styles.container}>
       {backsideRendering && <div className={styles.spinner}><CircularProgress size={50} /></div>}
-      <div className={styles.block}>
-        <Typography variant='h4' gutterBottom>Backside</Typography>
-        <BacksideLink />
-      </div>
+      <Typography variant='h4' gutterBottom>Backside</Typography>
+      <BacksideLink />
     </div>
   );
 };
