@@ -9,6 +9,7 @@ export type Deck = {
   backsideKey?: string
   cards?: EditableImageT[][]
   imagesRequired: number,
+  isNumerated: boolean
 }
 
 export type DeckByID = {

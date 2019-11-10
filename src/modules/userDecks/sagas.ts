@@ -1,4 +1,4 @@
-import { put, takeEvery, throttle } from 'redux-saga/effects';
+import { put, takeEvery } from 'redux-saga/effects';
 import {
   createDeckSuccess,
   deckFailure,
@@ -46,8 +46,12 @@ function* getDecks(): Iterable<any> {
   }
 }
 
-function* updateDeck({payload: {deckId, name, description}}: any): Iterable<any> {
-  const {response: createdDeck, error} = yield request({url: `/api/deck/update`, body: JSON.stringify({id: deckId, name, description}), method: 'PUT'});
+function* updateDeck({payload: {deckId, name, description, isNumerated}}: any): Iterable<any> {
+  const {response: createdDeck, error} = yield request({
+    url: `/api/deck/update`,
+    body: JSON.stringify({id: deckId, name, description, isNumerated}),
+    method: 'PUT'
+  });
   if (createdDeck) {
     yield put(getDeckSuccess(createdDeck));
   } else {

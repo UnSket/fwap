@@ -35,10 +35,10 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
 
   if (deck.imagesRequired) {
     return (
-      <>
+      <div className={styles.container}>
         <Typography variant='h4' gutterBottom>Legends</Typography>
         <p className={styles.notification}>You should upload {deck.imagesRequired} more files to create legend!</p>
-      </>
+      </div>
     )
   }
 
@@ -50,7 +50,7 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
 
   const getSelectedLegend = () => {
     if (!legends.length) {
-      return <p className={styles.notification}>You haven't created legends. Create it in
+      return <p className={styles.notification}>You haven't created legends. Create it in{' '}
         <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.legend)}>"Editing -> Legend"</Link> section</p>
     }
 
@@ -71,14 +71,14 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
       )
     }
 
-    return <Legend legend={currentLegend} />;
+    return <Legend legend={currentLegend} isNumerated={deck.isNumerated} />;
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <Typography variant='h4' gutterBottom>Legends</Typography>
       {deckLegends.loading && <div className={styles.loading}><CircularProgress size={50} /></div>}
-      {legends.length &&
+      {!!legends.length &&
         <div className={legendStyles.selectContainer}>
           <FormControl className={legendStyles.select} >
             <InputLabel htmlFor="age-helper">Select legend</InputLabel>
@@ -92,7 +92,7 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
         </div>
       }
       {getSelectedLegend()}
-    </>
+    </div>
   )
 };
 

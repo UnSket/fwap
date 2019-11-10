@@ -18,7 +18,7 @@ export const {
   GET_DECK_SUCCESS: (deck) => ({deck}),
   GET_USER_DECKS_REQUEST: () => null,
   GET_USER_DECKS_SUCCESS: (decks) => ({decks}),
-  UPDATE_DECK_REQUEST: (deckId, name, description) => ({deckId, name, description}),
+  UPDATE_DECK_REQUEST: (deckId, name, description, isNumerated) => ({deckId, name, description, isNumerated}),
 });
 
 // cards actions

@@ -9,22 +9,23 @@ import { Legend as LegendT } from '../../../../model/types/Legend';
 
 
 type Props = {
-  legend: LegendT
+  legend: LegendT,
+  isNumerated: boolean
 }
 
-const Legend: React.FC<Props> = ({legend}) => {
+const Legend: React.FC<Props> = ({legend, isNumerated}) => {
   // hack to show loader
   const [legendDocument, setLegendDocument] = useState<any>(null);
   const [legendRendering, legendRendered, startLegendRendering] = useFlag();
 
   useEffect(() => {
       startLegendRendering();
-      const document = <LegendPDF items={legend.cards} fontSize={legend.textSize} rendered={legendRendered} />;
+      const document = <LegendPDF items={legend.cards} fontSize={legend.textSize} rendered={legendRendered} isNumerated={isNumerated} />;
       setLegendDocument(document);
   }, [legend]);
 
   async function downloadImages() {
-    await downloadLegendImages(legend.cards, legend!.textSize);
+    await downloadLegendImages(legend.cards, legend!.textSize, isNumerated);
   };
 
   const LegendLink:React.FC = () => {

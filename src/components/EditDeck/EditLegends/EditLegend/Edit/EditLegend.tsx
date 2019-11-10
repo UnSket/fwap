@@ -14,7 +14,8 @@ import { updateLegendRequest } from '../../../../../modules/legends/actions';
 type Props = {
   legend: Legend,
   updateLegendRequest: (cards: Array<Array<EditableLegendItemT>>, legendId: string, textSize: number) => void;
-  images: Array<Image>
+  images: Array<Image>,
+  isNumerated: boolean
 }
 
 const useCards = (
@@ -60,7 +61,7 @@ const useTextSize = (legend?: Legend): {textSize: TextSizeT, setTextSize: (textS
   return {textSize, setTextSize};
 };
 
-const EditLegend: React.FC<Props> = ({legend, updateLegendRequest, images}) => {
+const EditLegend: React.FC<Props> = ({legend, updateLegendRequest, images, isNumerated}) => {
   const {textSize, setTextSize} = useTextSize(legend);
   const {cards,  updateItem, setCards} = useCards(legend.id, textSize.value, legend.isTuned, updateLegendRequest, legend && legend.cards);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +103,8 @@ const EditLegend: React.FC<Props> = ({legend, updateLegendRequest, images}) => {
             updateItem={(item, imageIndex) => updateItem(item, index, imageIndex)}
             textSize={textSize.value}
             editImage={editImage}
+            isNumerated={isNumerated}
+            cardNumber={index + 1}
           />
         ))}
       </div>

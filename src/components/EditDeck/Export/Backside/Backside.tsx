@@ -39,9 +39,9 @@ const Backside: React.FC<Props> = ({deck}) => {
 
   const BacksideLink:React.FC = () => {
     if (!deck.backsideKey) {
-      return <p className={styles.notification}>You should choose backside in tab
-        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.settings)}> "SETTINGS" </Link>
-        to export backside!</p>
+      return <p className={styles.notification}>You should choose backside in tab{' '}
+        <Link to={ROUTE_PATHS.editDeck.withID(deck.id, EditDeckPages.settings)}>"SETTINGS"</Link>
+        {' '}to export backside!</p>
     }
 
     if (!backsideDocument) {

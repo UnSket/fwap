@@ -20,3 +20,10 @@ export const useFlag = (): [boolean, () => void, () => void] => {
   };
   return [flag, setFalse, setTrue];
 };
+
+export const formatCardNumber = (cardNumber: number) => {
+  if (cardNumber === 6 || cardNumber === 9) {
+    return `${cardNumber}.`;
+  }
+  return `${cardNumber}`;
+};

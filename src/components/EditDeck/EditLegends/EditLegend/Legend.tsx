@@ -27,7 +27,7 @@ const Legend: React.FC<Props> = ({deck, legend}) => {
   return (
     <div className={styles.container}>
       <Typography variant='h5' gutterBottom>Edit legend {legend.name}</Typography>
-      <EditLegend legend={legend} images={deck.images}/>
+      <EditLegend legend={legend} images={deck.images} isNumerated={deck.isNumerated}/>
     </div>
   );
 

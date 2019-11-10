@@ -57,7 +57,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
     if (!deck) return null;
     switch (match.params.page) {
       case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deckId} imagesRequired={deck.imagesRequired} />;
-      case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
+      case EditDeckPages.cards: return <EditCards isNumerated={deck.isNumerated} cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
       case EditDeckPages.legend: return <Legends deck={deck} />;
       case EditDeckPages.exportCards: return <ExportCards deck={deck} />;
       case EditDeckPages.exportLegend: return <ExportLegend deck={deck} />;

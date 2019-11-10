@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image} from '@react-pdf/renderer';
 import { EditableImageT } from '../../../../model/types/Card';
-import { getUrlFromImgKey } from '../../../utils/utils';
+import { formatCardNumber, getUrlFromImgKey } from '../../../utils/utils';
 
 const PT_FACTOR = 0.75;
 
@@ -31,6 +31,17 @@ const styles = StyleSheet.create({
   secondCardInRow: {
     marginLeft: 15,
     marginRight: 30
+  },
+  cardNumberWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    top: 156 * PT_FACTOR,
+    width: 336 * PT_FACTOR,
+  },
+  cardNumber: {
+    fontSize: 12,
   }
 });
 
@@ -51,11 +62,12 @@ const getItemStyles = (item: EditableImageT) => StyleSheet.create({
 });
 
 type Props = {
-  items: Array<Array<EditableImageT>>
-  rendered: () => void
+  items: Array<Array<EditableImageT>>;
+  rendered: () => void;
+  isNumerated: boolean
 };
 
-const Cards:React.FC<Props> = ({items, rendered}) => (
+const Cards:React.FC<Props> = ({items, rendered, isNumerated}) => (
   <Document onRender={rendered}>
     <Page size="A4" style={styles.page} wrap>
       {items.map((card, index) => {
@@ -70,6 +82,11 @@ const Cards:React.FC<Props> = ({items, rendered}) => (
                 </View>
               )
             })}
+            {isNumerated && (
+              <View style={styles.cardNumberWrapper}>
+                <Text style={styles.cardNumber}>{formatCardNumber(index + 1)}</Text>
+              </View>
+            )}
           </View>
       )})}
     </Page>

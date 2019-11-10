@@ -1,10 +1,10 @@
 import { EditableImageT } from '../../../../model/types/Card';
 import { canvasToBlobAsync, containImageInBox, imageLoadAsync, QUALITY_FACTOR } from './utils';
-import { getUrlFromImgKey } from '../../../utils/utils';
+import { formatCardNumber, getUrlFromImgKey } from '../../../utils/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-async function generateCardImage(items: Array<EditableImageT>) {
+async function generateCardImage(items: Array<EditableImageT>, isNumerated: boolean, cardNumber: number) {
   const images = await Promise.all(items.map(i => imageLoadAsync(getUrlFromImgKey(i.imageUrl))));
   const canvas = document.createElement('canvas');
   canvas.width  = 336 * QUALITY_FACTOR;
@@ -38,19 +38,22 @@ async function generateCardImage(items: Array<EditableImageT>) {
     ctx.restore();
   });
 
+  if (isNumerated) {
+    const fontSize = 16 * QUALITY_FACTOR;
+    ctx.fillStyle = "#000";
+    ctx.strokeStyle = "#000";
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillText(formatCardNumber(cardNumber + 1), 168 * QUALITY_FACTOR, 168 * QUALITY_FACTOR);
+  }
+
 
   const blob = await canvasToBlobAsync(canvas) as Blob;
   return blob;
 }
 
-async function downloadCardsImages(cards: Array<Array<EditableImageT>>, deckName: string) {
-  const imagesPromises: Array<Promise<Blob>> = [];
-
+async function downloadCardsImages(cards: Array<Array<EditableImageT>>, deckName: string, isNumerated: boolean) {
   // parallel resolving
-  for (const items of cards) {
-    const imagePromise = generateCardImage(items);
-    imagesPromises.push(imagePromise);
-  }
+  const imagesPromises: Array<Promise<Blob>> = cards.map((items, index) => generateCardImage(items, isNumerated, index));
   const images = await Promise.all(imagesPromises);
 
   const zip = new JSZip();

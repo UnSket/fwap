@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { Deck } from '../../../model/types/Deck';
 import styles from './Settings.module.scss';
 import {
-  Button,
+  Button, Checkbox, FormControlLabel,
   TextField,
   Typography
 } from '@material-ui/core';
@@ -19,13 +19,14 @@ import { OpenChangeFileModalContext } from '../EditDeck';
 type Props = {
   deck: Deck,
   error?: string | null,
-  updateDeckRequest: (deckId: string, name: string, description: string) => void
+  updateDeckRequest: (deckId: string, name: string, description: string, isNumerated: boolean) => void
   updateBacksideRequest: (image: File | Blob, deckId: string, bgCleanUpFlags?: boolean) => void
 }
 
 const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksideRequest}) => {
   const [name, changeName] = useState<any>({value: deck.name});
   const [description, changeDescription] = useState<any>({value: deck.description});
+  const [isNumerated, setIsNumerated] = useState<any>(deck.isNumerated);
   const openModal = useContext(OpenChangeFileModalContext);
 
   const updateBacksideHandler = useCallback((images: Array<File | Blob>, bgCleanUpFlags?: boolean) => {
@@ -39,7 +40,7 @@ const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksi
     if (!description.value) changeDescription({value: description.value, error: 'Field is required'});
 
     if (name.value && description.value) {
-      updateDeckRequest(deck.id, name.value, description.value);
+      updateDeckRequest(deck.id, name.value, description.value, isNumerated);
     }
   };
 
@@ -49,6 +50,10 @@ const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksi
 
   const descriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeDescription({value: e.target.value});
+  };
+
+  const isNumeratedCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsNumerated(event.target.checked);
   };
 
   return (
@@ -69,6 +74,16 @@ const Settings: React.FC<Props> = ({deck, error, updateDeckRequest, updateBacksi
           value={description.value}
           error={!!description.error}
           onChange={descriptionInputChange}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isNumerated}
+              onChange={isNumeratedCheckboxHandler}
+              color="primary"
+            />
+          }
+          label="Numerate cards"
         />
         <div className={styles.backside}>
           <p>Backside image:</p>

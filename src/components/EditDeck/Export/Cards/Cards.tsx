@@ -29,7 +29,7 @@ const Cards: React.FC<Props> = ({deck, cardsState, getDeckCardsRequest}) => {
   useEffect(() => {
     if (!cardsRendering && !cardsDocument && deck.cards) {
       startCardsRendering();
-      const document = <CardsPDF items={deck.cards} rendered={cardsRendered}/>;
+      const document = <CardsPDF items={deck.cards} rendered={cardsRendered} isNumerated={deck.isNumerated}/>;
       setCardsDocument(document);
     }
   }, [deck.cards]);
@@ -42,7 +42,7 @@ const Cards: React.FC<Props> = ({deck, cardsState, getDeckCardsRequest}) => {
   });
 
   async function downloadImages() {
-    await downloadCardImages(deck.cards!, deck.name);
+    await downloadCardImages(deck.cards!, deck.name, deck.isNumerated);
   }
 
   const CardsLink:React.FC = () => {

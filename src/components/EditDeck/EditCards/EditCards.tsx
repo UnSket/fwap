@@ -19,7 +19,8 @@ type Props = {
   left: number,
   getDeckCardsRequest: (deckId: string) => void,
   loading: boolean,
-  error?: string | null
+  error?: string | null,
+  isNumerated: boolean
 }
 
 const useCards = (initialCards?: Array<Array<EditableImageT>>) => {
@@ -37,7 +38,7 @@ const useCards = (initialCards?: Array<Array<EditableImageT>>) => {
   return {cards, updateImage};
 };
 
-const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest, left, loading, getDeckCardsRequest, error}) => {
+const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsRequest, left, loading, getDeckCardsRequest, error, isNumerated}) => {
   const {cards, updateImage} = useCards(initialCards);
 
   useEffect(() => {
@@ -63,7 +64,12 @@ const EditCards: React.FC<Props> = ({cards: initialCards, deckId, saveCardsReque
       <Typography variant='h4' gutterBottom>Edit cards</Typography>
       <div className={styles.wrapper}>
         {cards.map((images, index) => (
-          <Card key={index} editableImages={images} updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)} />
+          <Card
+            key={index}
+            editableImages={images}
+            updateImage={(image, imageIndex) => updateImage(image, index, imageIndex)}
+            cardNumber={index + 1}
+            isNumerated={isNumerated} />
         ))}
       </div>
       <div className={styles.actionPanel}>

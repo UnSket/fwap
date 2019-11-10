@@ -69,7 +69,7 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
       <div className={styles.controls}>
         {legends.length ?
           <FormControl className={styles.select} >
-            <InputLabel htmlFor="age-helper">Current legend</InputLabel>
+            <InputLabel htmlFor="age-helper">Select legend</InputLabel>
             <Select
               value={currentLegendId}
               onChange={currentLegendSelectChange}
