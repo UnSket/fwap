@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from './EditableItem.module.scss';
-import { getUrlFromImgKey, classes } from '../../../../../utils/utils';
-import { EditableLegendItemT, LegendSourceTypeEnum } from '../../../../../../model/types/Legend';
+import { getUrlFromImgKey, classes } from '../../../../../../utils/utils';
+import { EditableLegendItemT, LegendSourceTypeEnum } from '../../../../../../../model/types/Legend';
 import EditIcon from '@material-ui/icons/Edit';
-import { Image } from '../../../../../../model/types/Image';
+import { Image } from '../../../../../../../model/types/Image';
 
 interface Props {
   setCardActive: (isActive: boolean) => void,

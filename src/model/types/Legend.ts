@@ -1,7 +1,10 @@
 export type Legend = {
   deckId: string;
   textSize: number;
+  name: string;
   cards: EditableLegendItemT[][];
+  id: string;
+  isTuned: boolean;
 }
 
 export enum LegendSourceTypeEnum  {

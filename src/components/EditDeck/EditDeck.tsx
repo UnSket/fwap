@@ -11,11 +11,11 @@ import { StoreState } from '../../modules/types';
 import { Deck, DeckByID } from '../../model/types/Deck';
 import Settings from './Settings/Settings';
 import EditCards from './EditCards/EditCards';
-import Legend from './Legend/Legend';
+import Legends from'./EditLegends/Legends';
 import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
 import { NavLink } from 'react-router-dom';
 import ExportCards from './Export/Cards/Cards';
-import ExportLegend from './Export/Legend/Legend';
+import ExportLegend from './Export/Legend/Legends';
 import ExportBackside from './Export/Backside/Backside';
 
 interface MatchParams {
@@ -58,7 +58,7 @@ const EditDeck: React.FC<Props> = ({match, decksById, getDeckRequest, history, l
     switch (match.params.page) {
       case EditDeckPages.files: return <FileManagment images={deck && deck.images} deckId={deckId} imagesRequired={deck.imagesRequired} />;
       case EditDeckPages.cards: return <EditCards cards={deck.cards} deckId={deck.id} left={deck.imagesRequired} />;
-      case EditDeckPages.legend: return <Legend deck={deck} left={deck.imagesRequired} />;
+      case EditDeckPages.legend: return <Legends deck={deck} />;
       case EditDeckPages.exportCards: return <ExportCards deck={deck} />;
       case EditDeckPages.exportLegend: return <ExportLegend deck={deck} />;
       case EditDeckPages.exportBackside: return <ExportBackside deck={deck} />;

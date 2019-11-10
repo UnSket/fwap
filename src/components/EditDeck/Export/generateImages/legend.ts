@@ -12,7 +12,7 @@ async function generateLegendCardImage(items: Array<EditableLegendItemT>, fontSi
   canvas.height = 336 * QUALITY_FACTOR;
 
   const ctx = canvas.getContext('2d')!;
-  ctx.arc(336, 336, 336, 0, Math.PI * 2);
+  ctx.arc(168 * QUALITY_FACTOR, 168 * QUALITY_FACTOR, 168 * QUALITY_FACTOR, 0, Math.PI * 2);
   ctx.fillStyle = '#fff';
   ctx.fill();
   ctx.clip();
@@ -20,7 +20,7 @@ async function generateLegendCardImage(items: Array<EditableLegendItemT>, fontSi
 
   ctx.fillStyle = "#000";
   ctx.strokeStyle = "#000";
-  ctx.font = `${fontSize * QUALITY_FACTOR}px BlinkMacSystemFont`;
+  ctx.font = `${fontSize * QUALITY_FACTOR}px Arial`;
   for (const item of items) {
     if (item.legendSourceType === LegendSourceTypeEnum.text) {
       ctx.fillText(item.source, item.positionX * QUALITY_FACTOR, item.positionY * QUALITY_FACTOR + fontSize * QUALITY_FACTOR);

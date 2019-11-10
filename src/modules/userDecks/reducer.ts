@@ -80,7 +80,7 @@ export default handleActions<State, any>(
       currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
       if (currentDeck && currentDeck.legend) {
         const legendCopy = cloneDeep(currentDeck.legend);
-        const legendItems = legendCopy.cards.flat();
+        const legendItems = legendCopy.cards!.flat();
         const itemTextIndex = legendItems.findIndex(item => item.imageId === newImage.id && item.legendSourceType === LegendSourceTypeEnum.text);
         legendItems[itemTextIndex].source = newImage.text || '';
         legendItems[itemTextIndex].source = newImage.text || '';

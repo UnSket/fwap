@@ -7,7 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DropFile from '../FileDrop/FileDrop';
 import { Tab, Tabs } from '@material-ui/core';
 import CreateFromText from '../CreateFromText/CreateFromText';
-import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 
 type Props = {
   isOpen: boolean,

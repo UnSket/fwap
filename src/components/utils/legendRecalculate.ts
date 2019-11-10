@@ -17,11 +17,11 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
 
   const height = (DECK_DIAMETER - offset * 2);
   const pairHeight = imageSize + TEXT_TOP_OFFSET + fontSize;
-  const linesCount =  height / (pairHeight + MIN_OFFSET);
-  const verticalOffset = (height - (pairHeight * linesCount)) / (linesCount - 1);
+  const linesCount =  Math.floor(height / (pairHeight + MIN_OFFSET));
+  const verticalOffset = (height - (pairHeight * linesCount)) / (linesCount + 1);
 
   const linePositioning = (sourceItems: Array<EditableLegendItemT>, lineNumber: number, cardNumber: number) => {
-    const positionY = offset + (lineNumber * (pairHeight + verticalOffset));
+    const positionY = offset + verticalOffset + (lineNumber * (pairHeight + verticalOffset));
     const bottomY = positionY + pairHeight;
     let itemsCount = 0;
     let totalItemsWidth = 0;
@@ -55,7 +55,7 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
     }
 
     let horizontalOffset = itemsCount > 1 ? Math.floor((totalWidth - totalItemsWidth) / (itemsCount - 1)) : 0;
-    if (itemsCount < 3 && horizontalOffset > itemsParams[0].itemWidth) {
+    if (itemsCount < 3 && horizontalOffset && horizontalOffset > itemsParams[0].itemWidth) {
       horizontalOffset = MIN_OFFSET;
     }
     const offsetLeft = (DECK_DIAMETER - totalWidth) / 2;
@@ -75,7 +75,7 @@ const recalculate = (fontSize: number, items: Array<EditableLegendItemT>): Array
 
   for (let cardNumber = 0; finalItems.flat().length < sourceItems.length; cardNumber++) {
     finalItems[cardNumber] = [];
-    for (let lineNumber = 0; lineNumber < linesCount - 1; lineNumber++) {
+    for (let lineNumber = 0; lineNumber < linesCount; lineNumber++) {
       const source = sourceItems.slice(finalItems.flat().length);
       if (!source.length) {
         break;

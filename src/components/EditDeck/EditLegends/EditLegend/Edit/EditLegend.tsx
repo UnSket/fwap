@@ -1,31 +1,27 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './EditLegend.module.scss';
 import { Button } from '@material-ui/core';
-import { saveLegendCardsRequest, getDeckLegendRequest } from '../../../../modules/userDecks/actions'
 import { connect } from 'react-redux';
-import { EditableLegendItemT, Legend } from '../../../../model/types/Legend';
+import { EditableLegendItemT, Legend } from '../../../../../model/types/Legend';
 import Card from './Card/Card';
 import cloneDeep from 'lodash/cloneDeep';
 import TextField from '@material-ui/core/TextField';
-import recalculate from '../../../utils/legendRecalculate';
-import { Image } from '../../../../model/types/Image';
+import recalculate from '../../../../utils/legendRecalculate';
+import { Image } from '../../../../../model/types/Image';
 import ChangeTextDialog from '../ChangeTextDialog/ChangeText';
+import { updateLegendRequest } from '../../../../../modules/legends/actions';
 
 type Props = {
-  legend?: Legend,
-  deckId: string,
-  getDeckLegendRequest: (deckId: string) => void
-  saveLegendCardsRequest: (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
-  loading: boolean,
-  images: Array<Image>,
-  isTuned: boolean
+  legend: Legend,
+  updateLegendRequest: (cards: Array<Array<EditableLegendItemT>>, legendId: string, textSize: number) => void;
+  images: Array<Image>
 }
 
 const useCards = (
+  legendId: string,
   fontSize: number,
   isTuned: boolean,
-  saveLegendCardsRequest:  (cards: Array<Array<EditableLegendItemT>>, deckId: string, textSize: number) => void,
-  deckId: string,
+  saveLegendCardsRequest:  (cards: Array<Array<EditableLegendItemT>>, legendId: string, textSize: number) => void,
   initialCards?: Array<Array<EditableLegendItemT>>
 ) => {
   const [cards, setCards] = useState<Array<Array<EditableLegendItemT>>>([]);
@@ -35,7 +31,7 @@ const useCards = (
     // is user do not save legend yet calculate positions manual
     if (!isTuned && initialCards) {
       cardsToShow = recalculate(fontSize, initialCards.flat());
-      saveLegendCardsRequest(cardsToShow, deckId, fontSize);
+      saveLegendCardsRequest(cardsToShow, legendId, fontSize);
     }
     setCards(cardsToShow);
   }, [initialCards]);
@@ -48,9 +44,13 @@ const useCards = (
   return {cards, updateItem, setCards};
 };
 
-const useTextSize = (legend?: Legend) => {
+type TextSizeT = {
+  value: number, tempValue: number, error?: string
+}
+
+const useTextSize = (legend?: Legend): {textSize: TextSizeT, setTextSize: (textSize: TextSizeT) => void} => {
   const defaultTextSize = legend ? legend.textSize : 8;
-  const [textSize, setTextSize] = useState<{value: number, error?: string, tempValue: number}>({value: defaultTextSize, tempValue: defaultTextSize});
+  const [textSize, setTextSize] = useState<TextSizeT>({value: defaultTextSize, tempValue: defaultTextSize});
   useEffect(() => {
     if (legend && !textSize) {
       setTextSize({value: legend.textSize, tempValue: legend.textSize});
@@ -60,9 +60,9 @@ const useTextSize = (legend?: Legend) => {
   return {textSize, setTextSize};
 };
 
-const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, getDeckLegendRequest, loading, images, isTuned}) => {
+const EditLegend: React.FC<Props> = ({legend, updateLegendRequest, images}) => {
   const {textSize, setTextSize} = useTextSize(legend);
-  const {cards,  updateItem, setCards} = useCards(textSize.value, isTuned, saveLegendCardsRequest, deckId, legend && legend.cards);
+  const {cards,  updateItem, setCards} = useCards(legend.id, textSize.value, legend.isTuned, updateLegendRequest, legend && legend.cards);
   const textSizeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = +e.target.value;
     if (value < 8 || value > 26) {
@@ -82,17 +82,11 @@ const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, ge
 
   const closeModal = () => setEditingImage(null);
 
-  useEffect(() => {
-    if (!legend && !loading) {
-      getDeckLegendRequest(deckId);
-    }
-  }, [legend]);
-
-  const save = useCallback(() => {
+  const save = () => {
     if (!textSize.error) {
-      saveLegendCardsRequest(cards, deckId, textSize.value);
+      updateLegendRequest(cards, legend.id, textSize.value);
     }
-  }, [deckId, cards]);
+  };
 
   if (!legend) {
     return null;
@@ -128,14 +122,13 @@ const EditLegend: React.FC<Props> = ({legend, deckId, saveLegendCardsRequest, ge
           Save
         </Button>
       </div>
-      <ChangeTextDialog image={editingImage} close={closeModal} deckId={deckId} />
+      <ChangeTextDialog image={editingImage} close={closeModal} legendId={legend.id} />
     </>
   )
 };
 
 const mapDispatchToProps = {
-  saveLegendCardsRequest,
-  getDeckLegendRequest,
+  updateLegendRequest
 };
 
 export default connect(null, mapDispatchToProps)(EditLegend);

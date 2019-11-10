@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Card.module.scss';
-import { classes } from '../../../../utils/utils';
-import { EditableLegendItemT } from '../../../../../model/types/Legend';
+import { classes } from '../../../../../utils/utils';
+import { EditableLegendItemT } from '../../../../../../model/types/Legend';
 import EditableItem from './EditableItem/EditableItem';
 
 interface Props {
