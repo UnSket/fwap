@@ -1,6 +1,5 @@
 import { Image } from './Image';
 import { EditableImageT } from './Card';
-import { Legend } from './Legend';
 
 export type Deck = {
   name: string,
@@ -10,8 +9,6 @@ export type Deck = {
   backsideKey?: string
   cards?: EditableImageT[][]
   imagesRequired: number,
-  legend?: Legend,
-  legendTuned: boolean
 }
 
 export type DeckByID = {

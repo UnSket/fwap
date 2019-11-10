@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import { createLegendRequest } from '../../../../modules/legends/actions';
 import { connect } from 'react-redux';
 import styles from './CreateLegend.module.scss';
-import { State as LegendState } from '../../../../modules/legends/types'
 
 type Props = {
   isOpen: boolean,

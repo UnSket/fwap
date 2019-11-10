@@ -9,14 +9,8 @@ import {
   getUserDecksSuccess,
   updateDeckRequest,
   getDeckCardsRequest,
-  saveImageTextSuccess,
-  getDeckLegendRequest,
-  saveLegendCardsRequest,
   getDeckCardsSuccess,
   getDeckCardsFailure,
-  legendFailure,
-  getDeckLegendSuccess,
-  saveImageTextRequest,
   saveCardsRequest
 } from './actions';
 import { saveFileRequest, saveFileSuccess, saveFileFailure, updateImageRequest, updateImageSuccess } from './files/actions';
@@ -74,22 +68,10 @@ export default handleActions<State, any>(
         }
       })
     },
-    [combineActions(saveImageTextSuccess, updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
+    [combineActions(updateImageSuccess).toString()]: (state, {payload: {newImage, deckId}}) => {
       const currentDeck = state.decksById[deckId];
       const currentImageIndex = currentDeck.images.findIndex((image: Image) => newImage.id === image.id);
       currentDeck.images = [...currentDeck.images.slice(0, currentImageIndex), newImage, ...currentDeck.images.slice(currentImageIndex + 1)];
-      if (currentDeck && currentDeck.legend) {
-        const legendCopy = cloneDeep(currentDeck.legend);
-        const legendItems = legendCopy.cards!.flat();
-        const itemTextIndex = legendItems.findIndex(item => item.imageId === newImage.id && item.legendSourceType === LegendSourceTypeEnum.text);
-        legendItems[itemTextIndex].source = newImage.text || '';
-        legendItems[itemTextIndex].source = newImage.text || '';
-        const itemImageIndex = legendItems.findIndex(item => item.imageId === newImage.id && item.legendSourceType === LegendSourceTypeEnum.image);
-        legendItems[itemImageIndex].source = newImage.url;
-        const itemsByCardsNumber = groupBy(legendItems, 'cardNumber');
-        legendCopy.cards = Object.values(itemsByCardsNumber);
-        currentDeck.legend = legendCopy;
-      }
       return ({
         ...state,
         decksById: {
@@ -116,24 +98,6 @@ export default handleActions<State, any>(
           [deckId]: currentDeck
         },
         cards:  {
-          loading: false,
-          error: null
-        }
-      }
-    },
-    [combineActions(saveLegendCardsRequest, getDeckLegendRequest).toString()]: (state) => ({...state, legend: {loading: true, error: null}}),
-    [legendFailure.toString()]: (state, {payload: {error}}) => ({...state, legend: {loading: false, error: error.toString()}}),
-    [getDeckLegendSuccess.toString()]: (state, {payload: {deckId, legend}}) => {
-      const currentDeck = cloneDeep(state.decksById[deckId]!);
-      currentDeck.legend = legend;
-      currentDeck.legendTuned = legend.legendTuned;
-      return {
-        ...state,
-        decksById: {
-          ...state.decksById,
-          [deckId]: currentDeck
-        },
-        legend:  {
           loading: false,
           error: null
         }

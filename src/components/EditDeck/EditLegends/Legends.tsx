@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import CreateLegend from './CreteLegend/CreateLegend';
 import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
 import styles from './Legends.module.scss';
-import { Legend as LegendT } from '../../../model/types/Legend';
 import { classes } from '../../utils/utils';
 import AddIcon from '@material-ui/icons/Add';
 import Legend from './EditLegend/Legend';
@@ -32,7 +31,7 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
 
   useEffect(() => {
     getDeckLegendsRequest(deck.id)
-  }, []);
+  }, [getDeckLegendsRequest, deck.id]);
 
   useEffect(() => {
     if (!currentLegendId) {
@@ -50,7 +49,7 @@ const Legends: React.FC<Props> = ({deck, deckLegends, getDeckLegendsRequest}) =>
   if (deck.imagesRequired) {
     return (
       <>
-        <Typography variant='h4' gutterBottom>Legends</Typography>
+        <Typography variant='h4' gutterBottom>Legends</Typography>A
         <p className={styles.notification}>You should upload {deck.imagesRequired} more files to create legend!</p>
       </>
     )

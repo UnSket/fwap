@@ -108,7 +108,7 @@ const EditableImage: React.FC<Props> = React.memo(({editableImage, setCardActive
       }
     }
 
-  }, []);
+  }, [onWheel]);
 
   const startRotate = (e: React.DragEvent) => {
     if (wrapperRef && wrapperRef.current) {

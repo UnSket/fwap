@@ -10,12 +10,6 @@ import {
   updateDeckRequest,
   getDeckCardsRequest,
   saveCardsRequest,
-  saveImageTextRequest,
-  saveImageTextSuccess,
-  getDeckLegendRequest,
-  saveLegendCardsRequest,
-  getDeckLegendSuccess,
-  legendFailure,
   getDeckCardsFailure,
   getDeckCardsSuccess
 } from './actions';
@@ -79,39 +73,6 @@ function* saveCards({payload: {deckId, cards}}: any): Iterable<any> {
   }
 }
 
-function* saveImageText({payload: {image, deckId}}: any): Iterable<any> {
-  //for (let i = 1; i < 22; i++) {
-    const { response: createdImage, error } = yield request({
-      url: `/api/deck/text/legend`,
-      method: 'POST',
-      body: JSON.stringify({ deckId, imageId: image.id, text: image.text })
-    });
-    if (createdImage) {
-      yield put(saveImageTextSuccess(deckId, createdImage));
-    } else {
-      yield put(legendFailure(error));
-    }
-  //}
-}
-
-function* getDeckLegend({payload: {deckId}}: any): Iterable<any> {
-  const {response: legend, error} = yield request({url: `/api/legend/${deckId}`});
-  if (legend) {
-    yield put(getDeckLegendSuccess(deckId, legend));
-  } else {
-    yield put(legendFailure(error));
-  }
-}
-
-function* saveLegendCards({payload: {deckId, cards, textSize}}: any): Iterable<any> {
-  const {response: legend, error} = yield request({url: `/api/legend/update`, method: 'POST', body: JSON.stringify({deckId, cards: cards.flat(), textSize})});
-  if (legend) {
-    yield put(getDeckLegendSuccess(deckId, legend));
-  } else {
-    yield put(legendFailure(error));
-  }
-}
-
 export default function* loginSaga() {
   yield takeEvery(createDeckRequest, createDeck);
   yield takeEvery(getDeckRequest, getDeck);
@@ -119,7 +80,4 @@ export default function* loginSaga() {
   yield takeEvery(updateDeckRequest, updateDeck);
   yield takeEvery(getDeckCardsRequest, getDeckCards);
   yield takeEvery(saveCardsRequest, saveCards);
-  yield takeEvery(saveImageTextRequest, saveImageText);
-  yield takeEvery(getDeckLegendRequest, getDeckLegend);
-  yield takeEvery(saveLegendCardsRequest, saveLegendCards);
 }

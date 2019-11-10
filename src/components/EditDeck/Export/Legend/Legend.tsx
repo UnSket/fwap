@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../Export.module.scss';
-import { CircularProgress, Typography } from '@material-ui/core';
-import {legendState} from '../../../../modules/userDecks/selectors';
-import {getDeckLegendRequest} from '../../../../modules/userDecks/actions';
-import { StoreState } from '../../../../modules/types';
-import { connect } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
 import { useFlag } from '../../../utils/utils';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import LegendPDF from '../PDFGenerator/Legend';
@@ -56,12 +52,4 @@ const Legend: React.FC<Props> = ({legend}) => {
   );
 };
 
-const mapStateToProps = (state: StoreState) => ({
-  legendState: legendState(state)
-});
-
-const mapDispatchToProps = {
-  getDeckLegendRequest,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Legend);
+export default Legend;

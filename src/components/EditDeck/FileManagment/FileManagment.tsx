@@ -8,7 +8,6 @@ import CreateFromText from '../CreateFromText/CreateFromText';
 import { Image } from '../../../model/types/Image';
 import { getUrlFromImgKey } from '../../utils/utils';
 import { saveFileRequest, updateImageRequest } from '../../../modules/userDecks/files/actions';
-import { ImageWithPreview } from '../../../model/types/ImageWithPreview';
 import { connect } from 'react-redux';
 import { StoreState } from '../../../modules/types';
 import { filesState } from '../../../modules/userDecks/selectors';
@@ -29,7 +28,7 @@ const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, sav
 
   const saveHandler = useCallback((images: Array<File | Blob>, bgCleanUpFlags?: boolean) => {
     saveFileRequest(images, deckId, bgCleanUpFlags);
-  }, [deckId]);
+  }, [deckId, saveFileRequest]);
 
   const getUpdateHandler = useCallback((image: Image) => {
    return (images: Array<File | Blob>, bgCleanUpFlags?: boolean) => {
@@ -37,7 +36,7 @@ const FileManagment: React.FC<Props> = ({images, deckId, updateImageRequest, sav
         updateImageRequest(image, images[0], deckId, bgCleanUpFlags);
       }
     };
-  }, [deckId]);
+  }, [deckId, updateImageRequest]);
 
   return (
     <div className={styles.wrapper} >

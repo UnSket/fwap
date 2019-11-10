@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import {Deck} from '../../model/types/Deck';
 import Carousel from './Carousel/Carousel';
 import styles from './DeckPreview.module.scss';
-import { EditDeckPages, ROUTE_PATHS } from '../../model/constans/routePaths';
+import { ROUTE_PATHS } from '../../model/constans/routePaths';
 import { getUrlFromImgKey } from '../utils/utils';
 import { Link } from 'react-router-dom';
 

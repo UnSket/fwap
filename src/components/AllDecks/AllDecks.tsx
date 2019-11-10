@@ -10,7 +10,6 @@ import { getDecksRequest } from '../../modules/decks/actions';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import throttle from 'lodash/throttle';
-import { Simulate } from 'react-dom/test-utils';
 
 type Props = {
   decks: Deck[];
